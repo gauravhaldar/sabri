@@ -32,11 +32,14 @@ const ProductCard = ({ product, onAddToCart }) => {
   const productImage = getProductImageUrl(product);
   const { current, original, discount } = getProductDisplayPrice(product);
   const isOnSale = isProductOnSale(product);
-  const rating = product.rating?.average || 0;
+  const rating = Number(product.averageRating || product.rating?.average || 0);
 
   return (
     <div className="bg-white group">
-      <Link href={`/necklaces/${product.slug || product.id}`} className="block">
+      <Link
+        href={`/necklaces/${product.slug || product._id || product.id}`}
+        className="block"
+      >
         <div className="relative aspect-square overflow-hidden">
           <Image
             src={productImage}
@@ -69,7 +72,7 @@ const ProductCard = ({ product, onAddToCart }) => {
         </div>
       </Link>
       <div className="p-3">
-        <Link href={`/necklaces/${product.slug || product.id}`}>
+        <Link href={`/necklaces/${product.slug || product._id || product.id}`}>
           <h3 className="text-xs font-light text-black mb-1.5 line-clamp-2 leading-tight hover:text-gray-600 transition-colors">
             {product.name}
           </h3>
@@ -106,7 +109,7 @@ const ProductCard = ({ product, onAddToCart }) => {
             ))}
           </div>
           <span className="text-xs text-gray-500 font-light">
-            ({rating.toFixed(1)})
+            ({isNaN(rating) ? 0 : rating.toFixed(1)})
           </span>
         </div>
       </div>
@@ -211,7 +214,7 @@ export default function NecklacesPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {sortedProducts.map((product) => (
                 <ProductCard
-                  key={product.id}
+                  key={product._id || product.id}
                   product={product}
                   onAddToCart={handleAddToCart}
                 />

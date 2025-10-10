@@ -197,6 +197,42 @@ export function useBestSellers() {
   return { products, loading, error, refetch: () => fetchBestSellers() };
 }
 
+export function useNecklaces() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchNecklaces = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const response = await fetch("/api/products/necklaces");
+        const data = await response.json();
+
+        if (data.success) {
+          const transformedProducts = transformProductsFromBackend(
+            data.data.products
+          );
+          setProducts(transformedProducts);
+        } else {
+          setError(data.message || "Failed to fetch necklaces");
+        }
+      } catch (err) {
+        setError("Failed to fetch necklaces");
+        console.error("Error fetching necklaces:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchNecklaces();
+  }, []);
+
+  return { products, loading, error, refetch: () => fetchNecklaces() };
+}
+
 export function useRelatedProducts(productId) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -237,4 +273,3 @@ export function useRelatedProducts(productId) {
 
   return { products, loading, error, refetch: () => fetchRelatedProducts() };
 }
-
