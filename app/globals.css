@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+/* Use Chakra body font variable globally, with safe fallbacks */
+body, button, input, select, textarea {
+  font-family: var(--chakra-fonts-body, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif);
+}
+
+/* Move-Stop-Move shake animation for ADD TO BAG buttons */
+@keyframes move-stop-shake {
+  0%, 30%, 60%, 90%, 100% { 
+    transform: translateX(0); 
+  }
+  2% { 
+    transform: translateX(-2px); 
+  }
+  4% { 
+    transform: translateX(2px); 
+  }
+  6% { 
+    transform: translateX(-1px); 
+  }
+  32% { 
+    transform: translateX(2px); 
+  }
+  34% { 
+    transform: translateX(-2px); 
+  }
+  36% { 
+    transform: translateX(1px); 
+  }
+  62% { 
+    transform: translateX(-2px); 
+  }
+  64% { 
+    transform: translateX(2px); 
+  }
+  66% { 
+    transform: translateX(-1px); 
+  }
+  92% { 
+    transform: translateX(2px); 
+  }
+  94% { 
+    transform: translateX(-2px); 
+  }
+  96% { 
+    transform: translateX(1px); 
+  }
+}
+
+.shake-attention {
+  animation: move-stop-shake 2.5s ease-in-out infinite;
+}
+
+.shake-attention:hover {
+  animation-play-state: paused;
+}
+
