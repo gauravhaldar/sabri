@@ -5,57 +5,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { Heart, ShoppingBag } from "lucide-react";
 import FiltersDrawer from "../components/FiltersDrawer";
-
-// Standalone products data - you can replace this with your own data source
-const products = [
-  {
-    id: "1",
-    name: "Classic Diwali Gift Hamper",
-    price: 1996,
-    originalPrice: 4699,
-    discount: 58,
-    image:
-      "https://images.unsplash.com/photo-1602173574767-37ac01994b2a?w=400&h=400&fit=crop",
-    hoverImage:
-      "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400&h=400&fit=crop",
-    category: "Gift Hampers",
-    isOnSale: true,
-    isNew: true,
-    rating: 5,
-    description: "Elegant Diwali gift hamper with premium jewelry pieces",
-  },
-  {
-    id: "2",
-    name: "Elegant Diwali Gift Hamper",
-    price: 2193,
-    originalPrice: 5049,
-    discount: 57,
-    image:
-      "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400&h=400&fit=crop",
-    hoverImage:
-      "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400&h=400&fit=crop",
-    category: "Gift Hampers",
-    isOnSale: true,
-    isNew: true,
-    rating: 4.5,
-    description: "Premium Diwali gift hamper with luxury jewelry collection",
-    sku: "DG-BUNDLE-3",
-  },
-  {
-    id: "3",
-    name: "Grand Diwali Gift Hamper",
-    price: 2384,
-    originalPrice: 5699,
-    discount: 58,
-    image:
-      "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400&h=400&fit=crop",
-    category: "Gift Hampers",
-    isOnSale: true,
-    isNew: true,
-    rating: 4.8,
-    description: "Grand Diwali gift hamper with exclusive jewelry pieces",
-  },
-];
+import { useNewArrivals } from "../../hooks/useProducts";
+import {
+  getProductImageUrl,
+  getProductDisplayPrice,
+  isProductOnSale,
+  filterProducts,
+  sortProducts,
+} from "../../lib/productUtils";
 
 // Standalone ProductCard component
 const ProductCard = ({ product, onAddToCart }) => {
@@ -75,7 +32,10 @@ const ProductCard = ({ product, onAddToCart }) => {
 
   return (
     <div className="bg-white group">
-      <Link href={`/new-arrivals/${product.id}`} className="block">
+      <Link
+        href={`/new-arrivals/${product.slug || product._id || product.id}`}
+        className="block"
+      >
         <div className="relative aspect-square overflow-hidden">
           <Image
             src={product.image}
@@ -116,7 +76,9 @@ const ProductCard = ({ product, onAddToCart }) => {
         </div>
       </Link>
       <div className="p-3">
-        <Link href={`/new-arrivals/${product.id}`}>
+        <Link
+          href={`/new-arrivals/${product.slug || product._id || product.id}`}
+        >
           <h3 className="text-xs font-light text-black mb-1.5 line-clamp-2 leading-tight hover:text-gray-600 transition-colors">
             {product.name}
           </h3>
@@ -149,7 +111,7 @@ const ProductCard = ({ product, onAddToCart }) => {
             ))}
           </div>
           <span className="text-xs text-gray-500 font-light">
-            ({product.rating || 0})
+            ({product.averageRating || product.rating || 0})
           </span>
         </div>
       </div>
@@ -160,36 +122,52 @@ const ProductCard = ({ product, onAddToCart }) => {
 export default function NewArrivalsPage() {
   const [cartItems, setCartItems] = useState([]);
   const [sortBy, setSortBy] = useState("featured");
-  const [filters, setFilters] = useState({ priceMin: "", priceMax: "", onSale: false, minRating: 0 });
+  const [filters, setFilters] = useState({
+    priceMin: 0,
+    priceMax: 50000,
+    minRating: 0,
+  });
   const [filtersOpen, setFiltersOpen] = useState(false);
 
-  // Filter products for New Arrivals
-  const baseProducts = products.filter(
-    (product) => product.isNew === true || product.category === "Gift Hampers"
-  );
+  const { products, loading, error } = useNewArrivals();
 
-  const filteredProducts = baseProducts.filter((p) => {
-    if (filters.onSale && !p.isOnSale) return false;
-    if (filters.minRating && (p.rating || 0) < filters.minRating) return false;
-    if (filters.priceMin !== "" && (p.price || 0) < Number(filters.priceMin)) return false;
-    if (filters.priceMax !== "" && (p.price || 0) > Number(filters.priceMax)) return false;
-    return true;
-  });
+  const filteredProducts = filterProducts(products, filters);
+  const sortedProducts = sortProducts(filteredProducts, sortBy);
 
   const handleAddToCart = (product) => {
     setCartItems((prev) => [...prev, product]);
     console.log("Added to cart:", product.name);
   };
 
-  const sortedProducts = [...filteredProducts].sort((a, b) => {
-    if (sortBy === "price-asc") {
-      return (a.price || 0) - (b.price || 0);
-    }
-    if (sortBy === "price-desc") {
-      return (b.price || 0) - (a.price || 0);
-    }
-    return 0;
-  });
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading products...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">
+            Error Loading Products
+          </h2>
+          <p className="text-gray-600 mb-6">{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="bg-black text-white px-6 py-3 hover:bg-gray-800 transition-colors duration-200"
+          >
+            Try Again
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -212,9 +190,16 @@ export default function NewArrivalsPage() {
           <>
             {/* Filters Drawer + Sort */}
             <div className="mb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-              <button onClick={() => setFiltersOpen(true)} className="px-3 py-2 border border-neutral-900 text-neutral-900 text-sm bg-white hover:bg-neutral-50 whitespace-nowrap">Filters</button>
+              <button
+                onClick={() => setFiltersOpen(true)}
+                className="px-3 py-2 border border-neutral-900 text-neutral-900 text-sm bg-white hover:bg-neutral-50 whitespace-nowrap"
+              >
+                Filters
+              </button>
               <div className="flex items-center w-full sm:w-auto">
-                <label className="mr-2 text-sm text-gray-700 whitespace-nowrap">Sort by:</label>
+                <label className="mr-2 text-sm text-gray-700 whitespace-nowrap">
+                  Sort by:
+                </label>
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
@@ -226,13 +211,18 @@ export default function NewArrivalsPage() {
                 </select>
               </div>
             </div>
-            <FiltersDrawer open={filtersOpen} value={filters} onChange={setFilters} onClose={() => setFiltersOpen(false)} />
+            <FiltersDrawer
+              open={filtersOpen}
+              value={filters}
+              onChange={setFilters}
+              onClose={() => setFiltersOpen(false)}
+            />
 
             {/* Products Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {sortedProducts.map((product) => (
                 <ProductCard
-                  key={product.id}
+                  key={product._id || product.id}
                   product={product}
                   onAddToCart={handleAddToCart}
                 />
