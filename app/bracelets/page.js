@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Heart, ShoppingBag } from "lucide-react";
 import FiltersDrawer from "../components/FiltersDrawer";
+import { useBracelets } from "../../hooks/useProducts";
 import {
-  transformProductsFromBackend,
   getProductImageUrl,
   getProductDisplayPrice,
   isProductOnSale,
@@ -32,7 +32,7 @@ const ProductCard = ({ product, onAddToCart }) => {
   const productImage = getProductImageUrl(product);
   const { current, original, discount } = getProductDisplayPrice(product);
   const isOnSale = isProductOnSale(product);
-  const rating = product.rating?.average || 0;
+  const rating = Number(product.averageRating || product.rating?.average || 0);
 
   return (
     <div className="bg-white group">
@@ -106,7 +106,7 @@ const ProductCard = ({ product, onAddToCart }) => {
             ))}
           </div>
           <span className="text-xs text-gray-500 font-light">
-            ({rating.toFixed(1)})
+            ({isNaN(rating) ? 0 : rating.toFixed(1)})
           </span>
         </div>
       </div>
@@ -116,43 +116,15 @@ const ProductCard = ({ product, onAddToCart }) => {
 
 export default function BraceletsPage() {
   const [cartItems, setCartItems] = useState([]);
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [sortBy, setSortBy] = useState("featured");
   const [filters, setFilters] = useState({
-    priceMin: "",
-    priceMax: "",
-    onSale: false,
+    priceMin: 0,
+    priceMax: 50000,
     minRating: 0,
   });
   const [filtersOpen, setFiltersOpen] = useState(false);
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch("/api/products?category=bracelets");
-        const data = await response.json();
-
-        if (data.success) {
-          const transformedProducts = transformProductsFromBackend(
-            data.data.products
-          );
-          setProducts(transformedProducts);
-        } else {
-          setError(data.message || "Failed to fetch products");
-        }
-      } catch (err) {
-        setError("Failed to fetch products");
-        console.error("Error fetching products:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, []);
+  const { products, loading, error } = useBracelets();
 
   const filteredProducts = filterProducts(products, filters);
   const sortedProducts = sortProducts(filteredProducts, sortBy);
@@ -239,7 +211,7 @@ export default function BraceletsPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {sortedProducts.map((product) => (
                 <ProductCard
-                  key={product.id}
+                  key={product._id || product.id}
                   product={product}
                   onAddToCart={handleAddToCart}
                 />

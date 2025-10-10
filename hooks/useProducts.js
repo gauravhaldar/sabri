@@ -233,6 +233,258 @@ export function useNecklaces() {
   return { products, loading, error, refetch: () => fetchNecklaces() };
 }
 
+export function useBracelets() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchBracelets = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const response = await fetch("/api/products/bracelets");
+        const data = await response.json();
+
+        if (data.success) {
+          const transformedProducts = transformProductsFromBackend(
+            data.data.products
+          );
+          setProducts(transformedProducts);
+        } else {
+          setError(data.message || "Failed to fetch bracelets");
+        }
+      } catch (err) {
+        setError("Failed to fetch bracelets");
+        console.error("Error fetching bracelets:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBracelets();
+  }, []);
+
+  return { products, loading, error, refetch: () => fetchBracelets() };
+}
+
+export function useRings() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchRings = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const response = await fetch("/api/products/rings");
+        const data = await response.json();
+
+        if (data.success) {
+          const transformedProducts = transformProductsFromBackend(
+            data.data.products
+          );
+          setProducts(transformedProducts);
+        } else {
+          setError(data.message || "Failed to fetch rings");
+        }
+      } catch (err) {
+        setError("Failed to fetch rings");
+        console.error("Error fetching rings:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRings();
+  }, []);
+
+  return { products, loading, error, refetch: () => fetchRings() };
+}
+
+export function useEarrings() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchEarrings = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const response = await fetch("/api/products/earrings");
+        const data = await response.json();
+
+        if (data.success) {
+          const transformedProducts = transformProductsFromBackend(
+            data.data.products
+          );
+          setProducts(transformedProducts);
+        } else {
+          setError(data.message || "Failed to fetch earrings");
+        }
+      } catch (err) {
+        setError("Failed to fetch earrings");
+        console.error("Error fetching earrings:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEarrings();
+  }, []);
+
+  return { products, loading, error, refetch: () => fetchEarrings() };
+}
+
+export function useMens() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchMens = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const response = await fetch("/api/products/mens");
+        const data = await response.json();
+
+        if (data.success) {
+          const transformedProducts = transformProductsFromBackend(
+            data.data.products
+          );
+          setProducts(transformedProducts);
+        } else {
+          setError(data.message || "Failed to fetch mens products");
+        }
+      } catch (err) {
+        setError("Failed to fetch mens products");
+        console.error("Error fetching mens products:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMens();
+  }, []);
+
+  return { products, loading, error, refetch: () => fetchMens() };
+}
+
+export function useFineGold() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchFineGold = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const response = await fetch("/api/products/fine-gold");
+        const data = await response.json();
+
+        if (data.success) {
+          const transformedProducts = transformProductsFromBackend(
+            data.data.products
+          );
+          setProducts(transformedProducts);
+        } else {
+          setError(data.message || "Failed to fetch fine gold products");
+        }
+      } catch (err) {
+        setError("Failed to fetch fine gold products");
+        console.error("Error fetching fine gold products:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFineGold();
+  }, []);
+
+  return { products, loading, error, refetch: () => fetchFineGold() };
+}
+
+export function useFineSilver() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchFineSilver = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const response = await fetch("/api/products/fine-silver");
+        const data = await response.json();
+
+        if (data.success) {
+          const transformedProducts = transformProductsFromBackend(
+            data.data.products
+          );
+          setProducts(transformedProducts);
+        } else {
+          setError(data.message || "Failed to fetch fine silver products");
+        }
+      } catch (err) {
+        setError("Failed to fetch fine silver products");
+        console.error("Error fetching fine silver products:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFineSilver();
+  }, []);
+
+  return { products, loading, error, refetch: () => fetchFineSilver() };
+}
+
+export function useGifts() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchGifts = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const response = await fetch("/api/products/gifts");
+        const data = await response.json();
+
+        if (data.success) {
+          const transformedProducts = transformProductsFromBackend(
+            data.data.products
+          );
+          setProducts(transformedProducts);
+        } else {
+          setError(data.message || "Failed to fetch gifts");
+        }
+      } catch (err) {
+        setError("Failed to fetch gifts");
+        console.error("Error fetching gifts:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchGifts();
+  }, []);
+
+  return { products, loading, error, refetch: () => fetchGifts() };
+}
+
 export function useRelatedProducts(productId) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);

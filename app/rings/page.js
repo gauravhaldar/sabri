@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Heart, ShoppingBag } from "lucide-react";
 import FiltersDrawer from "../components/FiltersDrawer";
-import { useProducts } from "../../hooks/useProducts";
+import { useRings } from "../../hooks/useProducts";
 import {
   getProductImageUrl,
   getProductDisplayPrice,
@@ -32,7 +32,7 @@ const ProductCard = ({ product, onAddToCart }) => {
   const productImage = getProductImageUrl(product);
   const { current, original, discount } = getProductDisplayPrice(product);
   const isOnSale = isProductOnSale(product);
-  const rating = product.rating?.average || 0;
+  const rating = Number(product.averageRating || product.rating?.average || 0);
 
   return (
     <div className="bg-white group">
@@ -106,7 +106,7 @@ const ProductCard = ({ product, onAddToCart }) => {
             ))}
           </div>
           <span className="text-xs text-gray-500 font-light">
-            ({rating.toFixed(1)})
+            ({isNaN(rating) ? 0 : rating.toFixed(1)})
           </span>
         </div>
       </div>
@@ -124,7 +124,7 @@ export default function RingsPage() {
   });
   const [filtersOpen, setFiltersOpen] = useState(false);
 
-  const { products, loading, error } = useProducts("rings", filters);
+  const { products, loading, error } = useRings();
 
   const filteredProducts = filterProducts(products, filters);
   const sortedProducts = sortProducts(filteredProducts, sortBy);
@@ -211,7 +211,7 @@ export default function RingsPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {sortedProducts.map((product) => (
                 <ProductCard
-                  key={product.id}
+                  key={product._id || product.id}
                   product={product}
                   onAddToCart={handleAddToCart}
                 />
