@@ -10,21 +10,21 @@ const reviews = [
     rating: 5,
     text: "My experience was amazing after purchasing this product. I was eagerly waiting to buy this. Price and quality is amazing you can buy it. It's give a tough competition to gold products.",
     productName: "Small Heart Hoop Earrings",
-    productImage: "/images/earrings.png",
+    productImage: "/category/earring.webp",
   },
   {
     name: "Deepali B.",
     rating: 5,
     text: "Its the exact product shown in the image. Great for styling in different occasion and everyday use too.",
     productName: "Chevron Ring",
-    productImage: "/images/ring.png",
+    productImage: "/category/ring.webp",
   },
   {
     name: "Meenakshi",
     rating: 5,
     text: "Super 😍 quality! I 💕ve the product very much 💖",
     productName: "Sarvani Mangalsutra Bracelet | 18K Gold Vermeil",
-    productImage: "/images/bracelet.png",
+    productImage: "/category/bracelet.webp",
   },
 ];
 
@@ -59,7 +59,9 @@ export default function Customers() {
               animate={{ opacity: i === index ? 1 : 0.5, y: 0 }}
               transition={{ duration: 0.5 }}
               className={`p-5 sm:p-6 rounded-2xl shadow-sm bg-white border ${
-                i === index ? "scale-[1.02] sm:scale-105" : "opacity-80 sm:opacity-70"
+                i === index
+                  ? "scale-[1.02] sm:scale-105"
+                  : "opacity-80 sm:opacity-70"
               }`}
             >
               <div className="flex justify-center mb-2">

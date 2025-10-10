@@ -6,25 +6,22 @@ export async function GET(request, { params }) {
   try {
     await connectDB();
 
-    const { slug } = params;
+    const { id } = params;
 
-    if (!slug) {
+    if (!id) {
       return NextResponse.json(
         {
           success: false,
-          message: "Product slug is required",
+          message: "Product ID is required",
         },
         { status: 400 }
       );
     }
 
-    // Find product by slug or _id
-    const product = await Product.findOne({
-      $or: [{ slug: slug }, { _id: slug }, { id: slug }],
-      isActive: true,
-    });
+    // First, get the current product to find its category
+    const currentProduct = await Product.findById(id);
 
-    if (!product) {
+    if (!currentProduct) {
       return NextResponse.json(
         {
           success: false,
@@ -34,18 +31,27 @@ export async function GET(request, { params }) {
       );
     }
 
+    // Find related products from the same category, excluding the current product
+    const relatedProducts = await Product.find({
+      _id: { $ne: id },
+      category: currentProduct.category,
+      isActive: true,
+    })
+      .sort({ createdAt: -1 })
+      .limit(8);
+
     return NextResponse.json({
       success: true,
       data: {
-        product,
+        products: relatedProducts,
       },
     });
   } catch (error) {
-    console.error("Error fetching product by slug:", error);
+    console.error("Error fetching related products:", error);
     return NextResponse.json(
       {
         success: false,
-        message: "Server error fetching product",
+        message: "Server error fetching related products",
       },
       { status: 500 }
     );
