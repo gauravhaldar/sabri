@@ -5,12 +5,15 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { useCart } from "@/contexts/CartContext";
+import { useWishlist } from "@/contexts/WishlistContext";
+import { Heart } from "lucide-react";
 
 export default function Navbar() {
   const pathname = usePathname();
   const isHomePage = pathname === "/";
   const [open, setOpen] = useState(false);
   const { cartCount } = useCart();
+  const { wishlistCount } = useWishlist();
 
   return (
     <header
@@ -106,26 +109,6 @@ export default function Navbar() {
             aria-label="account-actions"
             className="hidden md:flex items-center gap-5 text-[13px]"
           >
-            {/* Wishlist */}
-            <Link
-              href="/wishlist"
-              className={`group flex flex-col items-center gap-1 hover:opacity-90 transition-colors duration-300 ${
-                isHomePage
-                  ? "text-white group-hover/nav:text-neutral-900"
-                  : "text-neutral-900"
-              }`}
-            >
-              <svg
-                className="h-6 w-6"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.8"
-              >
-                <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 22l7.8-8.6 1-1a5.5 5.5 0 0 0 0-7.8z" />
-              </svg>
-            </Link>
-
             {/* Location */}
             <Link
               href="/locations"
@@ -166,6 +149,23 @@ export default function Navbar() {
                 <path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5z" />
                 <path d="M4 22a8 8 0 0 1 16 0" />
               </svg>
+            </Link>
+
+            {/* Wishlist */}
+            <Link
+              href="/wishlist"
+              className={`group relative flex flex-col items-center gap-1 hover:opacity-90 transition-colors duration-300 ${
+                isHomePage
+                  ? "text-white group-hover/nav:text-neutral-900"
+                  : "text-neutral-900"
+              }`}
+            >
+              <Heart className="h-6 w-6" strokeWidth="1.8" />
+              {wishlistCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium">
+                  {wishlistCount > 99 ? "99+" : wishlistCount}
+                </span>
+              )}
             </Link>
 
             {/* Cart */}
@@ -256,10 +256,16 @@ export default function Navbar() {
           <div className="flex items-center justify-between border-t py-3">
             <Link
               href="/wishlist"
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 relative"
               onClick={() => setOpen(false)}
             >
+              <Heart className="h-5 w-5" strokeWidth="1.8" />
               <span>Wishlist</span>
+              {wishlistCount > 0 && (
+                <span className="bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium">
+                  {wishlistCount > 99 ? "99+" : wishlistCount}
+                </span>
+              )}
             </Link>
             <Link
               href="/locations"

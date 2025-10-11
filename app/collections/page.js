@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Heart, ShoppingBag } from "lucide-react";
 import FiltersDrawer from "../components/FiltersDrawer";
+import { useWishlist } from "../../contexts/WishlistContext";
 
 const products = [
   {
@@ -64,8 +65,12 @@ const products = [
 ];
 
 const ProductCard = ({ product, onAddToCart }) => {
-  const [isWishlisted, setIsWishlisted] = useState(false);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const {
+    toggleWishlist,
+    isInWishlist,
+    loading: wishlistLoading,
+  } = useWishlist();
 
   const handleAddToCart = async () => {
     setIsAddingToCart(true);
@@ -74,9 +79,16 @@ const ProductCard = ({ product, onAddToCart }) => {
     setIsAddingToCart(false);
   };
 
-  const handleWishlist = () => {
-    setIsWishlisted(!isWishlisted);
+  const handleWishlist = async (e) => {
+    e.preventDefault(); // Prevent navigation when clicking heart
+    e.stopPropagation();
+
+    if (!wishlistLoading) {
+      await toggleWishlist(product.id);
+    }
   };
+
+  const isWishlisted = isInWishlist(product.id);
 
   return (
     <div className="bg-white group">
@@ -98,7 +110,8 @@ const ProductCard = ({ product, onAddToCart }) => {
           )}
           <button
             onClick={handleWishlist}
-            className="absolute bottom-2 left-2 p-1.5 bg-white/90 hover:bg-white rounded-full transition-all duration-200 shadow-sm opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0"
+            disabled={wishlistLoading}
+            className="absolute bottom-2 left-2 p-1.5 bg-white/90 hover:bg-white rounded-full transition-all duration-200 shadow-sm opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 disabled:opacity-50"
           >
             <Heart
               className={`h-3 w-3 ${
@@ -165,14 +178,23 @@ const ProductCard = ({ product, onAddToCart }) => {
 export default function CollectionsPage() {
   const [cartItems, setCartItems] = useState([]);
   const [sortBy, setSortBy] = useState("featured");
-  const [filters, setFilters] = useState({ priceMin: "", priceMax: "", onSale: false, minRating: 0 });
+  const [filters, setFilters] = useState({
+    priceMin: "",
+    priceMax: "",
+    onSale: false,
+    minRating: 0,
+  });
   const [filtersOpen, setFiltersOpen] = useState(false);
-  const baseProducts = products.filter((product) => product.category === "Collections");
+  const baseProducts = products.filter(
+    (product) => product.category === "Collections"
+  );
   const filteredProducts = baseProducts.filter((p) => {
     if (filters.onSale && !p.isOnSale) return false;
     if (filters.minRating && (p.rating || 0) < filters.minRating) return false;
-    if (filters.priceMin !== "" && (p.price || 0) < Number(filters.priceMin)) return false;
-    if (filters.priceMax !== "" && (p.price || 0) > Number(filters.priceMax)) return false;
+    if (filters.priceMin !== "" && (p.price || 0) < Number(filters.priceMin))
+      return false;
+    if (filters.priceMax !== "" && (p.price || 0) > Number(filters.priceMax))
+      return false;
     return true;
   });
 
@@ -208,9 +230,16 @@ export default function CollectionsPage() {
         {filteredProducts.length > 0 ? (
           <>
             <div className="mb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-              <button onClick={() => setFiltersOpen(true)} className="px-3 py-2 border border-neutral-900 text-neutral-900 text-sm bg-white hover:bg-neutral-50 whitespace-nowrap">Filters</button>
+              <button
+                onClick={() => setFiltersOpen(true)}
+                className="px-3 py-2 border border-neutral-900 text-neutral-900 text-sm bg-white hover:bg-neutral-50 whitespace-nowrap"
+              >
+                Filters
+              </button>
               <div className="flex items-center w-full sm:w-auto">
-                <label className="mr-2 text-sm text-gray-700 whitespace-nowrap">Sort by:</label>
+                <label className="mr-2 text-sm text-gray-700 whitespace-nowrap">
+                  Sort by:
+                </label>
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
@@ -222,7 +251,12 @@ export default function CollectionsPage() {
                 </select>
               </div>
             </div>
-            <FiltersDrawer open={filtersOpen} value={filters} onChange={setFilters} onClose={() => setFiltersOpen(false)} />
+            <FiltersDrawer
+              open={filtersOpen}
+              value={filters}
+              onChange={setFilters}
+              onClose={() => setFiltersOpen(false)}
+            />
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {sortedProducts.map((product) => (
                 <ProductCard

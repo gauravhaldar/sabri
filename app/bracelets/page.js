@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Heart, ShoppingBag } from "lucide-react";
 import FiltersDrawer from "../components/FiltersDrawer";
 import { useBracelets } from "../../hooks/useProducts";
+import { useWishlist } from "../../contexts/WishlistContext";
 import {
   getProductImageUrl,
   getProductDisplayPrice,
@@ -15,8 +16,12 @@ import {
 } from "../../lib/productUtils";
 
 const ProductCard = ({ product, onAddToCart }) => {
-  const [isWishlisted, setIsWishlisted] = useState(false);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const {
+    toggleWishlist,
+    isInWishlist,
+    loading: wishlistLoading,
+  } = useWishlist();
 
   const handleAddToCart = async () => {
     setIsAddingToCart(true);
@@ -25,9 +30,16 @@ const ProductCard = ({ product, onAddToCart }) => {
     setIsAddingToCart(false);
   };
 
-  const handleWishlist = () => {
-    setIsWishlisted(!isWishlisted);
+  const handleWishlist = async (e) => {
+    e.preventDefault(); // Prevent navigation when clicking heart
+    e.stopPropagation();
+
+    if (!wishlistLoading) {
+      await toggleWishlist(product._id || product.id);
+    }
   };
+
+  const isWishlisted = isInWishlist(product._id || product.id);
 
   const productImage = getProductImageUrl(product);
   const { current, original, discount } = getProductDisplayPrice(product);
@@ -46,7 +58,8 @@ const ProductCard = ({ product, onAddToCart }) => {
           />
           <button
             onClick={handleWishlist}
-            className="absolute bottom-2 left-2 p-1.5 bg-white/90 hover:bg-white rounded-full transition-all duration-200 shadow-sm opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0"
+            disabled={wishlistLoading}
+            className="absolute bottom-2 left-2 p-1.5 bg-white/90 hover:bg-white rounded-full transition-all duration-200 shadow-sm opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 disabled:opacity-50"
           >
             <Heart
               className={`h-3 w-3 ${

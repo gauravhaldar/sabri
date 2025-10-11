@@ -19,6 +19,7 @@ import {
   isProductOnSale,
 } from "../../lib/productUtils";
 import { useCart } from "../../contexts/CartContext";
+import { useWishlist } from "../../contexts/WishlistContext";
 import { useAuth } from "../../contexts/AuthContext";
 import { useToast } from "../../contexts/ToastContext";
 
@@ -29,10 +30,14 @@ export default function DynamicProductPage({
 }) {
   const { user } = useAuth();
   const { addToCart, isInCart } = useCart();
+  const {
+    toggleWishlist,
+    isInWishlist,
+    loading: wishlistLoading,
+  } = useWishlist();
   const toast = useToast();
 
   const [selectedImage, setSelectedImage] = useState(0);
-  const [isWishlisted, setIsWishlisted] = useState(false);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [expandedSections, setExpandedSections] = useState({});
   const [recentProducts, setRecentProducts] = useState([]);
@@ -169,9 +174,36 @@ export default function DynamicProductPage({
     }
   };
 
-  const handleWishlist = () => {
-    setIsWishlisted(!isWishlisted);
+  const handleWishlist = async () => {
+    if (!user) {
+      // Redirect to login if not authenticated
+      window.location.href = "/login";
+      return;
+    }
+
+    if (!product) return;
+
+    try {
+      // Check current wishlist status before toggling
+      const wasWishlisted = isInWishlist(product.id);
+      const success = await toggleWishlist(product.id);
+
+      if (success) {
+        if (wasWishlisted) {
+          toast.success(`${product.name} removed from wishlist!`);
+        } else {
+          toast.success(`${product.name} added to wishlist!`);
+        }
+      } else {
+        toast.error("Failed to update wishlist");
+      }
+    } catch (error) {
+      console.error("Error updating wishlist:", error);
+      toast.error("Failed to update wishlist");
+    }
   };
+
+  const isWishlisted = product ? isInWishlist(product.id) : false;
 
   const toggleSection = (section) => {
     setExpandedSections((prev) => ({
@@ -203,16 +235,6 @@ export default function DynamicProductPage({
               />
               <button className="absolute top-4 right-4 p-2 bg-white/90 hover:bg-white rounded-full transition-colors">
                 <Share2 className="h-4 w-4 text-gray-600" />
-              </button>
-              <button
-                onClick={handleWishlist}
-                className="absolute bottom-4 right-4 p-2 bg-white/90 hover:bg-white rounded-full transition-colors"
-              >
-                <Heart
-                  className={`h-4 w-4 ${
-                    isWishlisted ? "text-red-500 fill-current" : "text-gray-600"
-                  }`}
-                />
               </button>
             </div>
             <div className="grid grid-cols-3 gap-2 pb-6">
@@ -323,7 +345,8 @@ export default function DynamicProductPage({
                 </button>
                 <button
                   onClick={handleWishlist}
-                  className="w-14 h-14 border border-gray-300 hover:bg-gray-50 transition-colors flex items-center justify-center rounded-md"
+                  disabled={wishlistLoading}
+                  className="w-14 h-14 border border-gray-300 hover:bg-gray-50 transition-colors flex items-center justify-center rounded-md disabled:opacity-50"
                 >
                   <Heart
                     className={`h-5 w-5 ${
