@@ -1,7 +1,21 @@
 import { NextResponse } from "next/server";
+import connectDB from "@/lib/db";
+import User from "@/lib/models/User";
+import { generateToken } from "@/lib/middleware/auth";
 
 export async function POST(request) {
   try {
+    // Check if required environment variables are set
+    if (!process.env.JWT_SECRET) {
+      console.error("JWT_SECRET environment variable is not set");
+      return NextResponse.json(
+        { success: false, message: "Server configuration error" },
+        { status: 500 }
+      );
+    }
+
+    await connectDB();
+
     const { uid, email, displayName, photoURL } = await request.json();
 
     if (!uid || !email) {
@@ -11,30 +25,72 @@ export async function POST(request) {
       );
     }
 
-    // Here you would typically:
-    // 1. Verify the Firebase user with your backend
-    // 2. Find or create user in your database
-    // 3. Generate JWT token
-    // 4. Return user data and token
+    // Find or create user in MongoDB
+    let user = await User.findOne({ email });
 
-    // For now, we'll create a mock response
-    const user = {
-      id: uid,
-      email: email,
-      name: displayName || email.split("@")[0],
-      avatar: photoURL,
-      createdAt: new Date().toISOString(),
-    };
+    if (!user) {
+      // Create new user if doesn't exist
+      const nameParts = displayName ? displayName.split(" ") : ["User"];
+      const firstName = nameParts[0] || "User";
+      const lastName = nameParts.slice(1).join(" ") || "";
 
-    const token = `firebase_token_${uid}_${Date.now()}`;
+      user = new User({
+        firstName,
+        lastName: lastName || undefined, // Don't set empty string, let it be undefined
+        email,
+        phone: undefined, // No phone required for OAuth users
+        googleId: uid,
+        profilePicture: photoURL,
+        registeredBy: "firebase",
+        isEmailVerified: true,
+        isActive: true,
+      });
+      await user.save();
+    } else if (!user.googleId) {
+      // Link Firebase account to existing user
+      user.googleId = uid;
+      user.profilePicture = photoURL;
+      user.isEmailVerified = true;
+      await user.save();
+    }
 
-    return NextResponse.json({
+    // Update last login
+    user.lastLogin = new Date();
+    await user.save();
+
+    // Generate JWT token
+    const token = generateToken(user._id);
+
+    // Create response
+    const response = NextResponse.json({
       success: true,
+      message: "Firebase login successful",
       data: {
-        user,
+        user: {
+          id: user._id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          phone: user.phone,
+          role: user.role,
+          isEmailVerified: user.isEmailVerified,
+          lastLogin: user.lastLogin,
+          tier: user.tier,
+          profilePicture: user.profilePicture,
+        },
         token,
       },
     });
+
+    // Set HTTP-only cookie
+    response.cookies.set("authToken", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
+    return response;
   } catch (error) {
     console.error("Firebase login error:", error);
     return NextResponse.json(

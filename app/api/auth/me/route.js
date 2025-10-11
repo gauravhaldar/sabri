@@ -5,6 +5,15 @@ import { authenticateToken } from "@/lib/middleware/auth";
 
 export async function GET(request) {
   try {
+    // Check if required environment variables are set
+    if (!process.env.JWT_SECRET) {
+      console.error("JWT_SECRET environment variable is not set");
+      return NextResponse.json(
+        { success: false, message: "Server configuration error" },
+        { status: 500 }
+      );
+    }
+
     await connectDB();
 
     // Get token from Authorization header or cookie

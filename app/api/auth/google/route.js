@@ -47,10 +47,14 @@ export async function POST(request) {
     if (!user) {
       // Create new user
       const nameParts = name ? name.split(" ") : ["User"];
+      const firstName = nameParts[0] || "User";
+      const lastName = nameParts.slice(1).join(" ") || "";
+
       user = new User({
-        firstName: nameParts[0] || "User",
-        lastName: nameParts.slice(1).join(" ") || "",
+        firstName,
+        lastName: lastName || undefined, // Don't set empty string, let it be undefined
         email,
+        phone: undefined, // No phone required for OAuth users
         googleId,
         profilePicture: picture,
         registeredBy: "google",
