@@ -224,4 +224,3 @@ async function seedProducts() {
 }
 
 seedProducts();
-

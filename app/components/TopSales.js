@@ -57,7 +57,11 @@ const MOCK_PRODUCTS = [
 ];
 
 function formatINR(n) {
-  return new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 2 }).format(n);
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    maximumFractionDigits: 2,
+  }).format(n);
 }
 
 export default function TopSales({ products = MOCK_PRODUCTS }) {
@@ -82,7 +86,9 @@ export default function TopSales({ products = MOCK_PRODUCTS }) {
               key={t.key}
               onClick={() => setActive(t.key)}
               className={`rounded px-4 py-2 text-xs sm:text-sm tracking-wide border transition-colors ${
-                active === t.key ? "bg-neutral-900 text-white border-neutral-900" : "bg-white text-neutral-900 border-neutral-300 hover:bg-neutral-50"
+                active === t.key
+                  ? "bg-neutral-900 text-white border-neutral-900"
+                  : "bg-white text-neutral-900 border-neutral-300 hover:bg-neutral-50"
               }`}
             >
               {t.label}
@@ -102,11 +108,23 @@ export default function TopSales({ products = MOCK_PRODUCTS }) {
                 )}
                 <button className="absolute left-3 bottom-3 z-10 grid h-8 w-8 place-items-center rounded-full bg-white/90 text-neutral-700">
                   {/* heart icon */}
-                  <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                    <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 22l7.8-8.6 1-1a5.5 5.5 0 0 0 0-7.8z"/>
+                  <svg
+                    className="h-4 w-4"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                  >
+                    <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 22l7.8-8.6 1-1a5.5 5.5 0 0 0 0-7.8z" />
                   </svg>
                 </button>
-                <Image src={p.image} alt={p.title} fill className="object-cover transition-transform duration-500 group-hover:scale-105" sizes="(max-width:1024px) 50vw, 25vw" />
+                <Image
+                  src={p.image}
+                  alt={p.title}
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  sizes="(max-width:1024px) 50vw, 25vw"
+                />
                 <div className="absolute right-3 bottom-3 z-10">
                   <button className="rounded bg-neutral-900 px-3 py-1.5 text-xs font-medium text-white shadow-sm hover:opacity-90 shake-attention">
                     ADD TO BAG
@@ -114,10 +132,16 @@ export default function TopSales({ products = MOCK_PRODUCTS }) {
                 </div>
               </div>
               <div className="px-3 py-3">
-                <h3 className="line-clamp-1 text-sm text-neutral-900">{p.title}</h3>
+                <h3 className="line-clamp-1 text-sm text-neutral-900">
+                  {p.title}
+                </h3>
                 <div className="mt-1 flex items-center gap-2 text-[13px]">
-                  <span className="font-medium text-neutral-900">{formatINR(p.price)}</span>
-                  <span className="text-neutral-500 line-through">{formatINR(p.original)}</span>
+                  <span className="font-medium text-neutral-900">
+                    {formatINR(p.price)}
+                  </span>
+                  <span className="text-neutral-500 line-through">
+                    {formatINR(p.original)}
+                  </span>
                   <span className="text-emerald-600">({p.discountPct}%)</span>
                 </div>
               </div>
@@ -128,5 +152,3 @@ export default function TopSales({ products = MOCK_PRODUCTS }) {
     </section>
   );
 }
-
-

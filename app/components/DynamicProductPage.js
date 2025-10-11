@@ -17,13 +17,20 @@ import {
   getProductImageUrl,
   getProductDisplayPrice,
   isProductOnSale,
-} from "../lib/productUtils";
+} from "../../lib/productUtils";
+import { useCart } from "../../contexts/CartContext";
+import { useAuth } from "../../contexts/AuthContext";
+import { useToast } from "../../contexts/ToastContext";
 
 export default function DynamicProductPage({
   params,
   categoryName,
   categoryRoute,
 }) {
+  const { user } = useAuth();
+  const { addToCart, isInCart } = useCart();
+  const toast = useToast();
+
   const [selectedImage, setSelectedImage] = useState(0);
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
@@ -137,9 +144,29 @@ export default function DynamicProductPage({
   const isOnSale = isProductOnSale(product);
 
   const handleAddToCart = async () => {
+    if (!user) {
+      // Redirect to login if not authenticated
+      window.location.href = "/login";
+      return;
+    }
+
+    if (!product) return;
+
     setIsAddingToCart(true);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setIsAddingToCart(false);
+
+    try {
+      const success = await addToCart(product.id, 1);
+      if (success) {
+        toast.success(`${product.name} added to cart successfully!`);
+      } else {
+        toast.error("Failed to add product to cart");
+      }
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+      toast.error("Failed to add product to cart");
+    } finally {
+      setIsAddingToCart(false);
+    }
   };
 
   const handleWishlist = () => {
@@ -288,7 +315,11 @@ export default function DynamicProductPage({
                   className="flex-1 bg-black text-white py-4 px-6 text-sm font-medium hover:bg-gray-800 transition-[transform,background-color] duration-[1600ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] disabled:opacity-50 flex items-center justify-center gap-2 rounded-md min-h-[55px] transform-gpu will-change-transform hover:translate-x-[3px] shake-attention"
                 >
                   <ShoppingBag className="h-4 w-4" />
-                  {isAddingToCart ? "Adding..." : "ADD TO BAG"}
+                  {isAddingToCart
+                    ? "Adding..."
+                    : product && isInCart(product.id)
+                    ? "IN CART"
+                    : "ADD TO BAG"}
                 </button>
                 <button
                   onClick={handleWishlist}
@@ -608,4 +639,3 @@ export default function DynamicProductPage({
     </div>
   );
 }
-

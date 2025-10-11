@@ -29,12 +29,18 @@ export const AuthProvider = ({ children }) => {
         try {
           // Check if user data exists in localStorage
           const storedUser = localStorage.getItem("userData");
-          if (storedUser) {
+          const authToken = localStorage.getItem("authToken");
+
+          if (storedUser && authToken) {
             const userData = JSON.parse(storedUser);
             setUser(userData);
-          } else {
-            // If no stored data, fetch from API
-            const response = await fetch("/api/auth/me");
+          } else if (authToken) {
+            // If no stored data but have token, fetch from API
+            const response = await fetch("/api/auth/me", {
+              headers: {
+                Authorization: `Bearer ${authToken}`,
+              },
+            });
             const data = await response.json();
 
             if (data.success) {
@@ -42,11 +48,17 @@ export const AuthProvider = ({ children }) => {
               localStorage.setItem("userData", JSON.stringify(data.data.user));
             } else {
               setUser(null);
+              localStorage.removeItem("userData");
+              localStorage.removeItem("authToken");
             }
+          } else {
+            setUser(null);
           }
         } catch (error) {
           console.error("Error fetching user data:", error);
           setUser(null);
+          localStorage.removeItem("userData");
+          localStorage.removeItem("authToken");
         }
       } else {
         setUser(null);

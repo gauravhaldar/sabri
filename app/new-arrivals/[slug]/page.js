@@ -1,4 +1,4 @@
-import DynamicProductPage from "../../../components/DynamicProductPage";
+import DynamicProductPage from "../../components/DynamicProductPage";
 
 export default function NewArrivalsProductPage({ params }) {
   return (

@@ -4,11 +4,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { useCart } from "@/contexts/CartContext";
 
 export default function Navbar() {
   const pathname = usePathname();
   const isHomePage = pathname === "/";
   const [open, setOpen] = useState(false);
+  const { cartCount } = useCart();
 
   return (
     <header
@@ -169,7 +171,7 @@ export default function Navbar() {
             {/* Cart */}
             <Link
               href="/cart"
-              className={`group flex flex-col items-center gap-1 hover:opacity-90 transition-colors duration-300 ${
+              className={`group relative flex flex-col items-center gap-1 hover:opacity-90 transition-colors duration-300 ${
                 isHomePage
                   ? "text-white group-hover/nav:text-neutral-900"
                   : "text-neutral-900"
@@ -186,6 +188,11 @@ export default function Navbar() {
                 <circle cx="20" cy="21" r="1" />
                 <path d="M1 1h3l3.6 12.59a2 2 0 0 0 2 1.41h7.72a2 2 0 0 0 2-1.59l2.38-10.41H6" />
               </svg>
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium">
+                  {cartCount > 99 ? "99+" : cartCount}
+                </span>
+              )}
             </Link>
           </nav>
         </div>
@@ -270,10 +277,15 @@ export default function Navbar() {
             </Link>
             <Link
               href="/cart"
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 relative"
               onClick={() => setOpen(false)}
             >
               <span>Cart</span>
+              {cartCount > 0 && (
+                <span className="bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium">
+                  {cartCount > 99 ? "99+" : cartCount}
+                </span>
+              )}
             </Link>
           </div>
         </div>
