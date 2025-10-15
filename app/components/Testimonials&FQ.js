@@ -2,203 +2,171 @@
 
 import React from "react";
 
-export default function TestimonialsFQ() {
+export default function MysabriJewellery() {
   return (
     <section className="w-full bg-white py-12 sm:py-20 lg:py-28 font-sans text-neutral-800">
       <div className="w-full px-4 sm:px-6 lg:px-16">
         {/* Heading */}
         <h1 className="text-left text-2xl sm:text-4xl md:text-5xl font-serif font-normal uppercase tracking-wide mb-6 sm:mb-8 text-neutral-900">
-          Buy Everyday Demi-Fine Jewellery, Curated by Shraddha Kapoor
+          Mysabri – Handcrafted Sterling Silver Jewellery That Defines Everyday Elegance
         </h1>
 
         <p className="text-left text-base sm:text-xl font-light text-neutral-700 mb-8 sm:mb-12 italic">
-          Sabri Jewellery – Everyday Luxury That Doesn’t Sit in a Box
+          Welcome to Mysabri, where art meets real. We craft sterling silver jewellery inspired by modern living, Indian craftsmanship, and the beauty of nature.
         </p>
 
         <div className="space-y-8 sm:space-y-10 text-neutral-700 text-[14px] sm:text-base leading-relaxed">
+          {/* Intro */}
           <p>
-            Welcome to Sabri, where modern minimalism meets real-life
-            wearability. We design demi-fine jewellery that looks like luxury,
-            feels like a second skin, and outlasts your longest days. Our pieces
-            are made with 925 sterling silver, surgical-grade stainless steel,
-            and finished with thick layers of rhodium, 18k gold vermeil, and 18k
-            gold tone plating — so you never have to babysit your jewellery or
-            wait for an occasion to wear it.
+            Every piece is made from the heart and designed for you — with genuine 925 sterling silver that feels personal, lasting, and luxurious. 
+            At Mysabri, we believe jewellery should be more than an accessory; it should be a part of who you are.
           </p>
 
-          <p>
-            From office days to off-duty plans, from subtle to statement, we’re
-            here to make jewellery that works as hard as you do. Think of us as
-            the quiet flex in your everyday look — waterproof, skin-safe, and
-            made to show up every single day.
-          </p>
-
-          <h2 className="text-xl sm:text-3xl font-serif font-normal mt-10 sm:mt-12 mb-3 sm:mb-4 text-neutral-900">
-            Sabri Jewellery That Belongs in Your Daily Lineup — Not Locked in a
-            Drawer
+          <h2 className="text-xl sm:text-3xl font-serif font-normal mt-10 sm:mt-12 text-neutral-900">
+            Pure Silver Indian Jewellery, Crafted with Passion
           </h2>
-
           <p>
-            At Sabri, we don’t think jewellery should be reserved for “special
-            occasions” or kept in a box waiting for its moment. It should be
-            something you throw on without thinking — and still feel put
-            together every time.
+            Mysabri celebrates artistry with authenticity. Our handmade sterling silver jewellery honors contemporary design, Indian craftsmanship, and timeless beauty.
+            From understated minimal pieces to statement designs, every item is unique — just like the woman who wears it.
           </p>
 
           <p>
-            Our pieces are made for real life — the kind where you&apos;re
-            rushing out the door, jumping from work to dinner, or stuffing
-            everything into one weekend bag. No overthinking. Just great-looking
-            jewellery that shows up with you, wherever you&apos;re going.
+            Each piece is carefully handcrafted by skilled silversmiths using the finest 925 sterling silver and finished with love to ensure it lasts generations, not just seasons.
+            Whether it’s for a festive occasion or a casual coffee run, Mysabri’s silver jewellery adds the perfect touch of grace and confidence.
           </p>
 
+          <h2 className="text-xl sm:text-3xl font-serif font-normal mt-10 sm:mt-12 text-neutral-900">
+            Shop Silver Jewellery Online with Trust and Transparency
+          </h2>
           <p>
-            That’s what sets us apart. Not too precious. Not too flashy. Just
-            intentionally made, beautifully finished pieces that feel like you —
-            on your best days and your busiest ones.
+            Shopping for silver jewellery online should feel as good as wearing it — and that’s what we guarantee. Mysabri offers 100% pure and genuine 925 sterling silver of the highest quality.
+            Every product is skin-friendly, tarnish-resistant, and photographed with full details for a transparent shopping experience across India.
           </p>
 
-          <h3 className="text-base sm:text-xl font-normal mt-6 sm:mt-8 text-neutral-900">
-            Our materials speak for themselves:
-          </h3>
+          <h2 className="text-xl sm:text-3xl font-serif font-normal mt-10 sm:mt-12 text-neutral-900">
+            Handcrafted Silver Jewellery for Effortless Everyday Wear
+          </h2>
+          <p>
+            Discover our necklace collection — where easy chic meets timeless style. From dainty chokers to diamond-accented chains, each piece is crafted to move with you effortlessly.
+            Pair it with jeans or a kurta; every necklace adds sophistication without effort.
+          </p>
+
+          <h2 className="text-xl sm:text-3xl font-serif font-normal mt-10 sm:mt-12 text-neutral-900">
+            Silver Earrings You’ll Never Want to Take Off
+          </h2>
+          <p>
+            We understand earrings should look good and feel great. Mysabri’s sterling silver earrings are lightweight, hypoallergenic, and durable — perfect for all-day comfort.
+            From simple studs to elegant hoops and danglers, our designs add subtle brilliance to any outfit.
+          </p>
+
+          <h2 className="text-xl sm:text-3xl font-serif font-normal mt-10 sm:mt-12 text-neutral-900">
+            Rings That Go Beyond Special Occasions
+          </h2>
+          <p>
+            Our sterling silver rings are made for real life — elegant enough for evenings, practical enough for everyday wear. 
+            Each ring is handcrafted to symbolize strength, beauty, and individuality.
+          </p>
+
+          <h2 className="text-xl sm:text-3xl font-serif font-normal mt-10 sm:mt-12 text-neutral-900">
+            Bracelets That Go Beyond Being Just Accessories
+          </h2>
+          <p>
+            Our bracelets are crafted to be part of you — strong, comfortable, and stylish. 
+            Discover charm bracelets, chain links, and minimalist designs that complement your personal fashion.
+          </p>
+
+          <h2 className="text-xl sm:text-3xl font-serif font-normal mt-10 sm:mt-12 text-neutral-900">
+            Bangles That Are Built to Stay Beautiful
+          </h2>
+          <p>
+            We’ve reinvented the traditional bangle — smoother, stronger, and modern. 
+            Wear them solo or stacked; they pair beautifully with sarees, kurtas, or denim.
+          </p>
+
+          <h2 className="text-xl sm:text-3xl font-serif font-normal mt-10 sm:mt-12 text-neutral-900">
+            Crafted for the Modern You
+          </h2>
+          <p>
+            Mysabri designs sterling silver jewellery that fits effortlessly into your life — from meetings to brunches. 
+            Each piece is tested for comfort, durability, and versatility because luxury should be lived in, not stored.
+          </p>
+
+          <h2 className="text-xl sm:text-3xl font-serif font-normal mt-10 sm:mt-12 text-neutral-900">
+            Thoughtful Materials, Lasting Beauty
+          </h2>
+          <p>
+            We use premium 925 silver, rhodium, and gold-plated finishes to ensure lasting brilliance. 
+            From luminous pearls to sparkling cubic zirconia, every detail is selected for beauty and resilience.
+          </p>
+
+          <h2 className="text-xl sm:text-3xl font-serif font-normal mt-10 sm:mt-12 text-neutral-900">
+            No Skin Drama — Just Pure Comfort
+          </h2>
+          <p>
+            Our jewellery is hypoallergenic, anti-tarnish, and gentle on sensitive skin. 
+            No nickel. No brass. Just silver that loves you back.
+          </p>
+
+          <h2 className="text-xl sm:text-3xl font-serif font-normal mt-10 sm:mt-12 text-neutral-900">
+            Fashion Meets Function
+          </h2>
+          <p>
+            Every clasp, chain, and stone at Mysabri is made with care. 
+            Our silver jewellery is designed to look beautiful and live beautifully with you — a reflection of modern luxury.
+          </p>
+
+          <h2 className="text-xl sm:text-3xl font-serif font-normal mt-10 sm:mt-12 text-neutral-900">
+            Why Choose Mysabri Silver Jewellery Online
+          </h2>
           <ul className="list-disc list-inside space-y-2 ml-4">
-            <li>
-              Long-lasting gold plated, rhodium, and gold tone plated jewellery
-              that doesn’t flake or fade
-            </li>
-            <li>
-              Sparkling lab grown diamond jewellery with zero mining guilt
-            </li>
-            <li>Hypoallergenic, tarnish-resistant, and always sweatproof</li>
-            <li>
-              Designed for layering, gifting, stacking, or simply wearing solo
-            </li>
+            <li>925 Sterling Silver Purity — Hallmarked and authentic silver jewellery for daily wear.</li>
+            <li>Made by Indian Artisans — Each piece tells a story of craftsmanship and passion.</li>
+            <li>Hypoallergenic & Skin-Friendly — Soft on skin, hard to tarnish, built to last.</li>
+            <li>Perfect for Gifting — Jewellery that makes every moment special.</li>
+            <li>Nationwide Delivery — Safe and fast silver jewellery shopping across India.</li>
           </ul>
-
-          <h2 className="text-xl sm:text-3xl font-serif font-normal mt-10 sm:mt-12 mb-3 sm:mb-4 text-neutral-900">
-            Find the Jewellery That Fits Your Everyday Life
-          </h2>
-
-          {/* Category Sections */}
-          <div className="space-y-8">
-            {[
-              [
-                "Necklaces That Do More Than Just Look Good",
-                "Our necklaces collection is where subtle shine meets versatile design. Whether it’s a kurta kind of day or just jeans and a tee, our styles slip in without trying too hard.",
-              ],
-              [
-                "Chains That Keep It Clean and Confident",
-                "Whether you prefer bold links or barely-there shimmer, our gold plated chain options are made to last — no tarnish, no green skin, no stress.",
-              ],
-              [
-                "Earrings That You Can Sleep In",
-                "We get it — earrings that look great but irritate your ears? Hard pass. That’s why we’ve designed a range of gold earrings for women that are light on your lobes but heavy on polish.",
-              ],
-              [
-                "Rings That Aren’t Just for “Occasions”",
-                "Your hands do a lot — your rings should keep up. We craft gold rings for women that are refined yet functional.",
-              ],
-              [
-                "Bracelets That Go Beyond Accessory Status",
-                "Your wristwear should feel like part of your personality, not an afterthought. Our bracelets for women are crafted to be comfortable, durable, and meaningful.",
-              ],
-              [
-                "Bangles That Are Built to Stay Beautiful",
-                "We’ve taken the traditional bangle and made it stronger, sleeker, and more wearable. No jangly chaos here — just refined, intentional styling.",
-              ],
-              [
-                "Mangalsutra, Modernised",
-                "Tradition meets subtlety in our take on the silver mangalsutra. Designed for daily wear, each piece feels modern, light, and versatile — not weighed down by ornate bulk.",
-              ],
-            ].map(([title, desc], idx) => (
-              <div key={idx}>
-                <h3 className="font-normal text-base sm:text-xl mb-1.5 sm:mb-2 text-neutral-900">
-                  {title}
-                </h3>
-                <p className="font-light text-[14px] sm:text-base">{desc}</p>
-              </div>
-            ))}
-          </div>
-
-          <h2 className="text-xl sm:text-3xl font-serif font-normal mt-10 sm:mt-12 mb-3 sm:mb-4 text-neutral-900">
-            More Than Looks — What Makes Sabri Different
-          </h2>
-
-          <ul className="list-disc list-inside space-y-2.5 sm:space-y-3 ml-4 font-light">
-            <li>
-              Crafted for Now: Jewellery that keeps up with your lifestyle —
-              tested for comfort, longevity, and versatility.
-            </li>
-            <li>
-              Thoughtful Materials: Using 925 sterling silver, surgical-grade
-              steel, and thick rhodium or gold finishes.
-            </li>
-            <li>
-              No Skin Drama: Hypoallergenic, nickel-free, and tarnish-resistant
-              for sensitive skin.
-            </li>
-            <li>
-              Designed for You: Proudly co-designed by Shraddha Kapoor, blending
-              minimal glam with personal charm.
-            </li>
-            <li>
-              Fashion Meets Function: Jewellery that’s built to last — from
-              clasps to shine.
-            </li>
-          </ul>
-
-          <h2 className="text-xl sm:text-3xl font-serif font-normal mt-10 sm:mt-12 mb-3 sm:mb-4 text-neutral-900">
-            Gifting, Sorted — Jewellery Worth Sharing (or Keeping)
-          </h2>
-          <p className="font-light text-[14px] sm:text-base">
-            Jewellery that actually gets worn? That’s the kind worth gifting.
-            Our pieces make perfect presents for birthdays, anniversaries,
-            weddings, or just because.
-          </p>
 
           {/* FAQs */}
           <h2 className="text-2xl sm:text-3xl font-serif font-normal mt-12 sm:mt-16 mb-4 sm:mb-6 text-left text-neutral-900">
-            FAQs — Your Questions, Our Straight Answers
+            FAQs — Your Questions, Answered
           </h2>
 
           <div className="space-y-6 sm:space-y-8">
-            {[
-              [
-                "What is demi-fine jewellery, exactly?",
-                "Demi-fine jewellery sits between fine and fashion — made with 925 silver or surgical steel and plated with gold or rhodium for everyday luxury.",
-              ],
-              [
-                "How long does gold plated jewellery actually last?",
-                "With proper care, years. Sabri uses thick 18k plating over high-quality metals, not cheap brass.",
-              ],
-              [
-                "Can I wear Sabri jewellery in the shower?",
-                "Yes, most of it is waterproof, but for maximum shine, avoid harsh soaps and perfumes.",
-              ],
-              [
-                "Will Sabri jewellery turn my skin green?",
-                "No. We use 925 silver and stainless steel — no nickel, no brass, no green tint.",
-              ],
-              [
-                "Is lab grown diamond real?",
-                "Yes — it’s chemically identical to mined diamonds, just made sustainably in a lab.",
-              ],
-              [
-                "How do I take care of my demi-fine jewellery?",
-                "Keep it dry, avoid strong chemicals, and clean with a soft cloth. Every Sabri piece comes with a care guide.",
-              ],
-              [
-                "Can men wear Sabri jewellery?",
-                "Definitely. We offer gold chains, rings, and bracelets designed for subtle, stylish, all-day wear.",
-              ],
-            ].map(([q, a], idx) => (
-              <div key={idx}>
-                <h3 className="font-normal text-base sm:text-xl mb-1.5 sm:mb-2 text-neutral-900">
-                  {q}
-                </h3>
-                <p className="font-light text-[14px] sm:text-base">{a}</p>
-              </div>
-            ))}
+            <div>
+              <h3 className="font-normal text-base sm:text-xl mb-1.5 sm:mb-2 text-neutral-900">
+                Is Mysabri jewellery crafted from real silver?
+              </h3>
+              <p className="font-light text-[14px] sm:text-base">
+                Yes. All Mysabri products are made of 925 sterling silver — pure, authentic, and durable.
+              </p>
+            </div>
+
+            <div>
+              <h3 className="font-normal text-base sm:text-xl mb-1.5 sm:mb-2 text-neutral-900">
+                Is it safe to order Mysabri silver jewellery online?
+              </h3>
+              <p className="font-light text-[14px] sm:text-base">
+                Absolutely. Mysabri ensures a secure online shopping experience with verified products and easy returns.
+              </p>
+            </div>
+
+            <div>
+              <h3 className="font-normal text-base sm:text-xl mb-1.5 sm:mb-2 text-neutral-900">
+                Do you ship across India?
+              </h3>
+              <p className="font-light text-[14px] sm:text-base">
+                Yes, we deliver all over India with product tracking and insured shipping on all orders.
+              </p>
+            </div>
+
+            <div>
+              <h3 className="font-normal text-base sm:text-xl mb-1.5 sm:mb-2 text-neutral-900">
+                What makes Mysabri different from other brands?
+              </h3>
+              <p className="font-light text-[14px] sm:text-base">
+                Mysabri specialises in handcrafted sterling silver jewellery with a modern Indian touch — ethically made, built to last, and designed for everyday life.
+              </p>
+            </div>
           </div>
         </div>
       </div>

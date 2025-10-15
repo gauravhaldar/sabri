@@ -22,8 +22,8 @@ export default function ContactUsPage() {
             <p className="text-gray-600 mb-4">
               Get a response within 24 hours on business days.
             </p>
-            <a href="mailto:support@sabri.com" className="text-black underline">
-              support@sabri.com
+            <a href="mailto:haldarainit@gmail.com" className="text-black underline">
+            haldarainit@gmail.com
             </a>
           </div>
 
@@ -32,7 +32,7 @@ export default function ContactUsPage() {
             <h3 className="text-xl font-semibold mb-2">Call Us</h3>
             <p className="text-gray-600 mb-4">Mon–Sat, 10:00 AM – 7:00 PM IST</p>
             <a href="tel:+911234567890" className="text-black underline">
-              +91 12345 67890
+              +91 8770672422
             </a>
           </div>
 
@@ -41,7 +41,7 @@ export default function ContactUsPage() {
             <h3 className="text-xl font-semibold mb-2">WhatsApp</h3>
             <p className="text-gray-600 mb-4">Quick queries and order updates</p>
             <a
-              href="https://wa.me/911234567890"
+              href="https://wa.me/8770672422"
               target="_blank"
               rel="noopener noreferrer"
               className="text-black underline"
@@ -56,10 +56,10 @@ export default function ContactUsPage() {
           <div>
             <h2 className="text-2xl md:text-3xl font-bold mb-4">Head Office & Store</h2>
             <p className="text-gray-700 leading-relaxed">
-              Lane No. 5, Koregaon Park, Pune, Maharashtra, India, 411001
+            Industrial Ecommerce , engineering park Heavy Industrial Area Hathkhoj, Plot No-173, 490024 Hathkhoj CG, India
             </p>
-            <p className="text-gray-700 mt-2">Open: Mon–Sun, 11:00 AM – 9:00 PM</p>
-            <div className="mt-6 flex gap-4">
+            {/* <p className="text-gray-700 mt-2">Open: Mon–Sun, 11:00 AM – 9:00 PM</p> */}
+            {/* <div className="mt-6 flex gap-4">
               <a
                 href="https://maps.google.com/?q=Koregaon+Park+Lane+5+Pune"
                 target="_blank"
@@ -71,7 +71,7 @@ export default function ContactUsPage() {
               <Link href="/stores-services" className="px-4 py-2 border rounded-md hover:bg-gray-50">
                 Stores & Services
               </Link>
-            </div>
+            </div> */}
           </div>
 
           <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden bg-gray-100">
@@ -85,12 +85,12 @@ export default function ContactUsPage() {
         </div>
 
         {/* FAQ Teaser */}
-        <div className="mt-16 text-center">
+        {/* <div className="mt-16 text-center">
           <p className="text-gray-700">Looking for quick answers?</p>
           <Link href="/faq" className="text-black underline">
             Visit our FAQs
           </Link>
-        </div>
+        </div> */}
       </div>
     </div>
   );

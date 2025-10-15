@@ -6,21 +6,21 @@ export default function ShopWithConfidence() {
   const features = [
     {
       icon: <Heart className="w-10 h-10 mx-auto mb-4 text-black" />,
-      title: "SKIN SAFE",
+      title: "No Skin Drama",
       description:
-        "Our jewelry is hypoallergenic and skin-safe, crafted with care to ensure comfort for all skin types. Enjoy beautiful, irritation-free wear every day, knowing each piece is designed with your well-being in mind.",
+        "Our jewellery is hypoallergenic, anti-tarnish, and gentle on sensitive skin. No nickel. No brass. Just silver that loves you back.",
     },
     {
       icon: <Gem className="w-10 h-10 mx-auto mb-4 text-black" />,
-      title: "18K GOLD VERMEIL",
+      title: "Pure Silver Indian Jewellery",
       description:
-        "Our jewelry is crafted from premium metals like surgical steel, sterling silver, and thick 18k gold plating, ensuring durability and lasting shine. Experience luxury and quality with every piece, designed to stand the test of time.",
+        "Each piece is carefully handcrafted by skilled silversmiths using the finest 925 sterling silver and finished with love to ensure it lasts generations, not just seasons. Whether it’s for a festive occasion or a casual coffee run, Mysabri’s silver jewellery adds the perfect touch of grace and confidence.",
     },
     {
       icon: <Diamond className="w-10 h-10 mx-auto mb-4 text-black" />,
-      title: "AUTHENTIC DIAMONDS",
+      title: "Fashion Meets Function",
       description:
-        "Our lab-grown diamonds are SGL Certified, ensuring the highest standards of quality and authenticity same like natural diamonds. Each diamond undergoes rigorous testing to guarantee its brilliance and ethical origins.",
+        "Every clasp, chain, and stone at Mysabri is made with care. Our silver jewellery is designed to look beautiful and live beautifully with you — a reflection of modern luxury.",
     },
   ];
 

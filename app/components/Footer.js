@@ -21,8 +21,7 @@ export default function Footer() {
             <h4 className="font-semibold">SABRI</h4>
             <p className="text-sm text-gray-600 mt-2 flex items-start gap-2">
               <MapPin size={16} className="mt-1 flex-shrink-0" />
-              Registered Address: Office No. A101/A102, S N - 26/2B, xxxxx, P.
-              No. - 345, Lane No. 5, Kxxx, xxx, Mxxxx, India, 411xx.
+              Plot No 173, Engineering Park, Heavy Industrial Area, Hathkhoj, Bhilai, C.G.
             </p>
           </div>
         </div>
@@ -43,9 +42,9 @@ export default function Footer() {
                 Return & Exchange Policy
               </a>
             </li>
-            <li>
+            {/* <li>
               <a href="/policies/payment-policy">Payment Policy</a>
-            </li>
+            </li> */}
             {/* <li>
               <a href="/faq">FAQ&apos;s</a>
             </li> */}

@@ -9,94 +9,66 @@ export default function PrivacyPolicyPage() {
         </h1>
 
         <p className="text-gray-700 mb-6">
-          Sabri respects your privacy. This Privacy Policy describes how we
-          collect, use, disclose, and safeguard your information when you visit
-          our website or make a purchase.
+          At Sabri, we respect your privacy and are committed to protecting your personal information. This policy outlines how we collect, use, and safeguard your data.
         </p>
 
         <section className="space-y-4 mb-10">
           <h2 className="text-2xl font-semibold">1. Information We Collect</h2>
           <ul className="list-disc pl-6 text-gray-700 space-y-2">
+            <li>Name, phone number, email address</li>
+            <li>Shipping and billing address</li>
             <li>
-              Contact details: name, email, phone, shipping/billing address
+              Payment information (collected securely via payment gateway – we do not store card details)
             </li>
-            <li>Order details: items purchased, payment method (tokenized)</li>
             <li>
-              Technical data: IP address, device, browser, analytics cookies
+              Analytics data including browsing behavior, IP address, and device type via cookies
             </li>
           </ul>
         </section>
 
         <section className="space-y-4 mb-10">
-          <h2 className="text-2xl font-semibold">2. How We Use Information</h2>
+          <h2 className="text-2xl font-semibold">2. How We Use Your Data</h2>
           <ul className="list-disc pl-6 text-gray-700 space-y-2">
-            <li>Process and deliver your orders</li>
-            <li>Provide customer support and order updates</li>
-            <li>Improve site performance, content, and user experience</li>
-            <li>Marketing communications with your consent</li>
+            <li>To fulfill orders and process payments</li>
+            <li>To send updates and respond to your queries</li>
+            <li>To communicate promotions or support</li>
+            <li>To improve your site experience via analytics</li>
           </ul>
         </section>
 
         <section className="space-y-4 mb-10">
-          <h2 className="text-2xl font-semibold">3. Cookies & Tracking</h2>
+          <h2 className="text-2xl font-semibold">3. Data Protection</h2>
           <p className="text-gray-700">
-            We use cookies and similar technologies for essential functionality,
-            analytics, and personalization. You can control cookies through your
-            browser settings.
+            We use SSL encryption and trusted third-party payment processors to ensure secure transactions. Your data is never sold or shared without your explicit consent.
           </p>
         </section>
 
         <section className="space-y-4 mb-10">
-          <h2 className="text-2xl font-semibold">
-            4. Sharing Your Information
-          </h2>
+          <h2 className="text-2xl font-semibold">4. Marketing Communication</h2>
           <p className="text-gray-700">
-            We may share information with service providers (payments,
-            logistics, analytics) under strict data processing terms. We do not
-            sell your personal data.
+            By signing up or placing an order, you agree to receive updates via SMS or email. You can opt out at any time using the unsubscribe link or by contacting us.
           </p>
         </section>
 
         <section className="space-y-4 mb-10">
-          <h2 className="text-2xl font-semibold">
-            5. Data Security & Retention
-          </h2>
+          <h2 className="text-2xl font-semibold">5. Cookies</h2>
           <p className="text-gray-700">
-            We implement reasonable safeguards to protect your data. We retain
-            personal information only as long as necessary for the purposes
-            outlined in this Policy or as required by law.
+            We use cookies to personalize content, analyze site traffic, and offer better user experiences. You can manage your cookie preferences through your browser settings.
           </p>
         </section>
 
         <section className="space-y-4 mb-10">
-          <h2 className="text-2xl font-semibold">6. Your Rights</h2>
+          <h2 className="text-2xl font-semibold">6. Third-Party Services</h2>
           <p className="text-gray-700">
-            Subject to applicable law, you may request access, correction,
-            deletion, or restriction of your personal data, and opt out of
-            marketing at any time.
-          </p>
-        </section>
-
-        <section className="space-y-4 mb-10">
-          <h2 className="text-2xl font-semibold">7. Children&apos;s Privacy</h2>
-          <p className="text-gray-700">
-            Our services are not intended for children under the age of 13, and
-            we do not knowingly collect personal information from children.
-          </p>
-        </section>
-
-        <section className="space-y-4 mb-10">
-          <h2 className="text-2xl font-semibold">8. International Transfers</h2>
-          <p className="text-gray-700">
-            Your data may be processed outside your country of residence,
-            subject to appropriate safeguards consistent with applicable laws.
+            Our platform may contain links to third-party services such as payment gateways or social media. We are not responsible for their privacy practices.
           </p>
         </section>
 
         <section className="space-y-4">
-          <h2 className="text-2xl font-semibold">Contact</h2>
+          <h2 className="text-2xl font-semibold">7. Contact Us</h2>
           <p className="text-gray-700">
-            For privacy requests, email privacy@sabri.com
+            If you have any questions or concerns regarding this Privacy Policy, please contact us at{" "}
+            <a href="mailto:info@mysabri.in" className="text-blue-600 underline">info@mysabri.in</a>.
           </p>
         </section>
       </div>
