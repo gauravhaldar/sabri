@@ -1,4 +1,5 @@
 import VideoBanner from "./components/VideoBanner";
+import Link from "next/link";
 import OfferBanner from "./components/OfferBanner";
 import Category from "./components/Category";
 import TopSales from "./components/TopSales";
@@ -21,9 +22,9 @@ export default function Home() {
             <p className="mt-2 sm:mt-3 text-sm sm:text-base md:text-lg text-white/90">Discover the new Sabri collection</p>
               <h1 className="text-3xl sm:text-5xl md:text-6xl font-semibold tracking-tight">Luxury Redefined</h1>
               <div className="mt-5 sm:mt-6">
-                <a href="/new-arrivals" className="inline-block rounded-md bg-[#6b4f3a] px-5 py-2.5 sm:px-6 sm:py-3 text-sm font-medium text-white shadow-sm hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-white/40">
+                <Link href="/new-arrivals" className="inline-block rounded-md bg-[#6b4f3a] px-5 py-2.5 sm:px-6 sm:py-3 text-sm font-medium text-white shadow-sm hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-white/40">
                   Discover more
-                </a>
+                </Link>
               </div>
             </div>
           </div>
