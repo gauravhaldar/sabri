@@ -71,7 +71,6 @@ function AuthenticatedProfile() {
   const tabs = [
     { id: "profile", label: "Profile", icon: "👤" },
     { id: "orders", label: "Orders", icon: "🛍️" },
-    { id: "wishlist", label: "Wishlist", icon: "❤️" },
     { id: "settings", label: "Settings", icon: "⚙️" },
   ];
 
@@ -202,24 +201,7 @@ function AuthenticatedProfile() {
                   </div>
                 )}
 
-                {/* Wishlist Tab */}
-                {activeTab === "wishlist" && (
-                  <div className="space-y-6">
-                    <h2 className="text-xl font-semibold text-neutral-900">
-                      Wishlist
-                    </h2>
-                    <div className="text-center py-12">
-                      <span className="text-4xl mb-4 block">❤️</span>
-                      <p className="text-neutral-600">Your wishlist is empty</p>
-                      <Link
-                        href="/best-sellers"
-                        className="inline-block mt-4 px-4 py-2 bg-neutral-900 text-white rounded-md hover:opacity-90"
-                      >
-                        Browse Products
-                      </Link>
-                    </div>
-                  </div>
-                )}
+                
 
                 {/* Settings Tab */}
                 {activeTab === "settings" && (

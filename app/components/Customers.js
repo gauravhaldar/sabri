@@ -102,11 +102,11 @@ export default function Customers() {
         </button>
       </div>
 
-      <div className="mt-8 sm:mt-10">
+      {/* <div className="mt-8 sm:mt-10">
         <button className="border border-black px-5 sm:px-6 py-2 text-xs sm:text-sm uppercase tracking-wider hover:bg-black hover:text-white transition">
           View All Reviews
         </button>
-      </div>
+      </div> */}
     </section>
   );
 }

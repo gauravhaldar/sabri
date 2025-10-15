@@ -46,9 +46,9 @@ export default function Footer() {
             <li>
               <a href="/policies/payment-policy">Payment Policy</a>
             </li>
-            <li>
+            {/* <li>
               <a href="/faq">FAQ&apos;s</a>
-            </li>
+            </li> */}
           </ul>
         </div>
 

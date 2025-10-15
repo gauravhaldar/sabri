@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 
 export default function OfferBanner({
   offers = [
@@ -15,6 +15,44 @@ export default function OfferBanner({
 }) {
   const trackRef = useRef(null);
   const containerRef = useRef(null);
+  const [couponOffers, setCouponOffers] = useState([]);
+
+  // Fetch active coupons and turn them into banner messages
+  useEffect(() => {
+    const controller = new AbortController();
+    (async () => {
+      try {
+        const res = await fetch(`/api/coupons?status=active`, {
+          signal: controller.signal,
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (!data?.success || !Array.isArray(data?.data)) return;
+
+        const messages = data.data.map((c) => {
+          const code = c.code ? `Use ${c.code}` : "";
+          const name = c.name || "Special Offer";
+          const discount = c.type === "percentage"
+            ? `${c.amount}% OFF`
+            : c.type === "flat"
+            ? `Save ₹${c.amount}`
+            : "Offer";
+          const min = typeof c.minValue === "number" ? `Min ₹${c.minValue}` : "";
+          return [name, discount, code, min].filter(Boolean).join(" • ");
+        });
+        setCouponOffers(messages.filter(Boolean));
+      } catch (_) {
+        // ignore
+      }
+    })();
+    return () => controller.abort();
+  }, []);
+
+  // Choose fetched coupons when available, otherwise fall back to provided offers
+  const bannerItems = useMemo(() => {
+    const base = couponOffers.length > 0 ? couponOffers : offers;
+    return Array.from({ length: Math.max(2, repeat) }).flatMap(() => base);
+  }, [couponOffers, offers, repeat]);
 
   useEffect(() => {
     const track = trackRef.current;
@@ -35,11 +73,7 @@ export default function OfferBanner({
     };
     let raf = requestAnimationFrame(step);
     return () => cancelAnimationFrame(raf);
-  }, [speed, offers]);
-
-  // Duplicate offers to create a longer seamless loop
-  const items = Array.from({ length: Math.max(2, repeat) })
-    .flatMap(() => offers);
+  }, [speed, bannerItems]);
 
   return (
     <div ref={containerRef} className="relative w-full overflow-hidden bg-neutral-900 text-white">
@@ -49,7 +83,7 @@ export default function OfferBanner({
         <div className="flex items-center gap-3 py-3">
           <div className="relative flex-1">
             <div ref={trackRef} className={`flex ${gapClass} will-change-transform`}>
-              {items.map((text, idx) => (
+              {bannerItems.map((text, idx) => (
                 <span key={`${text}-${idx}`} className="whitespace-nowrap text-sm">
                   {text}
                 </span>
