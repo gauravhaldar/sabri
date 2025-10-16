@@ -69,14 +69,14 @@ const Invoice = forwardRef(({ orderData }, ref) => {
           <div style={styles.companyDetails}>
             <p style={styles.companyName}>Sabri Jewellery</p>
             <p style={styles.companyAddress}>
-              123 Jewel Street<br />
-              Mumbai, Maharashtra 400001<br />
+            Plot No 173, Engineering Park, Heavy Industrial Area,<br />
+            Hathkhoj, Bhilai, C.G. 490024<br />
               India
             </p>
             <p style={styles.companyContact}>
-              Phone: +91 98765 43210<br />
+              Phone: +91 8770672422<br />
               Email: info@sabri.com<br />
-              Website: www.sabri.com
+              Website: www.mysabri.in
             </p>
           </div>
         </div>
@@ -155,7 +155,7 @@ const Invoice = forwardRef(({ orderData }, ref) => {
               <strong>Order Status:</strong> Confirmed
             </p>
             <p style={styles.paymentDetail}>
-              <strong>Estimated Delivery:</strong> 3-5 business days
+              <strong>Estimated Delivery:</strong> 7-9 business days
             </p>
           </div>
         </div>
@@ -208,8 +208,7 @@ const Invoice = forwardRef(({ orderData }, ref) => {
           <h4 style={styles.footerTitle}>Terms & Conditions</h4>
           <ul style={styles.termsList}>
             <li>All items are subject to availability</li>
-            <li>Returns accepted within 30 days</li>
-            <li>Free shipping on orders above ₹5,000</li>
+            <li>Returns accepted within 2 days of delivery</li>
             <li>GST included in all prices</li>
           </ul>
         </div>
