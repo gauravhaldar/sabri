@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   CheckCircle,
@@ -13,9 +13,13 @@ import {
   Package,
   CreditCard,
 } from "lucide-react";
+import Invoice from "./Invoice";
+import { generateInvoicePDF, generateInvoiceFilename } from "../utils/invoiceUtils";
 
 export default function OrderSuccessModal({ isOpen, onClose, orderData }) {
   const [copied, setCopied] = useState(false);
+  const [downloading, setDownloading] = useState(false);
+  const invoiceRef = useRef(null);
 
   if (!isOpen || !orderData) return null;
 
@@ -32,67 +36,48 @@ export default function OrderSuccessModal({ isOpen, onClose, orderData }) {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const handleDownloadInvoice = () => {
-    // Create a simple text invoice
-    const invoiceContent = `
-INVOICE
-Order ID: ${orderData.orderId || "N/A"}
-Date: ${
-      orderData.createdAt
-        ? new Date(orderData.createdAt).toLocaleDateString()
-        : new Date().toLocaleDateString()
+  const handleDownloadInvoice = async () => {
+    setDownloading(true);
+    
+    try {
+      // Create a temporary container for the invoice
+      const tempContainer = document.createElement('div');
+      tempContainer.style.position = 'absolute';
+      tempContainer.style.left = '-9999px';
+      tempContainer.style.top = '-9999px';
+      tempContainer.style.width = '210mm';
+      tempContainer.style.backgroundColor = '#ffffff';
+      
+      document.body.appendChild(tempContainer);
+
+      // Render the invoice component
+      const { createRoot } = await import('react-dom/client');
+      const root = createRoot(tempContainer);
+      
+      root.render(<Invoice orderData={orderData} />);
+
+      // Wait for rendering to complete
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      // Generate PDF
+      const filename = generateInvoiceFilename(orderData);
+      const success = await generateInvoicePDF(tempContainer, filename);
+
+      // Clean up
+      root.unmount();
+      document.body.removeChild(tempContainer);
+
+      if (success) {
+        // Show success message (you can use toast here if available)
+        console.log('Invoice downloaded successfully');
+      } else {
+        console.error('Failed to download invoice');
+      }
+    } catch (error) {
+      console.error('Error downloading invoice:', error);
+    } finally {
+      setDownloading(false);
     }
-
-Shipping Address:
-${orderData.shippingAddress?.name || "N/A"}
-${orderData.shippingAddress?.addressLine1 || "N/A"}
-${orderData.shippingAddress?.addressLine2 || ""}
-${orderData.shippingAddress?.city || "N/A"}, ${
-      orderData.shippingAddress?.state || "N/A"
-    } - ${orderData.shippingAddress?.zipCode || "N/A"}
-Phone: ${orderData.shippingAddress?.phone || "N/A"}
-
-Items:
-${
-  orderData.items
-    ?.map(
-      (item) =>
-        `${item.name || "Unnamed Item"} x${item.quantity || 0} - ₹${
-          (item.price || 0) * (item.quantity || 0)
-        }`
-    )
-    .join("\n") || "No items"
-}
-
-Order Summary:
-Subtotal: ₹${orderData.orderSummary?.subtotal || 0}
-${
-  (orderData.orderSummary?.couponDiscount || 0) > 0
-    ? `Coupon Discount (${orderData.orderSummary?.couponCode || "N/A"}): -₹${
-        orderData.orderSummary?.couponDiscount || 0
-      }`
-    : ""
-}
-Tax: ₹${orderData.orderSummary?.tax || 0}
-Shipping: ₹${orderData.orderSummary?.shippingCharge || 0}
-Total: ₹${orderData.orderSummary?.total || 0}
-
-Payment Method: ${
-      orderData.paymentMethod === "cash_on_delivery"
-        ? "Cash on Delivery"
-        : "Online Payment"
-    }
-    `.trim();
-
-    const blob = new Blob([invoiceContent], { type: "text/plain" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `invoice-${orderData.orderId}.txt`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
   };
 
   const formatDate = (dateString) => {
@@ -324,10 +309,20 @@ Payment Method: ${
               <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-gray-200">
                 <button
                   onClick={handleDownloadInvoice}
-                  className="flex-1 flex items-center justify-center gap-2 bg-gray-100 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-200 transition-colors"
+                  disabled={downloading}
+                  className="flex-1 flex items-center justify-center gap-2 bg-gray-100 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <Download className="w-4 h-4" />
-                  Download Invoice
+                  {downloading ? (
+                    <>
+                      <div className="animate-spin w-4 h-4 border-2 border-gray-700 border-t-transparent rounded-full"></div>
+                      Generating PDF...
+                    </>
+                  ) : (
+                    <>
+                      <Download className="w-4 h-4" />
+                      Download Invoice
+                    </>
+                  )}
                 </button>
 
                 <button
