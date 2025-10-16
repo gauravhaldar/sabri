@@ -19,6 +19,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/contexts/ToastContext";
 import CouponModal from "@/components/CouponModal";
 import AddressModal from "@/components/AddressModal";
+import OrderSuccessModal from "@/components/OrderSuccessModal";
 
 export default function CartPage() {
   const { user } = useAuth();
@@ -47,6 +48,12 @@ export default function CartPage() {
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [showAddressModal, setShowAddressModal] = useState(false);
   const [deliveryAvailable, setDeliveryAvailable] = useState(true);
+
+  // Payment and order state
+  const [paymentMethod, setPaymentMethod] = useState("cash_on_delivery");
+  const [orderLoading, setOrderLoading] = useState(false);
+  const [showOrderSuccess, setShowOrderSuccess] = useState(false);
+  const [orderData, setOrderData] = useState(null);
 
   // Fetch cart on component mount
   useEffect(() => {
@@ -233,7 +240,13 @@ export default function CartPage() {
     setDeliveryAvailable(true);
   };
 
-  const handleCheckout = async () => {
+  // Handle place order
+  const handlePlaceOrder = async () => {
+    console.log("=== ORDER PLACEMENT STARTED ===");
+    console.log("User:", user);
+    console.log("Selected address:", selectedAddress);
+    console.log("Cart items:", Object.values(cartItems));
+
     if (!user) {
       // Redirect to login
       window.location.href = "/login";
@@ -250,9 +263,84 @@ export default function CartPage() {
       return;
     }
 
-    console.log("Proceeding to checkout...");
-    // Redirect to checkout page (you can create this later)
-    alert("Checkout functionality will be implemented soon!");
+    if (!paymentMethod) {
+      toast.error("Please select a payment method");
+      return;
+    }
+
+    setOrderLoading(true);
+
+    try {
+      const cartItemsArray = Object.values(cartItems);
+      const subtotal = calculateSubtotal();
+      const tax = (subtotal - couponDiscount) * 0.18;
+      const shipping = subtotal > 5000 ? 0 : 200;
+      const total = subtotal - couponDiscount + tax + shipping;
+
+      // Prepare order data
+      const orderData = {
+        items: cartItemsArray.map((item) => ({
+          productId: item.productId || item._id,
+          name: item.name,
+          price: item.price,
+          originalPrice: item.originalPrice,
+          quantity: item.quantity,
+          size: item.size,
+          color: item.color,
+          category: item.category,
+          image: item.images?.[0] || item.image,
+        })),
+        shippingAddress: selectedAddress,
+        paymentMethod,
+        orderSummary: {
+          subtotal,
+          couponDiscount,
+          couponCode: appliedCoupon?.code,
+          tax: Math.round(tax * 100) / 100,
+          shippingCharge: shipping,
+          total: Math.round(total * 100) / 100,
+        },
+        notes: "",
+        userId: user.id || user._id, // Pass user ID in the request body
+      };
+
+      console.log("User object:", user);
+      console.log("User ID being sent:", user.id || user._id);
+      console.log("Making API request with data:", orderData);
+
+      const response = await fetch("/api/orders/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderData),
+      });
+
+      console.log("Response status:", response.status);
+      const data = await response.json();
+      console.log("API Response:", data);
+
+      if (data.success) {
+        console.log("✅ Order successful - Setting modal data");
+
+        // Set modal data and show modal
+        setOrderData(data.data);
+        setShowOrderSuccess(true);
+
+        toast.success("Order placed successfully!");
+
+        console.log("✅ Order completed");
+      } else {
+        console.error("❌ Order failed:", data.message);
+        toast.error(data.message || "Failed to place order");
+      }
+    } catch (error) {
+      console.error("❌ Order placement error:", error);
+      toast.error("Failed to place order");
+    } finally {
+      setOrderLoading(false);
+      console.log("=== ORDER PLACEMENT COMPLETED ===");
+    }
   };
 
   // Loading state
@@ -618,6 +706,74 @@ export default function CartPage() {
                   )}
                 </div>
 
+                {/* Payment Method Section */}
+                <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-gray-50 rounded-lg border">
+                  <div className="flex items-center justify-between mb-2 sm:mb-3">
+                    <h3 className="text-xs sm:text-sm font-medium text-gray-700 flex items-center gap-2">
+                      💳 Payment Method
+                    </h3>
+                  </div>
+
+                  <div className="space-y-3">
+                    {/* Cash on Delivery */}
+                    <div
+                      className={`p-3 border rounded-lg cursor-pointer transition-all ${
+                        paymentMethod === "cash_on_delivery"
+                          ? "border-blue-500 bg-blue-50"
+                          : "border-gray-200 hover:border-gray-300"
+                      }`}
+                      onClick={() => setPaymentMethod("cash_on_delivery")}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div
+                            className={`w-4 h-4 rounded-full border-2 ${
+                              paymentMethod === "cash_on_delivery"
+                                ? "border-blue-500 bg-blue-500"
+                                : "border-gray-300"
+                            }`}
+                          >
+                            {paymentMethod === "cash_on_delivery" && (
+                              <div className="w-full h-full rounded-full bg-white scale-50"></div>
+                            )}
+                          </div>
+                          <div>
+                            <span className="text-xs sm:text-sm font-medium text-gray-900">
+                              Cash on Delivery
+                            </span>
+                            <p className="text-[11px] sm:text-xs text-gray-500">
+                              Pay when your order is delivered
+                            </p>
+                          </div>
+                        </div>
+                        <span className="text-[11px] sm:text-xs px-2 py-1 bg-green-100 text-green-700 rounded-full">
+                          Available
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Online Payment - Disabled */}
+                    <div className="p-3 border border-gray-200 rounded-lg opacity-50 cursor-not-allowed bg-gray-100">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="w-4 h-4 rounded-full border-2 border-gray-300"></div>
+                          <div>
+                            <span className="text-xs sm:text-sm font-medium text-gray-600">
+                              Online Payment
+                            </span>
+                            <p className="text-[11px] sm:text-xs text-gray-400">
+                              Credit/Debit Card, UPI, Net Banking
+                            </p>
+                          </div>
+                        </div>
+                        <span className="text-[11px] sm:text-xs px-2 py-1 bg-gray-200 text-gray-600 rounded-full">
+                          Coming Soon
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                 <div className="space-y-2.5 sm:space-y-3">
                   <div className="flex justify-between text-xs sm:text-sm">
                     <span className="text-neutral-600">
@@ -709,11 +865,20 @@ export default function CartPage() {
                   </div>
                 ) : (
                   <button
-                    onClick={handleCheckout}
-                    disabled={loading}
-                    className="w-full mt-6 bg-neutral-900 text-white py-3 px-4 rounded-md text-sm font-medium hover:opacity-90 disabled:opacity-50 transition-opacity duration-200"
+                    onClick={handlePlaceOrder}
+                    disabled={orderLoading}
+                    className="w-full mt-6 bg-neutral-900 text-white py-3 px-4 rounded-md text-sm font-medium hover:opacity-90 disabled:opacity-50 transition-opacity duration-200 flex items-center justify-center gap-2"
                   >
-                    {loading ? "Processing..." : "Proceed to Checkout"}
+                    {orderLoading ? (
+                      <>
+                        <div className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full"></div>
+                        Placing Order...
+                      </>
+                    ) : (
+                      `Place Order - ₹${Math.round(
+                        calculateTotal()
+                      ).toLocaleString()}`
+                    )}
                   </button>
                 )}
 
@@ -763,6 +928,36 @@ export default function CartPage() {
         onClose={() => setShowAddressModal(false)}
         onAddressAdded={handleAddressAdded}
         currentUser={user}
+      />
+
+      {/* Order Success Modal */}
+      <OrderSuccessModal
+        isOpen={showOrderSuccess}
+        onClose={async (navigateTo = "/") => {
+          console.log(
+            "Modal close requested - clearing cart and navigating to:",
+            navigateTo
+          );
+
+          try {
+            // Clear cart and reset state when user closes modal
+            await clearCart();
+            setAppliedCoupon(null);
+            setCouponDiscount(0);
+            setCouponCode("");
+            console.log("✅ Cart cleared successfully");
+          } catch (error) {
+            console.error("❌ Error clearing cart:", error);
+          }
+
+          setShowOrderSuccess(false);
+
+          // Navigate to specified page after clearing
+          setTimeout(() => {
+            window.location.href = navigateTo;
+          }, 100);
+        }}
+        orderData={orderData}
       />
     </div>
   );
