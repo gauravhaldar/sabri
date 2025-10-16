@@ -78,9 +78,9 @@ export default function Footer() {
             About Us
           </h4>
           <ul className="space-y-2 text-sm">
-            <li>
+            {/* <li>
               <a href="/about-us">About Us</a>
-            </li>
+            </li> */}
             <li>
               <a href="/contact-us">Contact Us</a>
             </li>

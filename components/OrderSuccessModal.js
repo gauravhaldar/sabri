@@ -267,7 +267,7 @@ Payment Method: ${
                   {orderData.paymentMethod === "cash_on_delivery" && (
                     <div className="mt-2 p-3 bg-yellow-50 border border-yellow-200 rounded-md">
                       <p className="text-sm text-yellow-800">
-                        💡 You'll pay ₹
+                        💡 You&apos;ll pay ₹
                         {(orderData.orderSummary?.total || 0).toLocaleString()}{" "}
                         when your order is delivered.
                       </p>
