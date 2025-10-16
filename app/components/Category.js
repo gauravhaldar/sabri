@@ -7,33 +7,33 @@ export default function Category({
   title = "EVERYDAY DEMIFINE JEWELLERY",
   items = [
     {
-      title: "",
-      imageSrc: "/category/ring.webp",
+      title: "Rings",
+      imageSrc: "/category/ring.jpg",
       href: "/best-sellers",
     },
     {
-      title: "",
-      imageSrc: "/category/earring.webp",
+      title: "Earrings",
+      imageSrc: "/category/earring.jpg",
       href: "/fine-silver",
     },
     {
-      title: "",
-      imageSrc: "/category/neck.webp",
+      title: "Necklaces",
+      imageSrc: "/category/necklace.jpg",
       href: "/necklaces",
     },
     {
-      title: "",
-      imageSrc: "/category/bracelet.webp",
+      title: "Bracelets",
+      imageSrc: "/category/bracelet.jpg",
       href: "/earrings",
     },
     {
-      title: "",
-      imageSrc: "/category/mangal.webp",
+      title: "Gifts",
+      imageSrc: "/category/gifts.jpg",
       href: "/fine-gold",
     },
     {
-      title: "",
-      imageSrc: "/category/men.webp",
+      title: "Men's",
+      imageSrc: "/category/mens.webp",
       href: "/mens",
     },
   ],
@@ -67,7 +67,7 @@ export default function Category({
               </div>
 
               {/* Label */}
-              <div className="absolute left-3 bottom-3 sm:left-4 sm:bottom-4 text-[11px] sm:text-[12px] md:text-[13px] font-medium tracking-wide text-neutral-900">
+              <div className="absolute left-3 bottom-3 sm:left-4 sm:bottom-4 text-[11px] sm:text-[12px] md:text-[13px] font-medium tracking-wide text-neutral-100">
                 <span className="px-1 py-0.5">{item.title}</span>
               </div>
             </Link>
