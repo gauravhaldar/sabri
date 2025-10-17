@@ -432,12 +432,10 @@ export default function DynamicProductPage({
                       <span className="font-medium text-gray-700">
                         Brand owned and marketed by:
                       </span>{" "}
-                      Demifine Fashion Private Limited
+                      SABRI
                     </p>
                     <p>
-                      CLUB HOUSE, S NO. 26/13/B/1A25/B, WINTERBERRY PURPLE
-                      CO-OPERATIVE HOUSING SOCIETY LIMITED, KOREGAON PARK, LANE
-                      NO.8, Pune, Maharashtra, 411001
+                    Plot No 173, Engineering Park, Heavy Industrial Area, Hathkhoj, Bhilai,490024, C.G.
                     </p>
                     <p>
                       <span className="font-medium text-gray-700">
@@ -548,7 +546,7 @@ export default function DynamicProductPage({
             <p className="text-base md:text-lg text-neutral-900 my-4 px-2">
               Typically arrives in{" "}
               <span className="bg-[#C69A75] text-white px-1 rounded">
-                3-4 Days
+                7-9 Days
               </span>
             </p>
 
