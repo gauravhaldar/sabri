@@ -9,12 +9,12 @@ export default function Category({
     {
       title: "Rings",
       imageSrc: "/category/ring.jpg",
-      href: "/best-sellers",
+      href: "/rings",
     },
     {
       title: "Earrings",
       imageSrc: "/category/earring.jpg",
-      href: "/fine-silver",
+      href: "/earrings",
     },
     {
       title: "Necklaces",
@@ -24,12 +24,12 @@ export default function Category({
     {
       title: "Bracelets",
       imageSrc: "/category/bracelet.jpg",
-      href: "/earrings",
+      href: "/bracelets",
     },
     {
       title: "Gifts",
       imageSrc: "/category/gifts.jpg",
-      href: "/fine-gold",
+      href: "/gifts",
     },
     {
       title: "Men's",
