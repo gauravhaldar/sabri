@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import connectDB from "@/lib/db";
 import Order from "@/lib/models/Order";
 import Coupon from "@/lib/models/Coupon";
+import Sequence from "@/lib/models/Sequence";
 import mongoose from "mongoose";
 
 export async function POST(request) {
@@ -67,11 +68,16 @@ export async function POST(request) {
     console.log("UserId type:", typeof userId);
     console.log("Is valid ObjectId:", mongoose.Types.ObjectId.isValid(userId));
 
-    // Generate unique order ID
-    const orderCount = await Order.countDocuments();
-    const orderId = `SAB${String(orderCount + 1).padStart(6, "0")}`;
+    // Generate unique order ID atomically using a sequence counter
+    const nextSeq = await Sequence.findOneAndUpdate(
+      { name: "orderId" },
+      { $inc: { value: 1 } },
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    );
+    const seqValue = nextSeq.value;
+    const orderId = `SAB${String(seqValue).padStart(6, "0")}`;
 
-    // Generate unique invoice ID
+    // Generate unique invoice ID based on sequence
     const invoiceId = `INV-${orderId}-${Date.now()}`;
 
     // Calculate estimated delivery (7 days from now)
@@ -97,7 +103,31 @@ export async function POST(request) {
       },
     });
 
-    await order.save();
+    // Save with a lightweight retry in case of a rare race/dup
+    let saved = false;
+    let attempts = 0;
+    while (!saved && attempts < 3) {
+      try {
+        await order.save();
+        saved = true;
+      } catch (e) {
+        attempts++;
+        // If duplicate key on orderId, bump sequence and retry
+        if (e?.code === 11000 && e?.keyPattern?.orderId) {
+          const retrySeq = await Sequence.findOneAndUpdate(
+            { name: "orderId" },
+            { $inc: { value: 1 } },
+            { upsert: true, new: true }
+          );
+          const newVal = retrySeq.value;
+          const newOrderId = `SAB${String(newVal).padStart(6, "0")}`;
+          order.orderId = newOrderId;
+          order.invoice.invoiceId = `INV-${newOrderId}-${Date.now()}`;
+          continue;
+        }
+        throw e;
+      }
+    }
 
     // If a coupon was used, increment its usage count
     if (orderSummary.couponCode) {

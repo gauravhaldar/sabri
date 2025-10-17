@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState, Suspense } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useCart } from "@/contexts/CartContext";
 import { useSearchParams, useRouter } from "next/navigation";
 
@@ -7,11 +7,28 @@ function PaymentSuccessContent() {
   const { clearCart, fetchCart } = useCart();
   const searchParams = useSearchParams();
   const router = useRouter();
+  const ranRef = useRef(false);
+  const safeNavigate = useCallback(
+    (url) => {
+      try {
+        router.push(url);
+      } catch (e) {
+        try {
+          window.location.assign(url);
+        } catch (err) {
+          console.error("Navigation failed:", err);
+        }
+      }
+    },
+    [router]
+  );
   const [verifying, setVerifying] = useState(true);
   const [paymentData, setPaymentData] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    if (ranRef.current) return; // guard against repeated runs due to re-renders
+    ranRef.current = true;
     // Get all payment response parameters
     const params = {};
     searchParams.forEach((value, key) => {
@@ -19,14 +36,29 @@ function PaymentSuccessContent() {
     });
 
     console.log("Payment Success - Received params:", params);
+
+    // Basic parameter validation to avoid hanging state if gateway didn't send expected fields
+    if (!params?.txnid || !params?.status || !params?.hash) {
+      setError(
+        "Missing payment parameters from gateway. Please check your payment status or contact support."
+      );
+      setVerifying(false);
+      return;
+    }
     // Verify hash and process payment
     (async () => {
       try {
+        // Add a fetch timeout using AbortController to prevent indefinite loading
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 15000);
+
         const response = await fetch("/api/payment/payu/validate", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(params),
+          signal: controller.signal,
         });
+        clearTimeout(timeoutId);
 
         const data = await response.json();
 
@@ -44,7 +76,7 @@ function PaymentSuccessContent() {
 
           // Redirect to order details after 5 seconds
           setTimeout(() => {
-            router.push(`/orders/${data.data.orderId}`);
+            safeNavigate(`/orders/${data.data.orderId}`);
           }, 5000);
         } else {
           setError(data.message || "Payment verification failed");
@@ -56,7 +88,9 @@ function PaymentSuccessContent() {
         setVerifying(false);
       }
     })();
-  }, [searchParams, clearCart, fetchCart, router]);
+    // Intentionally no dependencies: we only want to run once after mount/redirect
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (verifying) {
     return (
@@ -172,13 +206,17 @@ function PaymentSuccessContent() {
             Redirecting to order details in 5 seconds...
           </p>
           <button
-            onClick={() => router.push(`/orders/${paymentData?.orderId || ""}`)}
+            type="button"
+            onClick={() =>
+              safeNavigate(`/orders/${paymentData?.orderId || ""}`)
+            }
             className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors"
           >
             View Order Details
           </button>
           <button
-            onClick={() => router.push("/")}
+            type="button"
+            onClick={() => safeNavigate("/")}
             className="w-full bg-gray-200 text-gray-800 py-3 rounded-lg hover:bg-gray-300 transition-colors"
           >
             Continue Shopping
@@ -189,21 +227,4 @@ function PaymentSuccessContent() {
   );
 }
 
-export default function PaymentSuccess() {
-  return (
-    <Suspense
-      fallback={
-        <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full text-center">
-            <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-green-600 mx-auto mb-4"></div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">
-              Loading...
-            </h2>
-          </div>
-        </div>
-      }
-    >
-      <PaymentSuccessContent />
-    </Suspense>
-  );
-}
+export default PaymentSuccessContent;
