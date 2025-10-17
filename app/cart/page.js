@@ -20,6 +20,7 @@ import { useToast } from "@/contexts/ToastContext";
 import CouponModal from "@/components/CouponModal";
 import AddressModal from "@/components/AddressModal";
 import OrderSuccessModal from "@/components/OrderSuccessModal";
+import PayUPayment from "@/components/PayUPayment";
 
 export default function CartPage() {
   const { user } = useAuth();
@@ -54,6 +55,7 @@ export default function CartPage() {
   const [orderLoading, setOrderLoading] = useState(false);
   const [showOrderSuccess, setShowOrderSuccess] = useState(false);
   const [orderData, setOrderData] = useState(null);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   // Fetch cart on component mount
   useEffect(() => {
@@ -323,11 +325,19 @@ export default function CartPage() {
       if (data.success) {
         console.log("✅ Order successful - Setting modal data");
 
-        // Set modal data and show modal
+        // Set modal data
         setOrderData(data.data);
-        setShowOrderSuccess(true);
 
-        toast.success("Order placed successfully!");
+        // Check payment method
+        if (paymentMethod === "online_payment") {
+          // Show PayU payment modal for online payment
+          setShowPaymentModal(true);
+          toast.success("Order created! Proceed to payment");
+        } else {
+          // Cash on delivery - show success modal
+          setShowOrderSuccess(true);
+          toast.success("Order placed successfully!");
+        }
 
         console.log("✅ Order completed");
       } else {
@@ -752,23 +762,67 @@ export default function CartPage() {
                       </div>
                     </div>
 
-                    {/* Online Payment - Disabled */}
-                    <div className="p-3 border border-gray-200 rounded-lg opacity-50 cursor-not-allowed bg-gray-100">
+                    {/* Online Payment - Enabled */}
+                    <div
+                      className={`p-3 border rounded-lg cursor-pointer transition-all ${
+                        paymentMethod === "online_payment"
+                          ? "border-blue-500 bg-blue-50"
+                          : "border-gray-200 hover:border-gray-300"
+                      }`}
+                      onClick={() => setPaymentMethod("online_payment")}
+                    >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
-                          <div className="w-4 h-4 rounded-full border-2 border-gray-300"></div>
+                          <div
+                            className={`w-4 h-4 rounded-full border-2 ${
+                              paymentMethod === "online_payment"
+                                ? "border-blue-500 bg-blue-500"
+                                : "border-gray-300"
+                            }`}
+                          >
+                            {paymentMethod === "online_payment" && (
+                              <div className="w-full h-full rounded-full bg-white scale-50"></div>
+                            )}
+                          </div>
                           <div>
-                            <span className="text-xs sm:text-sm font-medium text-gray-600">
+                            <span className="text-xs sm:text-sm font-medium text-gray-900">
                               Online Payment
                             </span>
-                            <p className="text-[11px] sm:text-xs text-gray-400">
-                              Credit/Debit Card, UPI, Net Banking
+                            <p className="text-[11px] sm:text-xs text-gray-500">
+                              Credit/Debit Card, UPI, Net Banking, Wallets
                             </p>
                           </div>
                         </div>
-                        <span className="text-[11px] sm:text-xs px-2 py-1 bg-gray-200 text-gray-600 rounded-full">
-                          Coming Soon
-                        </span>
+                        <div className="flex flex-col items-end gap-1">
+                          <span className="text-[11px] sm:text-xs px-2 py-1 bg-green-100 text-green-700 rounded-full">
+                            Available
+                          </span>
+                          <div className="flex gap-1">
+                            <Image
+                              src="/icons/visa.svg"
+                              alt="Visa"
+                              width={24}
+                              height={16}
+                              className="h-3 w-auto"
+                              onError={(e) => {
+                                e.target.style.display = "none";
+                              }}
+                            />
+                            <Image
+                              src="/icons/mastercard.svg"
+                              alt="Mastercard"
+                              width={24}
+                              height={16}
+                              className="h-3 w-auto"
+                              onError={(e) => {
+                                e.target.style.display = "none";
+                              }}
+                            />
+                            <span className="text-[10px] text-gray-500">
+                              +UPI
+                            </span>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -959,6 +1013,82 @@ export default function CartPage() {
         }}
         orderData={orderData}
       />
+
+      {/* PayU Payment Modal */}
+      {showPaymentModal && orderData && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 animate-fade-in">
+            <div className="text-center mb-6">
+              <div className="mx-auto w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+                <svg
+                  className="w-8 h-8 text-blue-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+                  />
+                </svg>
+              </div>
+              <h2 className="text-2xl font-bold text-gray-800 mb-2">
+                Complete Payment
+              </h2>
+              <p className="text-gray-600 mb-4">
+                You will be redirected to PayU payment gateway
+              </p>
+            </div>
+
+            <div className="bg-gray-50 rounded-lg p-4 mb-6 space-y-2">
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-600">Order ID:</span>
+                <span className="font-medium">{orderData.orderId}</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-600">Amount:</span>
+                <span className="font-medium text-lg">
+                  ₹{orderData.orderSummary.total.toLocaleString()}
+                </span>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <PayUPayment
+                orderId={orderData.orderId}
+                amount={orderData.orderSummary.total}
+                customerInfo={{
+                  firstname:
+                    user.firstName || user.name?.split(" ")[0] || "Customer",
+                  lastname:
+                    user.lastName ||
+                    user.name?.split(" ").slice(1).join(" ") ||
+                    "",
+                  email: user.email,
+                  phone: selectedAddress?.phone || user.phone || "0000000000",
+                }}
+                productInfo={`Order ${orderData.orderId}`}
+              />
+
+              <button
+                onClick={() => {
+                  setShowPaymentModal(false);
+                  toast.info("Payment cancelled. Your order is saved.");
+                }}
+                className="w-full py-3 px-6 rounded-lg font-medium transition-colors bg-gray-200 hover:bg-gray-300 text-gray-800"
+              >
+                Cancel Payment
+              </button>
+            </div>
+
+            <p className="text-xs text-center text-gray-500 mt-4">
+              🔒 Secure payment powered by PayU
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
