@@ -1,9 +1,10 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
+import { useCart } from "@/contexts/CartContext";
 import { useSearchParams, useRouter } from "next/navigation";
-import crypto from "crypto-js";
 
-export default function PaymentSuccess() {
+function PaymentSuccessContent() {
+  const { clearCart, fetchCart } = useCart();
   const searchParams = useSearchParams();
   const router = useRouter();
   const [verifying, setVerifying] = useState(true);
@@ -39,6 +40,14 @@ export default function PaymentSuccess() {
       if (data.success) {
         setPaymentData(data.data);
         setVerifying(false);
+
+        // Clear client-side cart optimistically, then refetch from server
+        try {
+          await clearCart();
+          await fetchCart();
+        } catch (e) {
+          console.warn("Cart clear post-success had a minor issue:", e);
+        }
 
         // Redirect to order details after 5 seconds
         setTimeout(() => {
@@ -183,5 +192,24 @@ export default function PaymentSuccess() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function PaymentSuccess() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full text-center">
+            <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-green-600 mx-auto mb-4"></div>
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">
+              Loading...
+            </h2>
+          </div>
+        </div>
+      }
+    >
+      <PaymentSuccessContent />
+    </Suspense>
   );
 }

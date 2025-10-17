@@ -11,9 +11,12 @@ const PAYU_CONFIG = {
     process.env.NODE_ENV === "production"
       ? "https://secure.payu.in"
       : "https://test.payu.in",
-  SUCCESS_URL: process.env.PAYU_SUCCESS_URL,
-  FAILURE_URL: process.env.PAYU_FAILURE_URL,
-  CANCEL_URL: process.env.PAYU_CANCEL_URL,
+  SUCCESS_URL:
+    process.env.PAYU_SUCCESS_URL || "http://localhost:3000/payment/success",
+  FAILURE_URL:
+    process.env.PAYU_FAILURE_URL || "http://localhost:3000/payment/failure",
+  CANCEL_URL:
+    process.env.PAYU_CANCEL_URL || "http://localhost:3000/payment/cancel",
 };
 
 // Validate required PayU configuration
@@ -109,6 +112,22 @@ export async function POST(request) {
     // Generate unique transaction ID
     const txnId = `TXN${Date.now()}${Math.random().toString(36).substr(2, 9)}`;
 
+    // Derive absolute origin to build return handler URLs
+    let origin;
+    try {
+      origin = new URL(PAYU_CONFIG.SUCCESS_URL).origin;
+    } catch {
+      // Fallback to request headers
+      const headers = request.headers;
+      const proto = headers.get("x-forwarded-proto") || "http";
+      const host = headers.get("host") || "localhost:3000";
+      origin = `${proto}://${host}`;
+    }
+
+    const returnSuccess = `${origin}/api/payment/payu/return?type=success`;
+    const returnFailure = `${origin}/api/payment/payu/return?type=failure`;
+    const returnCancel = `${origin}/api/payment/payu/return?type=cancel`;
+
     // Prepare PayU parameters
     const payUParams = {
       key: PAYU_CONFIG.MERCHANT_KEY,
@@ -118,9 +137,10 @@ export async function POST(request) {
       firstname: customerInfo.firstname,
       email: customerInfo.email,
       phone: customerInfo.phone,
-      surl: PAYU_CONFIG.SUCCESS_URL,
-      furl: PAYU_CONFIG.FAILURE_URL,
-      curl: PAYU_CONFIG.CANCEL_URL,
+      // IMPORTANT: PayU posts to these URLs. Use our return handler API.
+      surl: returnSuccess,
+      furl: returnFailure,
+      curl: returnCancel,
       udf1: orderId, // Store orderId for reference
       udf2: customerInfo.lastname || "",
       udf3: "",

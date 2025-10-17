@@ -1,8 +1,8 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 
-export default function PaymentCancel() {
+function PaymentCancelContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [paymentData, setPaymentData] = useState(null);
@@ -85,5 +85,24 @@ export default function PaymentCancel() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function PaymentCancel() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-gradient-to-br from-yellow-50 to-orange-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full text-center">
+            <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-yellow-600 mx-auto mb-4"></div>
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">
+              Loading...
+            </h2>
+          </div>
+        </div>
+      }
+    >
+      <PaymentCancelContent />
+    </Suspense>
   );
 }

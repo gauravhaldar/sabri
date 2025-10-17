@@ -2,23 +2,18 @@ import { NextResponse } from "next/server";
 import crypto from "crypto";
 import connectDB from "@/lib/db";
 import Order from "@/lib/models/Order";
+import User from "@/lib/models/User";
 
-// PayU Configuration - All values must be set in .env.local
+// PayU Configuration
 const PAYU_CONFIG = {
   MERCHANT_KEY: process.env.PAYU_MERCHANT_KEY,
   MERCHANT_SALT: process.env.PAYU_MERCHANT_SALT,
 };
 
-// Validate required PayU configuration
-if (!PAYU_CONFIG.MERCHANT_KEY || !PAYU_CONFIG.MERCHANT_SALT) {
-  console.error(
-    "❌ PayU configuration missing! Please set PAYU_MERCHANT_KEY and PAYU_MERCHANT_SALT in .env.local"
-  );
-}
-
 /**
  * Verify hash for PayU response (Reverse Hashing)
  * Formula for regular integration: SALT|status||||||udf5|udf4|udf3|udf2|udf1|email|firstname|productinfo|amount|txnid|key
+ * Formula with additional_charges: additional_charges|SALT|status||||||udf5|udf4|udf3|udf2|udf1|email|firstname|productinfo|amount|txnid|key
  */
 const verifyResponseHash = (data) => {
   const {
@@ -41,109 +36,90 @@ const verifyResponseHash = (data) => {
   // Build hash string based on whether additional_charges is present
   let hashString;
   if (additional_charges) {
-    hashString = [
-      additional_charges,
-      PAYU_CONFIG.MERCHANT_SALT,
-      status,
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      udf5,
-      udf4,
-      udf3,
-      udf2,
-      udf1,
-      email,
-      firstname,
-      productinfo,
-      amount,
-      txnid,
-      key,
-    ].join("|");
+    hashString = `${additional_charges}|${PAYU_CONFIG.MERCHANT_SALT}|${status}||||||${udf5}|${udf4}|${udf3}|${udf2}|${udf1}|${email}|${firstname}|${productinfo}|${amount}|${txnid}|${key}`;
   } else {
-    hashString = [
-      PAYU_CONFIG.MERCHANT_SALT,
-      status,
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      udf5,
-      udf4,
-      udf3,
-      udf2,
-      udf1,
-      email,
-      firstname,
-      productinfo,
-      amount,
-      txnid,
-      key,
-    ].join("|");
+    hashString = `${PAYU_CONFIG.MERCHANT_SALT}|${status}||||||${udf5}|${udf4}|${udf3}|${udf2}|${udf1}|${email}|${firstname}|${productinfo}|${amount}|${txnid}|${key}`;
   }
+
+  console.log("Response Hash String:", hashString);
 
   const calculatedHash = crypto
     .createHash("sha512")
     .update(hashString)
-    .digest("hex");
+    .digest("hex")
+    .toLowerCase(); // Ensure lowercase comparison
 
   console.log("Hash verification:", {
-    received: hash,
+    received: hash?.toLowerCase(),
     calculated: calculatedHash,
-    matches: calculatedHash === hash,
+    matches: calculatedHash === hash?.toLowerCase(),
   });
 
-  return calculatedHash === hash;
+  return calculatedHash === hash?.toLowerCase();
 };
 
-/**
- * Validate PayU payment response
- * Called from success/failure pages and can also handle direct POST callbacks
- */
 export async function POST(request) {
   try {
     const data = await request.json();
 
-    console.log("PayU Validate - Received data:", {
+    console.log("Payment validation request received:", {
       txnid: data.txnid,
       status: data.status,
       amount: data.amount,
-      orderId: data.udf1,
     });
 
-    // Verify hash to ensure authenticity
-    const isValidHash = verifyResponseHash(data);
-    if (!isValidHash) {
-      console.error("Invalid hash received from PayU");
+    // Validate required parameters
+    if (!data.txnid || !data.status || !data.hash) {
       return NextResponse.json(
-        { success: false, message: "Invalid payment response" },
+        {
+          success: false,
+          message: "Missing required payment parameters",
+        },
         { status: 400 }
       );
     }
 
+    // Verify hash to ensure authenticity
+    const isValidHash = verifyResponseHash(data);
+    if (!isValidHash) {
+      console.error("❌ Invalid hash received from PayU");
+      console.error("Response data:", {
+        txnid: data.txnid,
+        status: data.status,
+        receivedHash: data.hash,
+      });
+      return NextResponse.json(
+        { success: false, message: "Invalid payment response - Hash mismatch" },
+        { status: 400 }
+      );
+    }
+
+    console.log("✅ Hash verified successfully");
+
     await connectDB();
 
-    // Extract order ID from udf1
+    // Get order ID from udf1
     const orderId = data.udf1;
+
     if (!orderId) {
-      console.error("Order ID not found in response data");
       return NextResponse.json(
-        { success: false, message: "Order ID not found" },
+        {
+          success: false,
+          message: "Order ID not found in payment response",
+        },
         { status: 400 }
       );
     }
 
     // Find the order
     const order = await Order.findOne({ orderId });
+
     if (!order) {
-      console.error("Order not found:", orderId);
       return NextResponse.json(
-        { success: false, message: "Order not found" },
+        {
+          success: false,
+          message: "Order not found",
+        },
         { status: 404 }
       );
     }
@@ -164,29 +140,51 @@ export async function POST(request) {
       error: data.error,
       error_Message: data.error_Message,
       updatedAt: new Date(),
-      responseData: data,
+      responseData: data, // Store full response for debugging
     };
 
     // Update order status based on payment status
     if (paymentStatus === "success") {
-      order.status = "confirmed";
+      order.orderStatus = "confirmed";
       order.paymentStatus = "paid";
-    } else if (paymentStatus === "failed") {
-      order.status = "payment_failed";
+    } else if (paymentStatus === "failure" || paymentStatus === "failed") {
+      order.orderStatus = "payment_failed";
       order.paymentStatus = "failed";
     } else if (paymentStatus === "pending") {
-      order.status = "pending";
+      order.orderStatus = "pending";
       order.paymentStatus = "pending";
     } else if (paymentStatus === "cancelled" || paymentStatus === "cancel") {
-      order.status = "cancelled";
+      order.orderStatus = "cancelled";
       order.paymentStatus = "cancelled";
     }
 
     await order.save();
 
-    console.log("Order updated successfully:", {
+    // If payment succeeded, clear user's cart on the server for reliability
+    if (paymentStatus === "success") {
+      try {
+        const userId = order.user;
+        if (userId) {
+          const user = await User.findById(userId);
+          if (user) {
+            user.cartData = {};
+            user.markModified("cartData");
+            await user.save();
+            console.log(
+              "🧹 Cleared server-side cart for user:",
+              String(userId)
+            );
+          }
+        }
+      } catch (e) {
+        console.error("Failed to clear server-side cart after success:", e);
+        // Do not fail the validation due to cart clear issues
+      }
+    }
+
+    console.log("✅ Order updated successfully:", {
       orderId,
-      status: order.status,
+      orderStatus: order.orderStatus,
       paymentStatus: order.paymentStatus,
     });
 
@@ -199,6 +197,8 @@ export async function POST(request) {
         amount: data.amount,
         status: paymentStatus,
         mode: data.mode,
+        orderStatus: order.orderStatus,
+        paymentStatus: order.paymentStatus,
       },
     });
   } catch (error) {
