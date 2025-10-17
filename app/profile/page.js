@@ -52,6 +52,8 @@ export default function ProfilePage() {
 // Separate component for authenticated user profile
 function AuthenticatedProfile() {
   const [user, setUser] = useState(null);
+  const [orders, setOrders] = useState([]);
+  const [ordersLoading, setOrdersLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("profile");
 
   useEffect(() => {
@@ -59,6 +61,29 @@ function AuthenticatedProfile() {
     const userData = JSON.parse(localStorage.getItem("userData") || "{}");
     setUser(userData);
   }, []);
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      if (!user?.id) return;
+      try {
+        setOrdersLoading(true);
+        const res = await fetch(`/api/orders/user/${user.id}`);
+        const data = await res.json();
+        if (data.success) {
+          setOrders(data.data.orders || []);
+        } else {
+          setOrders([]);
+        }
+      } catch (e) {
+        setOrders([]);
+      } finally {
+        setOrdersLoading(false);
+      }
+    };
+    if (activeTab === "orders") {
+      fetchOrders();
+    }
+  }, [activeTab, user?.id]);
 
   const handleLogout = () => {
     // Clear authentication data
@@ -188,16 +213,53 @@ function AuthenticatedProfile() {
                     <h2 className="text-xl font-semibold text-neutral-900">
                       Order History
                     </h2>
-                    <div className="text-center py-12">
-                      <span className="text-4xl mb-4 block">🛍️</span>
-                      <p className="text-neutral-600">No orders yet</p>
-                      <Link
-                        href="/best-sellers"
-                        className="inline-block mt-4 px-4 py-2 bg-neutral-900 text-white rounded-md hover:opacity-90"
-                      >
-                        Start Shopping
-                      </Link>
-                    </div>
+                    {ordersLoading ? (
+                      <div className="text-center py-12">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-neutral-900 mx-auto mb-4"></div>
+                        <p className="text-neutral-600">Loading your orders...</p>
+                      </div>
+                    ) : orders.length === 0 ? (
+                      <div className="text-center py-12">
+                        <span className="text-4xl mb-4 block">🛍️</span>
+                        <p className="text-neutral-600">No orders yet</p>
+                        <Link
+                          href="/best-sellers"
+                          className="inline-block mt-4 px-4 py-2 bg-neutral-900 text-white rounded-md hover:opacity-90"
+                        >
+                          Start Shopping
+                        </Link>
+                      </div>
+                    ) : (
+                      <div className="space-y-4">
+                        {orders.map((order) => (
+                          <a key={order.orderId} href={`/orders/${order.orderId}`} className="block border border-neutral-200 rounded-lg p-4 hover:bg-neutral-50 transition-colors">
+                            <div className="flex items-center gap-4">
+                              {order.items?.[0]?.image && (
+                                <img src={order.items[0].image} alt={order.items[0].name} className="w-16 h-16 rounded object-cover border border-neutral-200" />
+                              )}
+                              <div className="flex-1 grid grid-cols-1 md:grid-cols-4 gap-4">
+                                <div>
+                                  <p className="text-sm text-neutral-600">Order</p>
+                                  <p className="font-medium text-neutral-900">#{order.orderId}</p>
+                                </div>
+                                <div>
+                                  <p className="text-sm text-neutral-600">Placed on</p>
+                                  <p className="font-medium text-neutral-900">{new Date(order.createdAt).toLocaleDateString()}</p>
+                                </div>
+                                <div>
+                                  <p className="text-sm text-neutral-600">Status</p>
+                                  <p className="font-medium capitalize">{order.status}</p>
+                                </div>
+                                <div>
+                                  <p className="text-sm text-neutral-600">Total</p>
+                                  <p className="font-medium">₹{order.orderSummary?.total?.toLocaleString?.() || order.orderSummary?.total}</p>
+                                </div>
+                              </div>
+                            </div>
+                          </a>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 )}
 
