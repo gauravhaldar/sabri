@@ -94,7 +94,7 @@ function PaymentFailureContent() {
 
         <div className="space-y-3">
           <p className="text-sm text-gray-600 text-center mb-4">
-            Don't worry, no money has been deducted from your account.
+            Don&apos;t worry, no money has been deducted from your account.
           </p>
           <button
             onClick={() => router.push("/cart")}

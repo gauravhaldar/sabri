@@ -19,50 +19,44 @@ function PaymentSuccessContent() {
     });
 
     console.log("Payment Success - Received params:", params);
-
     // Verify hash and process payment
-    verifyPayment(params);
-  }, [searchParams]);
+    (async () => {
+      try {
+        const response = await fetch("/api/payment/payu/validate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(params),
+        });
 
-  const verifyPayment = async (params) => {
-    try {
-      // Verify the hash on the server side
-      const response = await fetch("/api/payment/payu/validate", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(params),
-      });
+        const data = await response.json();
 
-      const data = await response.json();
+        if (data.success) {
+          setPaymentData(data.data);
+          setVerifying(false);
 
-      if (data.success) {
-        setPaymentData(data.data);
-        setVerifying(false);
+          // Clear client-side cart optimistically, then refetch from server
+          try {
+            await clearCart();
+            await fetchCart();
+          } catch (e) {
+            console.warn("Cart clear post-success had a minor issue:", e);
+          }
 
-        // Clear client-side cart optimistically, then refetch from server
-        try {
-          await clearCart();
-          await fetchCart();
-        } catch (e) {
-          console.warn("Cart clear post-success had a minor issue:", e);
+          // Redirect to order details after 5 seconds
+          setTimeout(() => {
+            router.push(`/orders/${data.data.orderId}`);
+          }, 5000);
+        } else {
+          setError(data.message || "Payment verification failed");
+          setVerifying(false);
         }
-
-        // Redirect to order details after 5 seconds
-        setTimeout(() => {
-          router.push(`/orders/${data.data.orderId}`);
-        }, 5000);
-      } else {
-        setError(data.message || "Payment verification failed");
+      } catch (error) {
+        console.error("Error verifying payment:", error);
+        setError("Failed to verify payment");
         setVerifying(false);
       }
-    } catch (error) {
-      console.error("Error verifying payment:", error);
-      setError("Failed to verify payment");
-      setVerifying(false);
-    }
-  };
+    })();
+  }, [searchParams, clearCart, fetchCart, router]);
 
   if (verifying) {
     return (
