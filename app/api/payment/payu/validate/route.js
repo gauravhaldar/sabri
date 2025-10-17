@@ -3,12 +3,18 @@ import crypto from "crypto";
 import connectDB from "@/lib/db";
 import Order from "@/lib/models/Order";
 
-// PayU Configuration
+// PayU Configuration - All values must be set in .env.local
 const PAYU_CONFIG = {
-  MERCHANT_KEY: process.env.PAYU_MERCHANT_KEY || "gtKFFx",
-  MERCHANT_SALT:
-    process.env.PAYU_MERCHANT_SALT || "4R38IvwiV57FwVpsgOvTXBdLE4tHUXFW",
+  MERCHANT_KEY: process.env.PAYU_MERCHANT_KEY,
+  MERCHANT_SALT: process.env.PAYU_MERCHANT_SALT,
 };
+
+// Validate required PayU configuration
+if (!PAYU_CONFIG.MERCHANT_KEY || !PAYU_CONFIG.MERCHANT_SALT) {
+  console.error(
+    "❌ PayU configuration missing! Please set PAYU_MERCHANT_KEY and PAYU_MERCHANT_SALT in .env.local"
+  );
+}
 
 /**
  * Verify hash for PayU response (Reverse Hashing)

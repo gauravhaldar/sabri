@@ -3,70 +3,82 @@ import crypto from "crypto";
 import connectDB from "@/lib/db";
 import Order from "@/lib/models/Order";
 
-// PayU Configuration
+// PayU Configuration - All values must be set in .env.local
 const PAYU_CONFIG = {
-  MERCHANT_KEY: process.env.PAYU_MERCHANT_KEY || "gtKFFx",
-  MERCHANT_SALT_V1:
-    process.env.PAYU_MERCHANT_SALT_V1 || "4R38IvwiV57FwVpsgOvTXBdLE4tHUXFW",
-  MERCHANT_SALT_V2:
-    process.env.PAYU_MERCHANT_SALT_V2 || "4R38IvwiV57FwVpsgOvTXBdLE4tHUXFW",
+  MERCHANT_KEY: process.env.PAYU_MERCHANT_KEY,
+  MERCHANT_SALT: process.env.PAYU_MERCHANT_SALT,
   BASE_URL:
     process.env.NODE_ENV === "production"
       ? "https://secure.payu.in"
       : "https://test.payu.in",
-  SUCCESS_URL:
-    process.env.PAYU_SUCCESS_URL || "http://localhost:3000/payment/success",
-  FAILURE_URL:
-    process.env.PAYU_FAILURE_URL || "http://localhost:3000/payment/failure",
-  CANCEL_URL:
-    process.env.PAYU_CANCEL_URL || "http://localhost:3000/payment/cancel",
+  SUCCESS_URL: process.env.PAYU_SUCCESS_URL,
+  FAILURE_URL: process.env.PAYU_FAILURE_URL,
+  CANCEL_URL: process.env.PAYU_CANCEL_URL,
 };
+
+// Validate required PayU configuration
+if (!PAYU_CONFIG.MERCHANT_KEY || !PAYU_CONFIG.MERCHANT_SALT) {
+  console.error(
+    "❌ PayU configuration missing! Please set PAYU_MERCHANT_KEY and PAYU_MERCHANT_SALT in .env.local"
+  );
+}
 
 /**
  * Build hash string for PayU payment request
  * Formula: key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5||||||SALT
+ * Total: 8 fields + udf1 + udf2 + udf3 + udf4 + udf5 + 6 empty + salt = 17 elements
  */
 const buildRequestHashString = (params, salt) => {
-  return [
-    params.key,
-    params.txnid,
-    params.amount,
-    params.productinfo,
-    params.firstname,
-    params.email,
-    params.udf1 || "",
-    params.udf2 || "",
-    params.udf3 || "",
-    params.udf4 || "",
-    params.udf5 || "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    salt,
-  ].join("|");
+  // Build the exact string as per PayU's format
+  const hashString = `${params.key}|${params.txnid}|${params.amount}|${
+    params.productinfo
+  }|${params.firstname}|${params.email}|${params.udf1 || ""}|${
+    params.udf2 || ""
+  }|${params.udf3 || ""}|${params.udf4 || ""}|${
+    params.udf5 || ""
+  }||||||${salt}`;
+
+  return hashString;
 };
 
 /**
  * Generate SHA512 hash for PayU payment request
+ * Returns a single lowercase hash string
  */
-const generatePayUHashes = (params) => {
-  const v1 = crypto
-    .createHash("sha512")
-    .update(buildRequestHashString(params, PAYU_CONFIG.MERCHANT_SALT_V1))
-    .digest("hex");
-  const v2 = crypto
-    .createHash("sha512")
-    .update(buildRequestHashString(params, PAYU_CONFIG.MERCHANT_SALT_V2))
-    .digest("hex");
+const generatePayUHash = (params) => {
+  const hashString = buildRequestHashString(params, PAYU_CONFIG.MERCHANT_SALT);
 
-  return { v1, v2 };
+  // Debug: Log the hash string to verify it matches PayU's expected format
+  console.log("Hash String:", hashString);
+
+  const hash = crypto
+    .createHash("sha512")
+    .update(hashString)
+    .digest("hex")
+    .toLowerCase();
+
+  console.log("Generated Hash:", hash);
+
+  // Return plain string - PayU will wrap it in {v1, v2} format automatically
+  return hash;
 };
 
 export async function POST(request) {
   try {
+    // Validate PayU configuration
+    if (!PAYU_CONFIG.MERCHANT_KEY || !PAYU_CONFIG.MERCHANT_SALT) {
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "PayU payment gateway is not configured. Please contact administrator.",
+          error:
+            "Missing PAYU_MERCHANT_KEY or PAYU_MERCHANT_SALT in environment variables",
+        },
+        { status: 500 }
+      );
+    }
+
     const { orderId, amount, customerInfo, productInfo } = await request.json();
 
     // Validate required fields
@@ -117,9 +129,7 @@ export async function POST(request) {
     };
 
     // Generate hash for the payment request
-    const hashes = generatePayUHashes(payUParams);
-    // PayU expects hash field as a JSON string containing both v1 & v2 hashes
-    payUParams.hash = JSON.stringify(hashes);
+    payUParams.hash = generatePayUHash(payUParams);
 
     // Update order with transaction ID and payment details
     order.paymentDetails = {
