@@ -212,6 +212,22 @@ export default function DynamicProductPage({
 
   const isWishlisted = product ? isInWishlist(product.id) : false;
 
+  const handleBuyNow = async () => {
+    if (!user) {
+      window.location.href = "/login";
+      return;
+    }
+    if (!product) return;
+    try {
+      // Ensure item is in cart, then navigate to cart
+      if (!isInCart(product.id)) {
+        await addToCart(product.id, 1);
+      }
+    } finally {
+      window.location.href = "/cart";
+    }
+  };
+
   const toggleSection = (section) => {
     setExpandedSections((prev) => ({
       ...prev,
@@ -364,7 +380,7 @@ export default function DynamicProductPage({
                   />
                 </button>
               </div>
-              <button className="w-full bg-black text-white py-3 sm:py-4 px-5 sm:px-6 text-sm font-medium hover:bg-gray-800 transition-colors rounded-md min-h-[48px] sm:min-h-[55px]">
+              <button onClick={handleBuyNow} className="w-full bg-black text-white py-3 sm:py-4 px-5 sm:px-6 text-sm font-medium hover:bg-gray-800 transition-colors rounded-md min-h-[48px] sm:min-h-[55px]">
                 BUY IT NOW
               </button>
             </div>
