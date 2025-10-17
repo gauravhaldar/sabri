@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 export default function Category({
-  title = "EVERYDAY DEMIFINE JEWELLERY",
+  title = "EVERYDAY SILVER JEWELLERY",
   items = [
     {
       title: "Rings",
