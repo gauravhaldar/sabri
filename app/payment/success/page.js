@@ -1,5 +1,12 @@
 "use client";
-import { useEffect, useState, useCallback, useRef, Suspense } from "react";
+import {
+  useEffect,
+  useState,
+  useCallback,
+  useRef,
+  Suspense,
+  startTransition,
+} from "react";
 import { useCart } from "@/contexts/CartContext";
 import { useSearchParams, useRouter } from "next/navigation";
 
@@ -11,7 +18,10 @@ function PaymentSuccessContent() {
   const safeNavigate = useCallback(
     (url) => {
       try {
-        router.push(url);
+        // Prefer replace so back button doesn't return to success screen
+        startTransition(() => {
+          router.replace(url);
+        });
       } catch (e) {
         try {
           window.location.assign(url);
@@ -25,10 +35,20 @@ function PaymentSuccessContent() {
   const [verifying, setVerifying] = useState(true);
   const [paymentData, setPaymentData] = useState(null);
   const [error, setError] = useState(null);
+  const [countdown, setCountdown] = useState(5);
 
   useEffect(() => {
     if (ranRef.current) return; // guard against repeated runs due to re-renders
     ranRef.current = true;
+
+    // Optimistically clear local cart immediately on entering success page
+    (async () => {
+      try {
+        await clearCart();
+      } catch (e) {
+        console.warn("Initial local cart clear failed (non-fatal):", e);
+      }
+    })();
     // Get all payment response parameters
     const params = {};
     searchParams.forEach((value, key) => {
@@ -43,6 +63,8 @@ function PaymentSuccessContent() {
         "Missing payment parameters from gateway. Please check your payment status or contact support."
       );
       setVerifying(false);
+      // Restore cart from server if we cannot verify success
+      fetchCart().catch(() => {});
       return;
     }
     // Verify hash and process payment
@@ -73,28 +95,50 @@ function PaymentSuccessContent() {
           } catch (e) {
             console.warn("Cart clear post-success had a minor issue:", e);
           }
-
-          // Redirect to order details after 5 seconds
-          setTimeout(() => {
-            safeNavigate(`/orders/${data.data.orderId}`);
-          }, 5000);
+          // Start countdown timer to redirect
+          // A separate effect below will handle the interval and redirect
         } else {
           setError(data.message || "Payment verification failed");
           setVerifying(false);
+          // Restore cart from server on failure
+          fetchCart().catch(() => {});
         }
       } catch (error) {
         console.error("Error verifying payment:", error);
         setError("Failed to verify payment");
         setVerifying(false);
+        // Restore cart from server on error
+        fetchCart().catch(() => {});
       }
     })();
     // Intentionally no dependencies: we only want to run once after mount/redirect
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Countdown effect (runs after success when paymentData is set)
+  useEffect(() => {
+    if (!verifying && paymentData?.orderId && !error) {
+      setCountdown(5);
+      const intervalId = setInterval(() => {
+        setCountdown((prev) => {
+          if (prev <= 1) {
+            clearInterval(intervalId);
+            // Use startTransition to avoid updating router during render
+            startTransition(() => {
+              router.replace(`/orders/${paymentData.orderId}`);
+            });
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+      return () => clearInterval(intervalId);
+    }
+  }, [verifying, paymentData?.orderId, error, safeNavigate]);
+
   if (verifying) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center p-4 pt-24 md:pt-28">
         <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-green-600 mx-auto mb-4"></div>
           <h2 className="text-2xl font-bold text-gray-800 mb-2">
@@ -110,7 +154,7 @@ function PaymentSuccessContent() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-red-50 to-orange-50 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-br from-red-50 to-orange-50 flex items-center justify-center p-4 pt-24 md:pt-28">
         <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full">
           <div className="text-center mb-6">
             <div className="mx-auto w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4">
@@ -153,7 +197,7 @@ function PaymentSuccessContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center p-4 pt-24 md:pt-28">
       <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full">
         <div className="text-center mb-6">
           <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
@@ -203,7 +247,8 @@ function PaymentSuccessContent() {
 
         <div className="space-y-3">
           <p className="text-sm text-gray-600 text-center">
-            Redirecting to order details in 5 seconds...
+            Redirecting to order details in {countdown} second
+            {countdown === 1 ? "" : "s"}...
           </p>
           <button
             type="button"

@@ -190,14 +190,20 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  // Clear entire cart - Backend first
+  // Clear entire cart - Optimistic local clear, then server sync if possible
   const clearCart = async () => {
-    if (!user?.id) {
-      console.error("User not logged in");
-      return false;
-    }
+    console.log("🧹 Clearing cart - Optimistic local clear, then server sync");
 
-    console.log("🧹 Clearing cart - Backend First Approach");
+    // Always clear local state immediately for responsive UX
+    setCartItems({});
+    setCartCount(0);
+
+    // If no user yet (e.g., during redirect hydration), skip server call
+    if (!user?.id) {
+      console.warn("⚠️ No user ID available; cleared local cart only for now.");
+      // Caller can optionally call fetchCart() later when user is ready
+      return true;
+    }
 
     try {
       setLoading(true);
@@ -207,25 +213,26 @@ export const CartProvider = ({ children }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          userId: user.id,
-        }),
+        body: JSON.stringify({ userId: user.id }),
       });
 
       const data = await response.json();
       console.log("📤 Clear cart backend response:", data);
 
       if (data.success) {
-        console.log("✅ Cart cleared from backend successfully");
-        setCartItems({});
-        setCartCount(0);
+        console.log("✅ Cart cleared on server successfully");
         return true;
       } else {
         console.error("❌ Backend cart clear failed:", data.message);
+        // Re-fetch to reconcile local vs server state if server failed
+        try {
+          await fetchCart();
+        } catch {}
         return false;
       }
     } catch (error) {
       console.error("🚨 Error clearing cart:", error);
+      // On error, re-fetch later; local state remains cleared
       return false;
     } finally {
       setLoading(false);
