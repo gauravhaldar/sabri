@@ -14,7 +14,10 @@ import {
   CreditCard,
 } from "lucide-react";
 import Invoice from "./Invoice";
-import { generateInvoicePDF, generateInvoiceFilename } from "../utils/invoiceUtils";
+import {
+  generateInvoicePDF,
+  generateInvoiceFilename,
+} from "../utils/invoiceUtils";
 
 export default function OrderSuccessModal({ isOpen, onClose, orderData }) {
   const [copied, setCopied] = useState(false);
@@ -38,26 +41,26 @@ export default function OrderSuccessModal({ isOpen, onClose, orderData }) {
 
   const handleDownloadInvoice = async () => {
     setDownloading(true);
-    
+
     try {
       // Create a temporary container for the invoice
-      const tempContainer = document.createElement('div');
-      tempContainer.style.position = 'absolute';
-      tempContainer.style.left = '-9999px';
-      tempContainer.style.top = '-9999px';
-      tempContainer.style.width = '210mm';
-      tempContainer.style.backgroundColor = '#ffffff';
-      
+      const tempContainer = document.createElement("div");
+      tempContainer.style.position = "absolute";
+      tempContainer.style.left = "-9999px";
+      tempContainer.style.top = "-9999px";
+      tempContainer.style.width = "210mm";
+      tempContainer.style.backgroundColor = "#ffffff";
+
       document.body.appendChild(tempContainer);
 
       // Render the invoice component
-      const { createRoot } = await import('react-dom/client');
+      const { createRoot } = await import("react-dom/client");
       const root = createRoot(tempContainer);
-      
+
       root.render(<Invoice orderData={orderData} />);
 
       // Wait for rendering to complete
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       // Generate PDF
       const filename = generateInvoiceFilename(orderData);
@@ -69,12 +72,12 @@ export default function OrderSuccessModal({ isOpen, onClose, orderData }) {
 
       if (success) {
         // Show success message (you can use toast here if available)
-        console.log('Invoice downloaded successfully');
+        console.log("Invoice downloaded successfully");
       } else {
-        console.error('Failed to download invoice');
+        console.error("Failed to download invoice");
       }
     } catch (error) {
-      console.error('Error downloading invoice:', error);
+      console.error("Error downloading invoice:", error);
     } finally {
       setDownloading(false);
     }
@@ -115,7 +118,7 @@ export default function OrderSuccessModal({ isOpen, onClose, orderData }) {
             {/* Header */}
             <div className="relative bg-gradient-to-r from-green-500 to-green-600 text-white p-6 rounded-t-xl">
               <button
-                onClick={onClose}
+                onClick={() => onClose()}
                 className="absolute top-4 right-4 text-white hover:text-green-200 transition-colors"
               >
                 <X className="w-6 h-6" />

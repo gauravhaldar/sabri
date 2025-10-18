@@ -988,6 +988,10 @@ export default function CartPage() {
       <OrderSuccessModal
         isOpen={showOrderSuccess}
         onClose={async (navigateTo = "/") => {
+          // If an event object was passed accidentally, normalize it
+          if (navigateTo && typeof navigateTo === "object") {
+            navigateTo = "/";
+          }
           console.log(
             "Modal close requested - clearing cart and navigating to:",
             navigateTo
