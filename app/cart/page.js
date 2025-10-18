@@ -487,8 +487,8 @@ export default function CartPage() {
                         </div>
 
                         {/* Price and Quantity */}
-                        <div className="flex items-center justify-between mt-3 sm:mt-4">
-                          <div className="flex items-center gap-3">
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mt-3 sm:mt-4">
+                          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                             <span className="text-base sm:text-lg font-semibold text-neutral-900">
                               ₹{item.price.toLocaleString()}
                             </span>
@@ -511,7 +511,7 @@ export default function CartPage() {
                           </div>
 
                           {/* Quantity Controls */}
-                          <div className="flex items-center border border-neutral-300 rounded-md">
+                          <div className="flex items-center border border-neutral-300 rounded-md self-end sm:self-auto">
                             <button
                               onClick={() =>
                                 handleUpdateQuantity(cartKey, item.quantity - 1)
@@ -567,7 +567,7 @@ export default function CartPage() {
 
             {/* Order Summary */}
             <div className="lg:col-span-1">
-              <div className="bg-white border border-neutral-200 rounded-lg p-4 sm:p-6 sticky top-6 sm:top-8">
+              <div className="bg-white border border-neutral-200 rounded-lg p-4 sm:p-6 lg:sticky lg:top-8">
                 <h2 className="text-base sm:text-lg font-semibold text-neutral-900 mb-3 sm:mb-4">
                   Order Summary
                 </h2>
