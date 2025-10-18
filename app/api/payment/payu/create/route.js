@@ -87,31 +87,47 @@ export async function POST(request) {
       );
     }
 
-    const { orderId, amount, customerInfo, productInfo } = await request.json();
+    const {
+      orderId,
+      amount,
+      customerInfo,
+      productInfo,
+      reference, // optional: custom reference (e.g., userId) to store in udf1 when no orderId exists
+    } = await request.json();
 
-    // Validate required fields
-    if (!orderId || !amount || !customerInfo || !productInfo) {
+    // Validate required fields (orderId is optional for prepay flow)
+    if (amount == null || isNaN(Number(amount)) || !customerInfo) {
       return NextResponse.json(
         {
           success: false,
-          message: "Missing required payment information",
+          message: "Missing or invalid payment information (amount/customer)",
         },
         { status: 400 }
       );
     }
-
-    await connectDB();
-
-    // Find the order
-    const order = await Order.findOne({ orderId });
-    if (!order) {
+    // Basic customer validation (require email, provide safe defaults for others)
+    if (!customerInfo.email) {
       return NextResponse.json(
-        {
-          success: false,
-          message: "Order not found",
-        },
-        { status: 404 }
+        { success: false, message: "Customer email is required" },
+        { status: 400 }
       );
+    }
+
+    // If an orderId is provided, we'll link the transaction to that order as before (legacy flow)
+    // If no orderId, we'll initiate a standalone payment session without touching DB order records yet
+    let order = null;
+    if (orderId) {
+      await connectDB();
+      order = await Order.findOne({ orderId });
+      if (!order) {
+        return NextResponse.json(
+          {
+            success: false,
+            message: "Order not found",
+          },
+          { status: 404 }
+        );
+      }
     }
 
     // Generate unique transaction ID
@@ -137,16 +153,17 @@ export async function POST(request) {
     const payUParams = {
       key: PAYU_CONFIG.MERCHANT_KEY,
       txnid: txnId,
-      amount: parseFloat(amount).toFixed(2), // Ensure 2 decimal places
-      productinfo: productInfo,
-      firstname: customerInfo.firstname,
-      email: customerInfo.email,
-      phone: customerInfo.phone,
+      amount: parseFloat(Number(amount)).toFixed(2), // Ensure 2 decimal places
+      productinfo: String(productInfo || "Order Payment"),
+      firstname: String(customerInfo.firstname || "Customer"),
+      email: String(customerInfo.email),
+      phone: String(customerInfo.phone || "9999999999"),
       // IMPORTANT: PayU posts to these URLs. Use our return handler API.
       surl: returnSuccess,
       furl: returnFailure,
       curl: returnCancel,
-      udf1: orderId, // Store orderId for reference
+      // Store orderId for reference when available; otherwise a custom reference (e.g., userId) to tie back later
+      udf1: orderId || reference || customerInfo.email || "",
       udf2: customerInfo.lastname || "",
       udf3: "",
       udf4: "",
@@ -156,15 +173,17 @@ export async function POST(request) {
     // Generate hash for the payment request
     payUParams.hash = generatePayUHash(payUParams);
 
-    // Update order with transaction ID and payment details
-    order.paymentDetails = {
-      txnId,
-      amount: parseFloat(amount),
-      status: "pending",
-      gateway: "payu",
-      initiatedAt: new Date(),
-    };
-    await order.save();
+    // Legacy flow only: update order with transaction ID and payment details when an order exists
+    if (order) {
+      order.paymentDetails = {
+        txnId,
+        amount: parseFloat(amount),
+        status: "pending",
+        gateway: "payu",
+        initiatedAt: new Date(),
+      };
+      await order.save();
+    }
 
     return NextResponse.json({
       success: true,
@@ -172,7 +191,7 @@ export async function POST(request) {
       data: {
         payUParams,
         paymentUrl: `${PAYU_CONFIG.BASE_URL}/_payment`,
-        orderId,
+        orderId: orderId || null,
         txnId,
       },
     });

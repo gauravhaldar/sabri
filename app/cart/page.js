@@ -56,6 +56,7 @@ export default function CartPage() {
   const [showOrderSuccess, setShowOrderSuccess] = useState(false);
   const [orderData, setOrderData] = useState(null);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [pendingOrderPayload, setPendingOrderPayload] = useState(null);
 
   // Fetch cart on component mount
   useEffect(() => {
@@ -310,39 +311,41 @@ export default function CartPage() {
       console.log("User ID being sent:", user.id || user._id);
       console.log("Making API request with data:", orderData);
 
-      const response = await fetch("/api/orders/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(orderData),
-      });
-
-      console.log("Response status:", response.status);
-      const data = await response.json();
-      console.log("API Response:", data);
-
-      if (data.success) {
-        console.log("✅ Order successful - Setting modal data");
-
-        // Set modal data
-        setOrderData(data.data);
-
-        // Check payment method
-        if (paymentMethod === "online_payment") {
-          // Show PayU payment modal for online payment
-          setShowPaymentModal(true);
-          toast.success("Order created! Proceed to payment");
-        } else {
-          // Cash on delivery - show success modal
+      if (paymentMethod === "online_payment") {
+        // Do NOT create order yet. Save payload in state and sessionStorage so success page can re-post it with paymentVerified.
+        setPendingOrderPayload(orderData);
+        try {
+          sessionStorage.setItem(
+            "pendingOrderPayload",
+            JSON.stringify(orderData)
+          );
+        } catch {}
+        setOrderData({
+          orderId: "PREPAY",
+          orderSummary: orderData.orderSummary,
+        });
+        setShowPaymentModal(true);
+        toast.info("You will be redirected to payment");
+      } else {
+        // COD flow: create order immediately
+        const response = await fetch("/api/orders/create", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(orderData),
+        });
+        console.log("Response status:", response.status);
+        const data = await response.json();
+        console.log("API Response:", data);
+        if (data.success) {
+          setOrderData(data.data);
           setShowOrderSuccess(true);
           toast.success("Order placed successfully!");
+        } else {
+          console.error("❌ Order failed:", data.message);
+          toast.error(data.message || "Failed to place order");
         }
-
-        console.log("✅ Order completed");
-      } else {
-        console.error("❌ Order failed:", data.message);
-        toast.error(data.message || "Failed to place order");
       }
     } catch (error) {
       console.error("❌ Order placement error:", error);
@@ -1019,7 +1022,7 @@ export default function CartPage() {
       />
 
       {/* PayU Payment Modal */}
-      {showPaymentModal && orderData && (
+      {showPaymentModal && (orderData || pendingOrderPayload) && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 animate-fade-in">
             <div className="text-center mb-6">
@@ -1047,22 +1050,35 @@ export default function CartPage() {
             </div>
 
             <div className="bg-gray-50 rounded-lg p-4 mb-6 space-y-2">
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-600">Order ID:</span>
-                <span className="font-medium">{orderData.orderId}</span>
-              </div>
+              {orderData?.orderId && (
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-600">Order ID:</span>
+                  <span className="font-medium">{orderData.orderId}</span>
+                </div>
+              )}
               <div className="flex justify-between text-sm">
                 <span className="text-gray-600">Amount:</span>
                 <span className="font-medium text-lg">
-                  ₹{orderData.orderSummary.total.toLocaleString()}
+                  ₹
+                  {(
+                    orderData?.orderSummary?.total ||
+                    pendingOrderPayload?.orderSummary?.total
+                  )?.toLocaleString()}
                 </span>
               </div>
             </div>
 
             <div className="space-y-3">
               <PayUPayment
-                orderId={orderData.orderId}
-                amount={orderData.orderSummary.total}
+                orderId={
+                  orderData?.orderId !== "PREPAY"
+                    ? orderData?.orderId
+                    : undefined
+                }
+                amount={
+                  orderData?.orderSummary?.total ||
+                  pendingOrderPayload?.orderSummary?.total
+                }
                 customerInfo={{
                   firstname:
                     user.firstName || user.name?.split(" ")[0] || "Customer",
@@ -1073,13 +1089,14 @@ export default function CartPage() {
                   email: user.email,
                   phone: selectedAddress?.phone || user.phone || "0000000000",
                 }}
-                productInfo={`Order ${orderData.orderId}`}
+                productInfo={`Cart Payment`}
+                reference={user.id || user._id}
               />
 
               <button
                 onClick={() => {
                   setShowPaymentModal(false);
-                  toast.info("Payment cancelled. Your order is saved.");
+                  toast.info("Payment cancelled. You can retry from cart.");
                 }}
                 className="w-full py-3 px-6 rounded-lg font-medium transition-colors bg-gray-200 hover:bg-gray-300 text-gray-800"
               >

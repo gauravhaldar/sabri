@@ -14,6 +14,8 @@ export async function POST(request) {
       orderSummary,
       notes,
       userId,
+      paymentVerified = false,
+      paymentDetails = null,
     } = await request.json();
 
     // Validate userId
@@ -99,9 +101,19 @@ export async function POST(request) {
         generatedDate: new Date(),
         dueDate: estimatedDelivery,
         paymentStatus:
-          paymentMethod === "cash_on_delivery" ? "pending" : "pending",
+          paymentMethod === "online_payment" && paymentVerified
+            ? "paid"
+            : "pending",
       },
     });
+
+    // If payment is already verified (online flow), mark order confirmed and attach payment details
+    if (paymentMethod === "online_payment" && paymentVerified) {
+      order.status = "confirmed";
+      if (paymentDetails) {
+        order.paymentDetails = paymentDetails;
+      }
+    }
 
     // Save with a lightweight retry in case of a rare race/dup
     let saved = false;
@@ -157,6 +169,7 @@ export async function POST(request) {
       paymentMethod: order.paymentMethod,
       orderSummary: order.orderSummary,
       invoice: order.invoice,
+      paymentDetails: order.paymentDetails || undefined,
     };
 
     console.log("Order created successfully:", {

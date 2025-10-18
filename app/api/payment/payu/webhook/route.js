@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import crypto from "crypto";
 import connectDB from "@/lib/db";
 import Order from "@/lib/models/Order";
+import User from "@/lib/models/User";
+import Coupon from "@/lib/models/Coupon";
 
 // PayU Configuration - All values must be set in .env.local
 const PAYU_CONFIG = {
@@ -166,30 +168,89 @@ export async function POST(request) {
       updatedAt: new Date(),
       webhookData: data,
     };
-
-    // Update order status based on payment status
     if (paymentStatus === "success") {
       order.status = "confirmed";
-      order.paymentStatus = "paid";
-    } else if (paymentStatus === "failed") {
-      order.status = "cancelled";
-      order.paymentStatus = "failed";
-    } else if (paymentStatus === "pending") {
-      order.status = "pending";
-      order.paymentStatus = "pending";
+      order.invoice = { ...order.invoice, paymentStatus: "paid" };
+      await order.save();
+
+      // Clear server-side cart
+      try {
+        const userId = order.user;
+        if (userId) {
+          const user = await User.findById(userId);
+          if (user) {
+            user.cartData = {};
+            user.markModified("cartData");
+            await user.save();
+          }
+        }
+      } catch (e) {
+        console.error("Failed to clear cart after webhook success:", e);
+      }
+
+      console.log("Order updated successfully:", {
+        orderId,
+        status: order.status,
+        paymentStatus: order.invoice?.paymentStatus,
+      });
+
+      return NextResponse.json(
+        { success: true, message: "Webhook processed successfully" },
+        { status: 200 }
+      );
     }
 
-    await order.save();
+    if (
+      paymentStatus === "failed" ||
+      paymentStatus === "failure" ||
+      paymentStatus === "cancelled" ||
+      paymentStatus === "cancel"
+    ) {
+      // Decrement coupon usage if applicable
+      try {
+        const code = order.orderSummary?.couponCode;
+        if (code) {
+          await Coupon.findOneAndUpdate(
+            { code: code.toUpperCase(), isActive: true },
+            { $inc: { usedCount: -1 } },
+            { new: true }
+          );
+        }
+      } catch (couponErr) {
+        console.warn(
+          "Coupon decrement failed (webhook, non-fatal):",
+          couponErr
+        );
+      }
 
-    console.log("Order updated successfully:", {
-      orderId,
-      status: order.status,
-      paymentStatus: order.paymentStatus,
-    });
+      await Order.deleteOne({ _id: order._id });
+      console.log(
+        "Deleted order due to webhook failed/cancelled payment:",
+        orderId
+      );
 
-    // Return 200 OK to acknowledge receipt
+      return NextResponse.json(
+        {
+          success: true,
+          message: "Webhook processed: order removed after failure/cancel",
+        },
+        { status: 200 }
+      );
+    }
+
+    if (paymentStatus === "pending") {
+      order.status = "pending";
+      order.invoice = { ...order.invoice, paymentStatus: "pending" };
+      await order.save();
+      return NextResponse.json(
+        { success: true, message: "Webhook processed: payment pending" },
+        { status: 200 }
+      );
+    }
+
+    // Unknown status, just acknowledge
     return NextResponse.json(
-      { success: true, message: "Webhook processed successfully" },
+      { success: true, message: "Webhook processed: status recorded" },
       { status: 200 }
     );
   } catch (error) {

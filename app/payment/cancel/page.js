@@ -16,6 +16,9 @@ function PaymentCancelContent() {
 
     console.log("Payment Cancel - Received params:", params);
     setPaymentData(params);
+    try {
+      sessionStorage.removeItem("pendingOrderPayload");
+    } catch {}
   }, [searchParams]);
 
   return (

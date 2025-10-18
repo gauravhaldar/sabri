@@ -41,14 +41,7 @@ function PaymentSuccessContent() {
     if (ranRef.current) return; // guard against repeated runs due to re-renders
     ranRef.current = true;
 
-    // Optimistically clear local cart immediately on entering success page
-    (async () => {
-      try {
-        await clearCart();
-      } catch (e) {
-        console.warn("Initial local cart clear failed (non-fatal):", e);
-      }
-    })();
+    // Do NOT clear cart until payment is validated and order is created
     // Get all payment response parameters
     const params = {};
     searchParams.forEach((value, key) => {
@@ -88,12 +81,48 @@ function PaymentSuccessContent() {
           setPaymentData(data.data);
           setVerifying(false);
 
-          // Clear client-side cart optimistically, then refetch from server
+          // If the order didn't exist in advance, create it now using saved payload
           try {
+            let savedPayload = null;
+            try {
+              const raw = sessionStorage.getItem("pendingOrderPayload");
+              if (raw) savedPayload = JSON.parse(raw);
+            } catch {}
+
+            if (!data.data.orderId && savedPayload) {
+              const createResp = await fetch("/api/orders/create", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  ...savedPayload,
+                  paymentMethod: "online_payment",
+                  paymentVerified: true,
+                  paymentDetails: {
+                    txnId: data.data.txnId,
+                    amount: parseFloat(data.data.amount),
+                    status: data.data.status,
+                    gateway: "payu",
+                    mode: data.data.mode,
+                  },
+                }),
+              });
+              const created = await createResp.json();
+              if (created?.success && created?.data?.orderId) {
+                setPaymentData((prev) => ({
+                  ...prev,
+                  orderId: created.data.orderId,
+                }));
+                try {
+                  sessionStorage.removeItem("pendingOrderPayload");
+                } catch {}
+              }
+            }
+
+            // Now clear client-side cart, then refetch from server
             await clearCart();
             await fetchCart();
           } catch (e) {
-            console.warn("Cart clear post-success had a minor issue:", e);
+            console.warn("Post-success processing issue:", e);
           }
           // Start countdown timer to redirect
           // A separate effect below will handle the interval and redirect

@@ -17,6 +17,11 @@ function PaymentFailureContent() {
     console.log("Payment Failure - Received params:", params);
     setPaymentData(params);
 
+    // Clean up any pending order payload since payment failed
+    try {
+      sessionStorage.removeItem("pendingOrderPayload");
+    } catch {}
+
     // Log failed payment
     logFailedPayment(params);
   }, [searchParams]);

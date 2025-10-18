@@ -6,6 +6,7 @@ export default function PayUPayment({
   amount,
   customerInfo,
   productInfo,
+  reference,
 }) {
   const [loading, setLoading] = useState(false);
 
@@ -21,6 +22,7 @@ export default function PayUPayment({
         body: JSON.stringify({
           orderId,
           amount,
+          reference,
           customerInfo: {
             firstname:
               customerInfo.firstname ||
