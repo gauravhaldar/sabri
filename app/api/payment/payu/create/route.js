@@ -3,14 +3,19 @@ import crypto from "crypto";
 import connectDB from "@/lib/db";
 import Order from "@/lib/models/Order";
 
-// PayU Configuration - All values must be set in .env.local
+// PayU Configuration - All values must be set in environment variables
+// You can force production gateway by setting PAYU_MODE=production (overrides NODE_ENV)
+const PAYU_MODE = (process.env.PAYU_MODE || "").toLowerCase();
 const PAYU_CONFIG = {
   MERCHANT_KEY: process.env.PAYU_MERCHANT_KEY,
   MERCHANT_SALT: process.env.PAYU_MERCHANT_SALT,
   BASE_URL:
-    process.env.NODE_ENV === "production"
+    process.env.PAYU_BASE_URL ||
+    (PAYU_MODE === "production"
       ? "https://secure.payu.in"
-      : "https://test.payu.in",
+      : process.env.NODE_ENV === "production"
+      ? "https://secure.payu.in"
+      : "https://test.payu.in"),
   SUCCESS_URL:
     process.env.PAYU_SUCCESS_URL || "http://localhost:3000/payment/success",
   FAILURE_URL:

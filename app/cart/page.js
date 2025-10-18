@@ -276,7 +276,7 @@ export default function CartPage() {
       const cartItemsArray = Object.values(cartItems);
       const subtotal = calculateSubtotal();
       const tax = (subtotal - couponDiscount) * 0.18;
-      const shipping = subtotal > 5000 ? 0 : 200;
+      const shipping = subtotal > 5000 ? 0 : 200; // Free shipping over ₹5000
       const total = subtotal - couponDiscount + tax + shipping;
 
       // Prepare order data
