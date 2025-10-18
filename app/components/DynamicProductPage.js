@@ -249,7 +249,14 @@ export default function DynamicProductPage({
       <div className="container mx-auto px-4 py-6 sm:py-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-24">
           <div className="space-y-4">
-            <div className="relative aspect-square overflow-hidden bg-gray-50">
+            <div
+              className="relative overflow-hidden bg-gray-50"
+              style={
+                selectedImage === 1
+                  ? { aspectRatio: "9/16" }
+                  : { aspectRatio: "1/1" }
+              }
+            >
               <Image
                 src={images[selectedImage] || getProductImageUrl(product)}
                 alt={product.name}
@@ -290,7 +297,9 @@ export default function DynamicProductPage({
           </div>
           <div className="space-y-4">
             <div>
-              <h1 className="text-xl sm:text-2xl text-black mb-2 sm:mb-3">{product.name}</h1>
+              <h1 className="text-xl sm:text-2xl text-black mb-2 sm:mb-3">
+                {product.name}
+              </h1>
               <div className="flex items-center gap-2 mb-4">
                 <div className="flex">
                   {[...Array(4)].map((_, i) => (
@@ -380,7 +389,10 @@ export default function DynamicProductPage({
                   />
                 </button>
               </div>
-              <button onClick={handleBuyNow} className="w-full bg-black text-white py-3 sm:py-4 px-5 sm:px-6 text-sm font-medium hover:bg-gray-800 transition-colors rounded-md min-h-[48px] sm:min-h-[55px]">
+              <button
+                onClick={handleBuyNow}
+                className="w-full bg-black text-white py-3 sm:py-4 px-5 sm:px-6 text-sm font-medium hover:bg-gray-800 transition-colors rounded-md min-h-[48px] sm:min-h-[55px]"
+              >
                 BUY IT NOW
               </button>
             </div>
@@ -435,7 +447,8 @@ export default function DynamicProductPage({
                       SABRI
                     </p>
                     <p>
-                    Plot No 173, Engineering Park, Heavy Industrial Area, Hathkhoj, Bhilai,490024, C.G.
+                      Plot No 173, Engineering Park, Heavy Industrial Area,
+                      Hathkhoj, Bhilai,490024, C.G.
                     </p>
                     <p>
                       <span className="font-medium text-gray-700">
@@ -582,7 +595,9 @@ export default function DynamicProductPage({
         <section className="mt-10 sm:mt-12 container mx-auto px-4">
           <div className="flex items-center gap-6 sm:gap-8 justify-start overflow-x-auto no-scrollbar [-ms-overflow-style:none] [scrollbar-width:none]">
             <style jsx>{`
-              .no-scrollbar::-webkit-scrollbar { display: none; }
+              .no-scrollbar::-webkit-scrollbar {
+                display: none;
+              }
             `}</style>
             <button
               onClick={() => setActiveProductsTab("related")}
