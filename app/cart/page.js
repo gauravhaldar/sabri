@@ -873,14 +873,14 @@ export default function CartPage() {
                   </div>
 
                   <div className="flex justify-between text-xs sm:text-sm">
-                    <span className="text-neutral-600">Tax (GST 18%)</span>
-                    <span className="font-medium">
-                      ₹
-                      {(
-                        (calculateSubtotal() - couponDiscount) *
-                        0.18
-                      ).toLocaleString()}
-                    </span>
+                    // <span className="text-neutral-600">Tax (GST 18%)</span>
+                    // <span className="font-medium">
+                    //   ₹
+                    //   {(
+                    //     (calculateSubtotal() - couponDiscount) *
+                    //     0.18
+                    //   ).toLocaleString()}
+                    // </span>
                   </div>
 
                   <div className="border-t border-neutral-200 pt-2.5 sm:pt-3">
