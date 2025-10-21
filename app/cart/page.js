@@ -127,8 +127,15 @@ export default function CartPage() {
   const calculateTotal = () => {
     const subtotal = calculateSubtotal();
     const shipping = subtotal > 5000 ? 0 : 200; // Free shipping over ₹5000
-    const tax = (subtotal - couponDiscount) * 0.18; // 18% GST after coupon discount
-    return subtotal - couponDiscount + shipping + tax;
+    // For 3% GST inclusive, the tax is already included in the prices
+    // We calculate the tax amount that's included in the subtotal
+    const taxableAmount = subtotal - couponDiscount;
+    const tax = (taxableAmount * 0.03) / 1.03; // Extract 3% GST from inclusive amount
+    
+    // Apply 5% discount for online payment
+    const onlinePaymentDiscount = paymentMethod === 'online_payment' ? (subtotal - couponDiscount) * 0.05 : 0;
+    
+    return subtotal - couponDiscount - onlinePaymentDiscount + shipping;
   };
 
   // Handle apply coupon
@@ -276,9 +283,14 @@ export default function CartPage() {
     try {
       const cartItemsArray = Object.values(cartItems);
       const subtotal = calculateSubtotal();
-      const tax = (subtotal - couponDiscount) * 0.18;
+      const taxableAmount = subtotal - couponDiscount;
+      const tax = (taxableAmount * 0.03) / 1.03; // Extract 3% GST from inclusive amount
       const shipping = subtotal > 5000 ? 0 : 200; // Free shipping over ₹5000
-      const total = subtotal - couponDiscount + tax + shipping;
+      
+      // Apply 5% discount for online payment
+      const onlinePaymentDiscount = paymentMethod === 'online_payment' ? (subtotal - couponDiscount) * 0.05 : 0;
+      
+      const total = subtotal - couponDiscount - onlinePaymentDiscount + shipping;
 
       // Prepare order data
       const orderData = {
@@ -299,6 +311,7 @@ export default function CartPage() {
           subtotal,
           couponDiscount,
           couponCode: appliedCoupon?.code,
+          onlinePaymentDiscount: Math.round(onlinePaymentDiscount * 100) / 100,
           tax: Math.round(tax * 100) / 100,
           shippingCharge: shipping,
           total: Math.round(total * 100) / 100,
@@ -861,6 +874,17 @@ export default function CartPage() {
                     </div>
                   )}
 
+                  {paymentMethod === 'online_payment' && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-green-600">
+                        Online Payment Discount (5%)
+                      </span>
+                      <span className="font-medium text-green-600">
+                        -₹{((calculateSubtotal() - couponDiscount) * 0.05).toLocaleString()}
+                      </span>
+                    </div>
+                  )}
+
                   <div className="flex justify-between text-xs sm:text-sm">
                     <span className="text-neutral-600">Shipping</span>
                     <span className="font-medium">
@@ -873,12 +897,11 @@ export default function CartPage() {
                   </div>
 
                   <div className="flex justify-between text-xs sm:text-sm">
-                    <span className="text-neutral-600">Tax (GST 18%)</span>
+                    <span className="text-neutral-600">Tax (GST 3% inclusive)</span>
                     <span className="font-medium">
                       ₹
                       {(
-                        (calculateSubtotal() - couponDiscount) *
-                        0.18
+                        ((calculateSubtotal() - couponDiscount) * 0.03) / 1.03
                       ).toLocaleString()}
                     </span>
                   </div>
