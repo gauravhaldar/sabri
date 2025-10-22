@@ -276,7 +276,7 @@ export default function Navbar() {
       <div className="w-full hidden md:block">
         <div className="mx-auto max-w-7xl px-0 sm:px-1 lg:px-2">
           <div
-            className={`flex flex-wrap items-center gap-x-8 lg:gap-x-13 gap-y-2 py-3 lg:py-4 text-sm lg:text-base transition-colors duration-300 ${
+            className={`flex flex-wrap items-center gap-x-8 lg:gap-x-14 gap-y-2 py-3 lg:py-4 text-sm lg:text-base transition-colors duration-300 ${
               isHomePage
                 ? "text-white group-hover/nav:text-neutral-900"
                 : "text-neutral-900"
@@ -293,7 +293,6 @@ export default function Navbar() {
               { name: "Ring Cum Bangle", href: "/ring-cum-bangle" },
               { name: "Mens", href: "/mens" },
               { name: "Gifts", href: "/gifts" },
-              { name: "Collections", href: "/collections" },
             ].map((item) => (
               <Link
                 key={item.name}

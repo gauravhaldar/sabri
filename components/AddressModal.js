@@ -10,6 +10,7 @@ import {
   Mail,
   Building2,
   ChevronDown,
+  Navigation,
 } from "lucide-react";
 import { useToast } from "@/contexts/ToastContext";
 
@@ -93,6 +94,7 @@ export default function AddressModal({
   const [isCountryDropdownOpen, setIsCountryDropdownOpen] = useState(false);
   const [countrySearchTerm, setCountrySearchTerm] = useState("");
   const [errors, setErrors] = useState({});
+  const [isGettingLocation, setIsGettingLocation] = useState(false);
 
   const resetForm = useCallback(() => {
     setAddress({
@@ -345,6 +347,98 @@ export default function AddressModal({
     }
   };
 
+  // Get user's current location
+  const getCurrentLocation = () => {
+    if (!navigator.geolocation) {
+      toast.error("Geolocation is not supported by this browser");
+      return;
+    }
+
+    setIsGettingLocation(true);
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        try {
+          const { latitude, longitude } = position.coords;
+          
+          // Use reverse geocoding to get address from coordinates
+          const response = await fetch(
+            `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
+          );
+          
+          const data = await response.json();
+          
+          if (data && data.localityInfo) {
+            let detectedZipCode = data.postcode || "";
+            
+            // If no zip code found, try alternative geocoding service
+            if (!detectedZipCode) {
+              try {
+                const fallbackResponse = await fetch(
+                  `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&addressdetails=1`
+                );
+                const fallbackData = await fallbackResponse.json();
+                detectedZipCode = fallbackData.address?.postcode || "";
+              } catch (fallbackError) {
+                console.log("Fallback geocoding failed:", fallbackError);
+              }
+            }
+            
+            // Update address fields with geocoded data
+            setAddress(prev => ({
+              ...prev,
+              addressLine1: data.localityInfo.administrative[2]?.name || data.localityInfo.administrative[1]?.name || "",
+              city: data.city || data.localityInfo.administrative[2]?.name || "",
+              state: data.principalSubdivision || data.localityInfo.administrative[1]?.name || "",
+              zipCode: detectedZipCode,
+              country: data.countryName || "India"
+            }));
+            
+            // Provide specific feedback about zip code detection
+            if (detectedZipCode) {
+              toast.success(`Location detected! Zip code: ${detectedZipCode}`);
+              // Validate shipping for the detected zip code
+              await validateShipping(detectedZipCode);
+            } else {
+              toast.success("Location detected, but zip code not found. Please enter it manually.");
+            }
+          } else {
+            toast.error("Could not determine address from location");
+          }
+        } catch (error) {
+          console.error("Error getting address from coordinates:", error);
+          toast.error("Failed to get address from location");
+        } finally {
+          setIsGettingLocation(false);
+        }
+      },
+      (error) => {
+        console.error("Geolocation error:", error);
+        let errorMessage = "Failed to get your location";
+        
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            errorMessage = "Location access denied. Please allow location access and try again.";
+            break;
+          case error.POSITION_UNAVAILABLE:
+            errorMessage = "Location information is unavailable.";
+            break;
+          case error.TIMEOUT:
+            errorMessage = "Location request timed out.";
+            break;
+        }
+        
+        toast.error(errorMessage);
+        setIsGettingLocation(false);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 300000 // 5 minutes
+      }
+    );
+  };
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -550,10 +644,28 @@ export default function AddressModal({
 
                 {/* Address Information */}
                 <div>
-                  <h3 className="text-lg font-medium text-gray-900 mb-4 flex items-center gap-2">
-                    <Building2 className="w-5 h-5 text-gray-600" />
-                    Address Information
-                  </h3>
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-lg font-medium text-gray-900 flex items-center gap-2">
+                      <Building2 className="w-5 h-5 text-gray-600" />
+                      Address Information
+                    </h3>
+                    <button
+                      type="button"
+                      onClick={getCurrentLocation}
+                      disabled={isGettingLocation}
+                      className="flex items-center gap-2 px-3 py-2 text-sm bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+                    >
+                      <Navigation className="w-4 h-4" />
+                      {isGettingLocation ? (
+                        <>
+                          <div className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full"></div>
+                          Getting Location...
+                        </>
+                      ) : (
+                        "Get My Location"
+                      )}
+                    </button>
+                  </div>
                   <div className="space-y-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
