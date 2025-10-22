@@ -143,7 +143,7 @@ export default function TopSales() {
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                         sizes="(max-width:1024px) 50vw, 25vw"
                       />
-                      <div className="absolute right-2 bottom-2 sm:right-3 sm:bottom-3 z-10">
+                      {/* <div className="absolute right-2 bottom-2 sm:right-3 sm:bottom-3 z-10">
                         <button
                           className="rounded bg-neutral-900 px-2.5 sm:px-3 py-1.5 text-[11px] sm:text-xs font-medium text-white shadow-sm hover:opacity-90 shake-attention"
                           onClick={(e) => {
@@ -155,7 +155,7 @@ export default function TopSales() {
                         >
                           ADD TO BAG
                         </button>
-                      </div>
+                      </div> */}
                     </div>
                     <div className="px-3 py-3">
                       <h3 className="line-clamp-1 text-[13px] sm:text-sm text-neutral-900">

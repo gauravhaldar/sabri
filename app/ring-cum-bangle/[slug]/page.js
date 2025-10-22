@@ -1,11 +1,11 @@
 import DynamicProductPage from "../../components/DynamicProductPage";
 
-export default function FineGoldProductPage({ params }) {
+export default function RingCumBangleProductPage({ params }) {
   return (
     <DynamicProductPage
       params={params}
-      categoryName="Fine Gold"
-      categoryRoute="fine-gold"
+      categoryName="Ring Cum Bangle"
+      categoryRoute="ring-cum-bangle"
     />
   );
 }

@@ -10,8 +10,7 @@ export async function GET(request) {
       isActive: true,
       category: "fine-gold",
     })
-      .sort({ createdAt: -1 })
-      .limit(20);
+      .sort({ createdAt: -1 });
 
     return NextResponse.json({
       success: true,
@@ -20,11 +19,11 @@ export async function GET(request) {
       },
     });
   } catch (error) {
-    console.error("Error fetching fine gold products:", error);
+    console.error("Error fetching ring cum bangle products:", error);
     return NextResponse.json(
       {
         success: false,
-        message: "Server error fetching fine gold products",
+        message: "Server error fetching ring cum bangle products",
       },
       { status: 500 }
     );

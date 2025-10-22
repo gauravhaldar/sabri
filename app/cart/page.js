@@ -68,6 +68,13 @@ export default function CartPage() {
   const handleUpdateQuantity = async (cartKey, newQuantity) => {
     if (newQuantity < 1) return;
 
+    // Get the cart item to check stock
+    const cartItem = cartItems[cartKey];
+    if (cartItem && cartItem.stock && newQuantity > cartItem.stock) {
+      toast.error(`Only ${cartItem.stock} ${cartItem.stock === 1 ? 'item' : 'items'} available in stock`);
+      return;
+    }
+
     setLocalLoading((prev) => ({ ...prev, [cartKey]: true }));
 
     const success = await updateQuantity(cartKey, newQuantity);
@@ -126,7 +133,7 @@ export default function CartPage() {
 
   const calculateTotal = () => {
     const subtotal = calculateSubtotal();
-    const shipping = subtotal > 5000 ? 0 : 200; // Free shipping over ₹5000
+    const shipping = 0; // Free shipping for all orders
     // For 3% GST inclusive, the tax is already included in the prices
     // We calculate the tax amount that's included in the subtotal
     const taxableAmount = subtotal - couponDiscount;
@@ -285,7 +292,7 @@ export default function CartPage() {
       const subtotal = calculateSubtotal();
       const taxableAmount = subtotal - couponDiscount;
       const tax = (taxableAmount * 0.03) / 1.03; // Extract 3% GST from inclusive amount
-      const shipping = subtotal > 5000 ? 0 : 200; // Free shipping over ₹5000
+      const shipping = 0; // Free shipping for all orders
       
       // Apply 5% discount for online payment
       const onlinePaymentDiscount = paymentMethod === 'online_payment' ? (subtotal - couponDiscount) * 0.05 : 0;
@@ -546,12 +553,24 @@ export default function CartPage() {
                               onClick={() =>
                                 handleUpdateQuantity(cartKey, item.quantity + 1)
                               }
-                              disabled={localLoading[cartKey]}
+                              disabled={
+                                localLoading[cartKey] || 
+                                (item.stock && item.quantity >= item.stock)
+                              }
                               className="px-2.5 sm:px-3 py-2 hover:bg-neutral-50 text-neutral-600 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                               <Plus className="w-4 h-4" />
                             </button>
                           </div>
+                          
+                          {/* Stock indicator for low stock items */}
+                          {item.stock && item.stock < 3 && item.stock > 0 && (
+                            <div className="mt-2">
+                              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
+                                {item.stock} {item.stock === 1 ? 'Item left' : 'Items left'}
+                              </span>
+                            </div>
+                          )}
                         </div>
 
                         {/* Item Total */}
@@ -887,13 +906,7 @@ export default function CartPage() {
 
                   <div className="flex justify-between text-xs sm:text-sm">
                     <span className="text-neutral-600">Shipping</span>
-                    <span className="font-medium">
-                      {calculateSubtotal() > 5000 ? (
-                        <span className="text-green-600">FREE</span>
-                      ) : (
-                        `₹200`
-                      )}
-                    </span>
+                    <span className="font-medium text-green-600">FREE</span>
                   </div>
 
                   <div className="flex justify-between text-xs sm:text-sm">

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Heart, ShoppingBag } from "lucide-react";
@@ -49,9 +49,9 @@ const ProductCard = ({ product, onAddToCart }) => {
   const rating = Number(product.averageRating || product.rating?.average || 0);
 
   return (
-    <div className="bg-white group">
+    <div className=" bg-white group">
       <Link
-        href={`/fine-gold/${product.slug || product._id || product.id}`}
+        href={`/ring-cum-bangle/${product.slug || product._id || product.id}`}
         className="block"
       >
         <div className="relative aspect-square overflow-hidden">
@@ -95,7 +95,7 @@ const ProductCard = ({ product, onAddToCart }) => {
         </div>
       </Link>
       <div className="p-3">
-        <Link href={`/fine-gold/${product.slug || product._id || product.id}`}>
+        <Link href={`/ring-cum-bangle/${product.slug || product._id || product.id}`}>
           <h3 className="text-xs font-light text-black mb-1.5 line-clamp-2 leading-tight hover:text-gray-600 transition-colors">
             {product.name}
           </h3>
@@ -149,11 +149,19 @@ export default function FineGoldPage() {
     minRating: 0,
   });
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const INITIAL_VISIBLE_COUNT = 12;
+  const LOAD_MORE_COUNT = 12;
+  const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_COUNT);
 
   const { products, loading, error } = useFineGold();
 
   const filteredProducts = filterProducts(products, filters);
   const sortedProducts = sortProducts(filteredProducts, sortBy);
+  const visibleProducts = sortedProducts.slice(0, visibleCount);
+
+  useEffect(() => {
+    setVisibleCount(INITIAL_VISIBLE_COUNT);
+  }, [sortBy, filters, products]);
 
   const handleAddToCart = (product) => {
     setCartItems((prev) => [...prev, product]);
@@ -195,7 +203,7 @@ export default function FineGoldPage() {
       <div className="bg-gray-50 py-6 sm:py-8 pt-28 sm:pt-40">
         <div className="container mx-auto px-4">
           <div className="text-center">
-            <h1 className="text-2xl sm:text-3xl font-bold text-black mb-2">Fine Gold</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold text-black mb-2">Ring Cum Bangle</h1>
             <p className="text-sm sm:text-base text-gray-600">
               {filteredProducts.length}{" "}
               {filteredProducts.length === 1 ? "product" : "products"} found
@@ -235,7 +243,7 @@ export default function FineGoldPage() {
               onClose={() => setFiltersOpen(false)}
             />
             <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
-              {sortedProducts.map((product) => (
+              {visibleProducts.map((product) => (
                 <ProductCard
                   key={product._id || product.id}
                   product={product}
@@ -243,11 +251,18 @@ export default function FineGoldPage() {
                 />
               ))}
             </div>
-            <div className="text-center mt-8 sm:mt-12">
-              <button className="bg-white border border-gray-300 text-gray-700 px-6 sm:px-8 py-2.5 sm:py-3 hover:bg-gray-50 transition-colors duration-200 text-sm">
-                Load More
-              </button>
-            </div>
+            {visibleCount < sortedProducts.length && (
+              <div className="text-center mt-8 sm:mt-12">
+                <button
+                  onClick={() =>
+                    setVisibleCount((prev) => Math.min(prev + LOAD_MORE_COUNT, sortedProducts.length))
+                  }
+                  className="bg-white border border-gray-300 text-gray-700 px-6 sm:px-8 py-2.5 sm:py-3 hover:bg-gray-50 transition-colors duration-200 text-sm"
+                >
+                  Load More ({Math.max(sortedProducts.length - visibleCount, 0)})
+                </button>
+              </div>
+            )}
           </>
         ) : (
           <div className="text-center py-16">

@@ -96,7 +96,6 @@ function AuthenticatedProfile() {
   const tabs = [
     { id: "profile", label: "Profile", icon: "👤" },
     { id: "orders", label: "Orders", icon: "🛍️" },
-    { id: "settings", label: "Settings", icon: "⚙️" },
   ];
 
   return (
@@ -260,37 +259,6 @@ function AuthenticatedProfile() {
                         ))}
                       </div>
                     )}
-                  </div>
-                )}
-
-                
-
-                {/* Settings Tab */}
-                {activeTab === "settings" && (
-                  <div className="space-y-6">
-                    <h2 className="text-xl font-semibold text-neutral-900">
-                      Account Settings
-                    </h2>
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-between py-3 border-b border-neutral-200">
-                        <div>
-                          <h3 className="font-medium text-neutral-900">
-                            Email Notifications
-                          </h3>
-                          <p className="text-sm text-neutral-600">
-                            Receive updates about your orders and promotions
-                          </p>
-                        </div>
-                        <label className="relative inline-flex items-center cursor-pointer">
-                          <input
-                            type="checkbox"
-                            className="sr-only peer"
-                            defaultChecked
-                          />
-                          <div className="w-11 h-6 bg-neutral-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-neutral-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-neutral-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-neutral-900"></div>
-                        </label>
-                      </div>
-                    </div>
                   </div>
                 )}
               </div>

@@ -388,7 +388,7 @@ export function useFineGold() {
         setLoading(true);
         setError(null);
 
-        const response = await fetch("/api/products/fine-gold");
+        const response = await fetch("/api/products/ring-cum-bangle");
         const data = await response.json();
 
         if (data.success) {

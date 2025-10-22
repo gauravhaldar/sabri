@@ -86,16 +86,27 @@ export async function POST(request) {
       JSON.stringify(user.cartData, null, 2)
     );
 
-    // Add or update cart item with product details
+    // Enforce stock constraints
+    if (product.stock <= 0) {
+      return NextResponse.json(
+        { success: false, message: "Product is out of stock" },
+        { status: 400 }
+      );
+    }
+
+    // Add or update cart item with product details, capping by stock
     if (user.cartData[cartKey]) {
-      // Item exists, update quantity only
       const oldQuantity = user.cartData[cartKey].quantity;
-      user.cartData[cartKey].quantity += parseInt(quantity);
+      const desiredQuantity = oldQuantity + parseInt(quantity);
+      const finalQuantity = Math.min(desiredQuantity, product.stock);
+      user.cartData[cartKey].quantity = finalQuantity;
+      user.cartData[cartKey].stock = product.stock;
       user.cartData[cartKey].updatedAt = new Date();
       console.log(
-        `🔄 BACKEND: Updated existing item quantity: ${oldQuantity} -> ${user.cartData[cartKey].quantity}`
+        `🔄 BACKEND: Updated existing item quantity: ${oldQuantity} -> ${finalQuantity} (stock: ${product.stock})`
       );
     } else {
+      const initialQuantity = Math.min(parseInt(quantity), product.stock);
       // New item, add to cart with full product details
       user.cartData[cartKey] = {
         productId,
@@ -104,12 +115,13 @@ export async function POST(request) {
         originalPrice: product.originalPrice,
         images: product.images, // Store all product images
         category: product.category,
-        quantity: parseInt(quantity),
+        quantity: initialQuantity,
+        stock: product.stock,
         size: size || null,
         color: color || null,
         addedAt: new Date(),
       };
-      console.log("➕ BACKEND: Added new item to cart:", product.name);
+      console.log("➕ BACKEND: Added new item to cart:", product.name, `qty=${initialQuantity} stock=${product.stock}`);
     }
 
     // IMPORTANT: Mark the cartData field as modified for Mongoose

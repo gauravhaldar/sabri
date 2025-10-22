@@ -361,6 +361,15 @@ export default function DynamicProductPage({
                 In stock - ready to ship
               </span>
             </div>
+            
+            {/* Stock indicator - show "X Item left" when stock is below 3 */}
+            {product.stock && product.stock < 3 && product.stock > 0 && (
+              <div className="mt-2">
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
+                  {product.stock} {product.stock === 1 ? 'Item left' : 'Items left'}
+                </span>
+              </div>
+            )}
             <div className="mt-5">
               <div className="flex gap-2 mb-2">
                 <button

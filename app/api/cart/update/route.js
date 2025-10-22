@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/db";
 import User from "@/lib/models/User";
+import Product from "@/lib/models/Product";
 
 export async function PUT(request) {
   try {
@@ -53,10 +54,24 @@ export async function PUT(request) {
       cartKey
     );
 
-    // Update quantity
+    // Update quantity with stock enforcement
     if (user.cartData && user.cartData[cartKey]) {
+      // Load product to know current stock
+      const productId = user.cartData[cartKey].productId;
+      const product = await Product.findById(productId);
+      if (!product) {
+        return NextResponse.json(
+          { success: false, message: "Product not found" },
+          { status: 404 }
+        );
+      }
+
+      const desiredQuantity = parseInt(quantity);
+      const finalQuantity = Math.min(desiredQuantity, product.stock);
       const oldQuantity = user.cartData[cartKey].quantity;
-      user.cartData[cartKey].quantity = parseInt(quantity);
+
+      user.cartData[cartKey].quantity = finalQuantity;
+      user.cartData[cartKey].stock = product.stock; // keep stock snapshot for UI
       user.cartData[cartKey].updatedAt = new Date();
 
       console.log(

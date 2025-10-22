@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Heart, ShoppingBag } from "lucide-react";
@@ -133,11 +133,19 @@ export default function EarringsPage() {
     minRating: 0,
   });
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const INITIAL_VISIBLE_COUNT = 12;
+  const LOAD_MORE_COUNT = 12;
+  const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_COUNT);
 
   const { products, loading, error } = useEarrings();
 
   const filteredProducts = filterProducts(products, filters);
   const sortedProducts = sortProducts(filteredProducts, sortBy);
+  const visibleProducts = sortedProducts.slice(0, visibleCount);
+
+  useEffect(() => {
+    setVisibleCount(INITIAL_VISIBLE_COUNT);
+  }, [sortBy, filters, products]);
 
   const handleAddToCart = (product) => {
     setCartItems((prev) => [...prev, product]);
@@ -219,7 +227,7 @@ export default function EarringsPage() {
               onClose={() => setFiltersOpen(false)}
             />
             <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
-              {sortedProducts.map((product) => (
+              {visibleProducts.map((product) => (
                 <ProductCard
                   key={product._id || product.id}
                   product={product}
@@ -227,11 +235,18 @@ export default function EarringsPage() {
                 />
               ))}
             </div>
-            <div className="text-center mt-8 sm:mt-12">
-              <button className="bg-white border border-gray-300 text-gray-700 px-6 sm:px-8 py-2.5 sm:py-3 hover:bg-gray-50 transition-colors duration-200 text-sm">
-                Load More
-              </button>
-            </div>
+            {visibleCount < sortedProducts.length && (
+              <div className="text-center mt-8 sm:mt-12">
+                <button
+                  onClick={() =>
+                    setVisibleCount((prev) => Math.min(prev + LOAD_MORE_COUNT, sortedProducts.length))
+                  }
+                  className="bg-white border border-gray-300 text-gray-700 px-6 sm:px-8 py-2.5 sm:py-3 hover:bg-gray-50 transition-colors duration-200 text-sm"
+                >
+                  Load More ({Math.max(sortedProducts.length - visibleCount, 0)})
+                </button>
+              </div>
+            )}
           </>
         ) : (
           <div className="text-center py-16">

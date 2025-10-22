@@ -10,8 +10,7 @@ export async function GET(request) {
       isActive: true,
       category: "fine-silver",
     })
-      .sort({ createdAt: -1 })
-      .limit(20);
+      .sort({ createdAt: -1 });
 
     return NextResponse.json({
       success: true,
