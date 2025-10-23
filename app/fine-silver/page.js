@@ -82,14 +82,27 @@ const ProductCard = ({ product, onAddToCart }) => {
           </button>
           <button
             onClick={handleAddToCart}
-            disabled={isAddingToCart}
-            className="absolute bottom-2 right-2 bg-white border border-black text-black px-3 py-1.5 text-xs font-medium hover:bg-gray-50 transition-all duration-200 disabled:opacity-50 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0"
+            disabled={isAddingToCart || product.stock <= 0}
+            className={`absolute bottom-2 right-2 px-3 py-1.5 text-xs font-medium transition-all duration-200 disabled:opacity-50 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 ${
+              product.stock <= 0
+                ? "bg-gray-400 text-white cursor-not-allowed border border-gray-400"
+                : "bg-white border border-black text-black hover:bg-gray-50"
+            }`}
           >
-            {isAddingToCart ? "Adding..." : "ADD TO BAG"}
+            {product.stock <= 0
+              ? "SOLD OUT"
+              : isAddingToCart
+              ? "Adding..."
+              : "ADD TO BAG"}
           </button>
           {isOnSale && (
             <div className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1">
               {discount}% OFF
+            </div>
+          )}
+          {product.stock <= 0 && (
+            <div className="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1">
+              OUT OF STOCK
             </div>
           )}
         </div>
@@ -205,7 +218,9 @@ export default function FineSilverPage() {
       <div className="bg-gray-50 py-6 sm:py-8 pt-28 sm:pt-40">
         <div className="container mx-auto px-4">
           <div className="text-center">
-            <h1 className="text-2xl sm:text-3xl font-bold text-black mb-2">Fine Silver</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold text-black mb-2">
+              Fine Silver
+            </h1>
             <p className="text-sm sm:text-base text-gray-600">
               {filteredProducts.length}{" "}
               {filteredProducts.length === 1 ? "product" : "products"} found
@@ -257,11 +272,14 @@ export default function FineSilverPage() {
               <div className="text-center mt-8 sm:mt-12">
                 <button
                   onClick={() =>
-                    setVisibleCount((prev) => Math.min(prev + LOAD_MORE_COUNT, sortedProducts.length))
+                    setVisibleCount((prev) =>
+                      Math.min(prev + LOAD_MORE_COUNT, sortedProducts.length)
+                    )
                   }
                   className="bg-white border border-gray-300 text-gray-700 px-6 sm:px-8 py-2.5 sm:py-3 hover:bg-gray-50 transition-colors duration-200 text-sm"
                 >
-                  Load More ({Math.max(sortedProducts.length - visibleCount, 0)})
+                  Load More ({Math.max(sortedProducts.length - visibleCount, 0)}
+                  )
                 </button>
               </div>
             )}

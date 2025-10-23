@@ -343,42 +343,70 @@ export default function DynamicProductPage({
                 See All Offers
               </button>
             </div>
-            <div className="flex items-center gap-2 text-green-600 mt-6 sm:mt-8">
-              <div className="w-2 h-2 bg-green-500 rounded-full flex items-center justify-center">
-                <svg
-                  className="w-1.5 h-1.5 text-white"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </div>
-              <span className="text-sm text-green-600">
-                In stock - ready to ship
-              </span>
-            </div>
-            
-            {/* Stock indicator - show "X Item left" when stock is below 3 */}
-            {product.stock && product.stock < 3 && product.stock > 0 && (
-              <div className="mt-2">
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
-                  {product.stock} {product.stock === 1 ? 'Item left' : 'Items left'}
-                </span>
+
+            {/* Stock Status Indicators */}
+            {product.stock > 0 ? (
+              <>
+                <div className="flex items-center gap-2 text-green-600 mt-6 sm:mt-8">
+                  <div className="w-2 h-2 bg-green-500 rounded-full flex items-center justify-center">
+                    <svg
+                      className="w-1.5 h-1.5 text-white"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                  <span className="text-sm text-green-600">
+                    In stock - ready to ship
+                  </span>
+                </div>
+
+                {/* Stock indicator - show "X Item left" when stock is below 3 */}
+                {product.stock < 3 && (
+                  <div className="mt-2">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
+                      {product.stock}{" "}
+                      {product.stock === 1 ? "Item left" : "Items left"}
+                    </span>
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="mt-6 sm:mt-8">
+                <div className="flex items-center gap-2 text-red-600">
+                  <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                  <span className="text-sm text-red-600 font-medium">
+                    Out of Stock
+                  </span>
+                </div>
+                <div className="mt-2">
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                    Currently Unavailable
+                  </span>
+                </div>
               </div>
             )}
+
             <div className="mt-5">
               <div className="flex gap-2 mb-2">
                 <button
                   onClick={handleAddToCart}
-                  disabled={isAddingToCart}
-                  className="flex-1 bg-black text-white py-3 sm:py-4 px-5 sm:px-6 text-sm font-medium hover:bg-gray-800 transition-[transform,background-color] duration-[1600ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] disabled:opacity-50 flex items-center justify-center gap-2 rounded-md min-h-[48px] sm:min-h-[55px] transform-gpu will-change-transform hover:translate-x-[3px] shake-attention"
+                  disabled={isAddingToCart || product.stock <= 0}
+                  className={`flex-1 py-3 sm:py-4 px-5 sm:px-6 text-sm font-medium transition-[transform,background-color] duration-[1600ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] disabled:opacity-50 flex items-center justify-center gap-2 rounded-md min-h-[48px] sm:min-h-[55px] transform-gpu will-change-transform ${
+                    product.stock <= 0
+                      ? "bg-gray-400 text-white cursor-not-allowed"
+                      : "bg-black text-white hover:bg-gray-800 hover:translate-x-[3px] shake-attention"
+                  }`}
                 >
                   <ShoppingBag className="h-4 w-4" />
-                  {isAddingToCart
+                  {product.stock <= 0
+                    ? "SOLD OUT"
+                    : isAddingToCart
                     ? "Adding..."
                     : product && isInCart(product.id)
                     ? "IN CART"
@@ -400,7 +428,12 @@ export default function DynamicProductPage({
               </div>
               <button
                 onClick={handleBuyNow}
-                className="w-full bg-black text-white py-3 sm:py-4 px-5 sm:px-6 text-sm font-medium hover:bg-gray-800 transition-colors rounded-md min-h-[48px] sm:min-h-[55px]"
+                disabled={product.stock <= 0}
+                className={`w-full py-3 sm:py-4 px-5 sm:px-6 text-sm font-medium transition-colors rounded-md min-h-[48px] sm:min-h-[55px] ${
+                  product.stock <= 0
+                    ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                    : "bg-black text-white hover:bg-gray-800"
+                }`}
               >
                 BUY IT NOW
               </button>

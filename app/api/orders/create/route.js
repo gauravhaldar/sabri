@@ -3,6 +3,7 @@ import connectDB from "@/lib/db";
 import Order from "@/lib/models/Order";
 import Coupon from "@/lib/models/Coupon";
 import Sequence from "@/lib/models/Sequence";
+import Product from "@/lib/models/Product";
 import mongoose from "mongoose";
 
 export async function POST(request) {
@@ -156,6 +157,55 @@ export async function POST(request) {
         console.error("Error updating coupon usage:", couponError);
         // Don't fail the order if coupon update fails
       }
+    }
+
+    // Update stock quantity for each ordered item
+    try {
+      console.log("=== UPDATING STOCK QUANTITIES ===");
+      for (const item of items) {
+        const productId = item.productId || item.id;
+        const quantity = item.quantity || 1;
+
+        console.log(
+          `Updating stock for product ${productId}, reducing by ${quantity}`
+        );
+
+        // Decrease stock by the ordered quantity
+        const updatedProduct = await Product.findByIdAndUpdate(
+          productId,
+          {
+            $inc: {
+              stock: -quantity,
+              purchaseCount: 1, // Also increment purchase count
+            },
+          },
+          { new: true }
+        );
+
+        if (updatedProduct) {
+          console.log(
+            `✅ Stock updated for ${updatedProduct.name}: ${updatedProduct.stock} remaining`
+          );
+
+          // Warn if stock is low or depleted
+          if (updatedProduct.stock <= 0) {
+            console.warn(
+              `⚠️ Product ${updatedProduct.name} is now OUT OF STOCK`
+            );
+          } else if (updatedProduct.stock < 5) {
+            console.warn(
+              `⚠️ Product ${updatedProduct.name} stock is LOW (${updatedProduct.stock} remaining)`
+            );
+          }
+        } else {
+          console.error(`❌ Product ${productId} not found for stock update`);
+        }
+      }
+      console.log("=== STOCK UPDATE COMPLETE ===");
+    } catch (stockError) {
+      console.error("Error updating stock quantities:", stockError);
+      // Don't fail the order if stock update fails, but log it
+      // You may want to implement a retry mechanism or manual verification
     }
 
     // Return order data with proper timestamps
