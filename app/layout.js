@@ -9,6 +9,9 @@ import { ToastProvider } from "@/contexts/ToastContext";
 export const metadata = {
   title: "My Sabri",
   description: "Jewelry store",
+  verification: {
+    google: "gaFxstefSBbycHnFXMP-vkFOpXUAxrfLhWXf81ss5aQ",
+  },
 };
 
 export default function RootLayout({ children }) {
