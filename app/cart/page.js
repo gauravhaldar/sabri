@@ -71,7 +71,11 @@ export default function CartPage() {
     // Get the cart item to check stock
     const cartItem = cartItems[cartKey];
     if (cartItem && cartItem.stock && newQuantity > cartItem.stock) {
-      toast.error(`Only ${cartItem.stock} ${cartItem.stock === 1 ? 'item' : 'items'} available in stock`);
+      toast.error(
+        `Only ${cartItem.stock} ${
+          cartItem.stock === 1 ? "item" : "items"
+        } available in stock`
+      );
       return;
     }
 
@@ -131,17 +135,25 @@ export default function CartPage() {
     return 0;
   }, []);
 
+  const calculateShipping = () => {
+    // ₹150 for Cash on Delivery, Free for Online Payment
+    return paymentMethod === "cash_on_delivery" ? 150 : 0;
+  };
+
   const calculateTotal = () => {
     const subtotal = calculateSubtotal();
-    const shipping = 0; // Free shipping for all orders
+    const shipping = calculateShipping();
     // For 3% GST inclusive, the tax is already included in the prices
     // We calculate the tax amount that's included in the subtotal
     const taxableAmount = subtotal - couponDiscount;
     const tax = (taxableAmount * 0.03) / 1.03; // Extract 3% GST from inclusive amount
-    
+
     // Apply 5% discount for online payment
-    const onlinePaymentDiscount = paymentMethod === 'online_payment' ? (subtotal - couponDiscount) * 0.05 : 0;
-    
+    const onlinePaymentDiscount =
+      paymentMethod === "online_payment"
+        ? (subtotal - couponDiscount) * 0.05
+        : 0;
+
     return subtotal - couponDiscount - onlinePaymentDiscount + shipping;
   };
 
@@ -292,12 +304,16 @@ export default function CartPage() {
       const subtotal = calculateSubtotal();
       const taxableAmount = subtotal - couponDiscount;
       const tax = (taxableAmount * 0.03) / 1.03; // Extract 3% GST from inclusive amount
-      const shipping = 0; // Free shipping for all orders
-      
+      const shipping = calculateShipping(); // ₹150 for COD, Free for Online Payment
+
       // Apply 5% discount for online payment
-      const onlinePaymentDiscount = paymentMethod === 'online_payment' ? (subtotal - couponDiscount) * 0.05 : 0;
-      
-      const total = subtotal - couponDiscount - onlinePaymentDiscount + shipping;
+      const onlinePaymentDiscount =
+        paymentMethod === "online_payment"
+          ? (subtotal - couponDiscount) * 0.05
+          : 0;
+
+      const total =
+        subtotal - couponDiscount - onlinePaymentDiscount + shipping;
 
       // Prepare order data
       const orderData = {
@@ -554,7 +570,7 @@ export default function CartPage() {
                                 handleUpdateQuantity(cartKey, item.quantity + 1)
                               }
                               disabled={
-                                localLoading[cartKey] || 
+                                localLoading[cartKey] ||
                                 (item.stock && item.quantity >= item.stock)
                               }
                               className="px-2.5 sm:px-3 py-2 hover:bg-neutral-50 text-neutral-600 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -562,12 +578,13 @@ export default function CartPage() {
                               <Plus className="w-4 h-4" />
                             </button>
                           </div>
-                          
+
                           {/* Stock indicator for low stock items */}
                           {item.stock && item.stock < 3 && item.stock > 0 && (
                             <div className="mt-2">
                               <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
-                                {item.stock} {item.stock === 1 ? 'Item left' : 'Items left'}
+                                {item.stock}{" "}
+                                {item.stock === 1 ? "Item left" : "Items left"}
                               </span>
                             </div>
                           )}
@@ -789,6 +806,9 @@ export default function CartPage() {
                             <p className="text-[11px] sm:text-xs text-gray-500">
                               Pay when your order is delivered
                             </p>
+                            <p className="text-[11px] sm:text-xs text-orange-600 font-medium mt-0.5">
+                              + ₹150 shipping charge
+                            </p>
                           </div>
                         </div>
                         <span className="text-[11px] sm:text-xs px-2 py-1 bg-green-100 text-green-700 rounded-full">
@@ -825,6 +845,9 @@ export default function CartPage() {
                             </span>
                             <p className="text-[11px] sm:text-xs text-gray-500">
                               Credit/Debit Card, UPI, Net Banking, Wallets
+                            </p>
+                            <p className="text-[11px] sm:text-xs text-green-600 font-medium mt-0.5">
+                              Free shipping
                             </p>
                           </div>
                         </div>
@@ -893,28 +916,43 @@ export default function CartPage() {
                     </div>
                   )}
 
-                  {paymentMethod === 'online_payment' && (
+                  {paymentMethod === "online_payment" && (
                     <div className="flex justify-between text-sm">
                       <span className="text-green-600">
                         Online Payment Discount (5%)
                       </span>
                       <span className="font-medium text-green-600">
-                        -₹{((calculateSubtotal() - couponDiscount) * 0.05).toLocaleString()}
+                        -₹
+                        {(
+                          (calculateSubtotal() - couponDiscount) *
+                          0.05
+                        ).toLocaleString()}
                       </span>
                     </div>
                   )}
 
                   <div className="flex justify-between text-xs sm:text-sm">
                     <span className="text-neutral-600">Shipping</span>
-                    <span className="font-medium text-green-600">FREE</span>
+                    <span
+                      className={`font-medium ${
+                        calculateShipping() === 0 ? "text-green-600" : ""
+                      }`}
+                    >
+                      {calculateShipping() === 0
+                        ? "FREE"
+                        : `₹${calculateShipping()}`}
+                    </span>
                   </div>
 
                   <div className="flex justify-between text-xs sm:text-sm">
-                    <span className="text-neutral-600">Tax (GST 3% inclusive)</span>
+                    <span className="text-neutral-600">
+                      Tax (GST 3% inclusive)
+                    </span>
                     <span className="font-medium">
                       ₹
                       {(
-                        ((calculateSubtotal() - couponDiscount) * 0.03) / 1.03
+                        ((calculateSubtotal() - couponDiscount) * 0.03) /
+                        1.03
                       ).toLocaleString()}
                     </span>
                   </div>
@@ -995,7 +1033,9 @@ export default function CartPage() {
                 {/* Trust Badges */}
                 <div className="mt-6 grid grid-cols-2 gap-2 text-center text-xs">
                   <div className="rounded border border-neutral-200 px-2 py-2">
-                    Free Shipping
+                    {paymentMethod === "online_payment"
+                      ? "Free Shipping"
+                      : "Fast Delivery"}
                   </div>
                   <div className="rounded border border-neutral-200 px-2 py-2">
                     Easy Returns
