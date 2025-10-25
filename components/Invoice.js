@@ -185,7 +185,7 @@ const Invoice = forwardRef(({ orderData }, ref) => {
               </span>
             </div>
             <div style={styles.summaryRow}>
-              <span>Tax (GST 18%):</span>
+              <span>Tax (GST 3%) Inclusive:</span>
               <span>{formatCurrency(orderData.orderSummary?.tax)}</span>
             </div>
             <div style={styles.summaryTotal}>
