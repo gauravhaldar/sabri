@@ -5,6 +5,7 @@ import Coupon from "@/lib/models/Coupon";
 import Sequence from "@/lib/models/Sequence";
 import Product from "@/lib/models/Product";
 import mongoose from "mongoose";
+import { sendOrderNotificationEmail } from "@/lib/emailService";
 
 export async function POST(request) {
   try {
@@ -227,6 +228,32 @@ export async function POST(request) {
       createdAt: orderResponse.createdAt,
       estimatedDelivery: orderResponse.estimatedDelivery,
     });
+
+    // Send order notification email to admin
+    console.log("\n═══════════════════════════════════════");
+    console.log("📧 ATTEMPTING TO SEND ORDER EMAIL");
+    console.log("═══════════════════════════════════════");
+    console.log("Order ID:", order.orderId);
+    console.log("Admin Email:", process.env.ADMIN_EMAIL || 'NOT SET ❌');
+    console.log("SMTP User:", process.env.SMTP_USER || 'NOT SET ❌');
+    console.log("SMTP Pass:", process.env.SMTP_PASS ? '✅ SET' : '❌ NOT SET');
+    console.log("═══════════════════════════════════════\n");
+    
+    try {
+      const emailResult = await sendOrderNotificationEmail(orderResponse);
+      if (emailResult.success) {
+        console.log("✅ Order notification email sent successfully to admin");
+        console.log("📬 Message ID:", emailResult.messageId);
+      } else {
+        console.error("❌ Failed to send order notification email:", emailResult.error);
+        // Don't fail the order if email fails
+      }
+    } catch (emailError) {
+      console.error("❌ Error sending order notification email:", emailError);
+      console.error("Error details:", emailError.message);
+      // Don't fail the order if email fails
+    }
+    console.log("\n═══════════════════════════════════════\n");
 
     return NextResponse.json(
       {

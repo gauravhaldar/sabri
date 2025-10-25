@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import LoginPage from "../login/page";
 
 export default function ProfilePage() {
@@ -234,7 +235,7 @@ function AuthenticatedProfile() {
                           <a key={order.orderId} href={`/orders/${order.orderId}`} className="block border border-neutral-200 rounded-lg p-4 hover:bg-neutral-50 transition-colors">
                             <div className="flex items-center gap-4">
                               {order.items?.[0]?.image && (
-                                <img src={order.items[0].image} alt={order.items[0].name} className="w-16 h-16 rounded object-cover border border-neutral-200" />
+                                <Image src={order.items[0].image} alt={order.items[0].name} width={64} height={64} className="w-16 h-16 rounded object-cover border border-neutral-200" />
                               )}
                               <div className="flex-1 grid grid-cols-1 md:grid-cols-4 gap-4">
                                 <div>

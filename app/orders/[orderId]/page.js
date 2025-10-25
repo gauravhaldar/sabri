@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function OrderDetailPage() {
   const params = useParams();
@@ -102,7 +103,7 @@ export default function OrderDetailPage() {
               {order.items?.map((item, idx) => (
                 <div key={idx} className="flex items-center gap-4">
                   {item.image && (
-                    <img src={item.image} alt={item.name} className="w-16 h-16 rounded object-cover border border-neutral-200" />
+                    <Image src={item.image} alt={item.name} width={64} height={64} className="w-16 h-16 rounded object-cover border border-neutral-200" />
                   )}
                   <div className="flex-1">
                     <p className="font-medium text-neutral-900">{item.name}</p>

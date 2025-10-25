@@ -1,0 +1,57 @@
+═══════════════════════════════════════════════════════════════
+   🔧 QUICK FIX - EMAIL NOT SENDING - SABRI JEWELRY
+═══════════════════════════════════════════════════════════════
+
+📋 WHAT WAS FIXED:
+✅ Removed product images from emails
+✅ Fixed logo (replaced broken URL with "SABRI JEWELRY" text)
+✅ Added detailed error logging
+✅ Fixed code structure
+
+🚨 WHAT YOU NEED TO DO NOW:
+
+Step 1: Create .env.local file
+─────────────────────────────────
+Create this file in: frontend/.env.local
+
+Paste this content:
+─────────────────────
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your-email@gmail.com
+SMTP_PASS=your-16-character-app-password
+ADMIN_EMAIL=haldarainit@gmail.com
+─────────────────────
+
+Step 2: Get Gmail App Password
+─────────────────────────────────
+1. Visit: https://myaccount.google.com/security
+2. Enable "2-Step Verification" 
+3. Click "App passwords"
+4. Choose Mail → Other (Custom) → "Sabri Jewelry"
+5. Copy the 16-character password
+6. Use it as SMTP_PASS above
+
+⚠️ DO NOT use your regular Gmail password!
+
+Step 3: Restart Server
+─────────────────────────────────
+Stop your dev server (Ctrl+C) and run:
+
+  npm run dev
+
+Step 4: Test
+─────────────────────────────────
+Place a test order and check console for:
+
+✅ SUCCESS:
+  Email Configuration: { host: 'smtp.gmail.com', ... }
+  ✅ Order notification email sent successfully
+
+❌ ERROR (if you see this):
+  ❌ Error sending order notification email: Invalid login
+  → You're using wrong password. Use App Password!
+
+═══════════════════════════════════════════════════════════════
+📖 Need detailed help? Check EMAIL_SETUP.md
+═══════════════════════════════════════════════════════════════

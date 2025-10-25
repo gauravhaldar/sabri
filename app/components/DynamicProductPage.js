@@ -40,8 +40,6 @@ export default function DynamicProductPage({
   const [selectedImage, setSelectedImage] = useState(0);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [expandedSections, setExpandedSections] = useState({});
-  const [recentProducts, setRecentProducts] = useState([]);
-  const [activeProductsTab, setActiveProductsTab] = useState("related");
   const [product, setProduct] = useState(null);
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -92,24 +90,6 @@ export default function DynamicProductPage({
     fetchProduct();
   }, [resolvedParams.slug]);
 
-  useEffect(() => {
-    if (product) {
-      try {
-        const key = `recentlyViewed${categoryName}`;
-        const raw =
-          typeof window !== "undefined"
-            ? window.localStorage.getItem(key)
-            : null;
-        const list = raw ? JSON.parse(raw) : [];
-        const next = [
-          product.id,
-          ...list.filter((id) => id !== product.id),
-        ].slice(0, 12);
-        window.localStorage.setItem(key, JSON.stringify(next));
-        setRecentProducts(next.slice(1, 9)); // Skip the first one as it's the current product
-      } catch {}
-    }
-  }, [product, categoryName]);
 
   if (loading) {
     return (
@@ -632,112 +612,51 @@ export default function DynamicProductPage({
         </div>
       </div>
 
-      {/* Related / Recently viewed tabs */}
-      {(relatedProducts.length > 0 || recentProducts.length > 0) && (
+      {/* Related Products */}
+      {relatedProducts.length > 0 && (
         <section className="mt-10 sm:mt-12 container mx-auto px-4">
-          <div className="flex items-center gap-6 sm:gap-8 justify-start overflow-x-auto no-scrollbar [-ms-overflow-style:none] [scrollbar-width:none]">
-            <style jsx>{`
-              .no-scrollbar::-webkit-scrollbar {
-                display: none;
-              }
-            `}</style>
-            <button
-              onClick={() => setActiveProductsTab("related")}
-              className="relative pb-2 text-xl sm:text-2xl font-medium text-neutral-900 flex-shrink-0"
-            >
+          <div className="mb-4">
+            <h2 className="text-xl sm:text-2xl font-medium text-neutral-900">
               Related Products
-              <span
-                className={`absolute left-0 -bottom-[1px] h-[2px] bg-neutral-900 transition-all duration-300 ${
-                  activeProductsTab === "related" ? "w-full" : "w-0"
-                }`}
-              ></span>
-            </button>
-            <button
-              onClick={() => setActiveProductsTab("recent")}
-              className="relative pb-2 text-xl sm:text-2xl font-medium text-neutral-900 flex-shrink-0"
-            >
-              Recently Viewed
-              <span
-                className={`absolute left-0 -bottom-[1px] h-[2px] bg-neutral-900 transition-all duration-300 ${
-                  activeProductsTab === "recent" ? "w-full" : "w-0"
-                }`}
-              ></span>
-            </button>
+            </h2>
           </div>
-          {activeProductsTab === "related" && relatedProducts.length > 0 && (
-            <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
-              {relatedProducts.map((rp) => {
-                const rpImage = getProductImageUrl(rp);
-                const rpPrice = getProductDisplayPrice(rp);
-                return (
-                  <Link
-                    key={rp.id}
-                    href={`/${categoryRoute}/${rp.slug || rp.id}`}
-                    className="group border border-neutral-200"
-                  >
-                    <div className="relative aspect-square overflow-hidden">
-                      <Image
-                        src={rpImage}
-                        alt={rp.name}
-                        fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                    </div>
-                    <div className="px-2 py-2">
-                      <div className="line-clamp-1 text-[13px] sm:text-sm text-neutral-900">
-                        {rp.name}
-                      </div>
-                      <div className="mt-1 flex items-center gap-2 text-[12px] sm:text-[13px]">
-                        <span className="font-medium text-neutral-900">
-                          ₹{rpPrice.current.toLocaleString()}
-                        </span>
-                        {rpPrice.original > rpPrice.current && (
-                          <span className="text-neutral-500 line-through">
-                            ₹{rpPrice.original.toLocaleString()}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
-          )}
-          {activeProductsTab === "recent" && recentProducts.length > 0 && (
-            <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
-              {recentProducts.map((rv) => (
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+            {relatedProducts.map((rp) => {
+              const rpImage = getProductImageUrl(rp);
+              const rpPrice = getProductDisplayPrice(rp);
+              return (
                 <Link
-                  key={rv.id}
-                  href={`/${categoryRoute}/${rv.id}`}
+                  key={rp.id}
+                  href={`/${categoryRoute}/${rp.slug || rp.id}`}
                   className="group border border-neutral-200"
                 >
                   <div className="relative aspect-square overflow-hidden">
                     <Image
-                      src={rv.image}
-                      alt={rv.name}
+                      src={rpImage}
+                      alt={rp.name}
                       fill
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                   </div>
                   <div className="px-2 py-2">
                     <div className="line-clamp-1 text-[13px] sm:text-sm text-neutral-900">
-                      {rv.name}
+                      {rp.name}
                     </div>
                     <div className="mt-1 flex items-center gap-2 text-[12px] sm:text-[13px]">
                       <span className="font-medium text-neutral-900">
-                        ₹{rv.price.toLocaleString()}
+                        ₹{rpPrice.current.toLocaleString()}
                       </span>
-                      {rv.originalPrice && (
+                      {rpPrice.original > rpPrice.current && (
                         <span className="text-neutral-500 line-through">
-                          ₹{rv.originalPrice.toLocaleString()}
+                          ₹{rpPrice.original.toLocaleString()}
                         </span>
                       )}
                     </div>
                   </div>
                 </Link>
-              ))}
-            </div>
-          )}
+              );
+            })}
+          </div>
         </section>
       )}
     </div>

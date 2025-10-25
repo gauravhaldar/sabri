@@ -197,7 +197,38 @@ export default function RingsPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="bg-gray-50 py-6 sm:py-8 pt-28 sm:pt-40">
+      {/* Hero Banner */}
+      <div className="relative text-white pt-28 sm:pt-40 pb-48 sm:pb-60 overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <Image
+            src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=2070&auto=format&fit=crop"
+            alt="Rings Banner"
+            fill
+            className="object-cover"
+            priority
+          />
+          {/* Dark Overlay for text readability */}
+          <div className="absolute inset-0 bg-gradient-to-r"></div>
+        </div>
+        
+        {/* Content */}
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="inline-block">
+              <span className="inline-block bg-white/10 backdrop-blur-sm border border-white/20 text-white text-xs sm:text-sm px-4 py-2 rounded-full font-medium tracking-wide">
+                ✨ RINGS
+              </span>
+            </div>
+          </div>
+        </div>
+        
+        {/* Decorative Elements */}
+        <div className="absolute top-20 left-10 w-20 h-20 bg-yellow-400/10 rounded-full blur-2xl"></div>
+        <div className="absolute bottom-10 right-10 w-32 h-32 bg-blue-400/10 rounded-full blur-3xl"></div>
+      </div>
+
+      <div className="bg-gray-50 py-6 sm:py-8">
         <div className="container mx-auto px-4">
           <div className="text-center">
             <h1 className="text-2xl sm:text-3xl font-bold text-black mb-2">

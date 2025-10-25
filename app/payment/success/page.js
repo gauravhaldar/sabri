@@ -163,7 +163,7 @@ function PaymentSuccessContent() {
       }, 1000);
       return () => clearInterval(intervalId);
     }
-  }, [verifying, paymentData?.orderId, error, safeNavigate]);
+  }, [verifying, paymentData?.orderId, error, router]);
 
   if (verifying) {
     return (
