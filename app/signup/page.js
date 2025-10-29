@@ -21,7 +21,7 @@ export default function SignupPage() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
-  const [phone, setPhone] = useState("");
+  const [phone, setPhone] = useState("+91");
   const [otp, setOtp] = useState("");
   const [confirmationResult, setConfirmationResult] = useState(null);
   const recaptchaContainerRef = useRef(null);
@@ -557,11 +557,19 @@ export default function SignupPage() {
                         id="phoneSignup"
                         name="phoneSignup"
                         value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          // Ensure '+91' is always at the beginning
+                          if (!value.startsWith("+91")) {
+                            setPhone("+91" + value.replace(/[^\d]/g, '').substring(2));
+                          } else {
+                            setPhone(value);
+                          }
+                        }}
                         className={`w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400 ${
                           errors.phone ? "border-red-500" : "border-neutral-300"
                         }`}
-                        placeholder="e.g., +15551234567"
+                        placeholder="e.g., 9876543210"
                       />
                       {errors.phone && (
                         <p className="mt-1 text-xs text-red-600">
@@ -574,7 +582,7 @@ export default function SignupPage() {
                       type="button"
                       onClick={handlePhoneSignup}
                       disabled={isLoading}
-                      className="w-full bg-blue-600 text-white py-3 px-4 rounded-md text-sm font-medium hover:opacity-90 disabled:opacity-50 transition-opacity duration-200"
+                      className="flex items-center justify-center w-full px-4 py-2 border border-neutral-300 rounded-md text-sm font-medium text-neutral-700 hover:bg-neutral-50 disabled:opacity-50"
                     >
                       {isLoading ? "Sending Code..." : "Continue with Phone"}
                     </button>
@@ -609,7 +617,7 @@ export default function SignupPage() {
                       type="button"
                       onClick={handleOtpSubmit}
                       disabled={isLoading}
-                      className="w-full bg-blue-600 text-white py-3 px-4 rounded-md text-sm font-medium hover:opacity-90 disabled:opacity-50 transition-opacity duration-200"
+                      className="flex items-center justify-center w-full px-4 py-2 border border-neutral-300 rounded-md text-sm font-medium text-neutral-700 hover:bg-neutral-50 disabled:opacity-50"
                     >
                       {isLoading ? "Verifying..." : "Verify Code"}
                     </button>
