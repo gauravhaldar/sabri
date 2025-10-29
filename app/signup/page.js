@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Eye, EyeOff, ArrowLeft, Check } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { RecaptchaVerifier } from "firebase/auth";
 
 export default function SignupPage() {
   const [formData, setFormData] = useState({
@@ -20,12 +21,36 @@ export default function SignupPage() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
+  const [phone, setPhone] = useState("");
+  const [otp, setOtp] = useState("");
+  const [confirmationResult, setConfirmationResult] = useState(null);
+  const recaptchaContainerRef = useRef(null);
+  const recaptchaVerifier = useRef(null);
   const authContext = useAuth();
-  const { signup, googleLogin } = authContext;
+  const { signup, googleLogin, sendPhoneVerificationCode, confirmPhoneNumber } = authContext;
 
   // Debug logging
   console.log("AuthContext:", authContext);
   console.log("googleLogin function:", googleLogin);
+
+  useEffect(() => {
+    if (recaptchaContainerRef.current && !recaptchaVerifier.current) {
+      recaptchaVerifier.current = new RecaptchaVerifier(
+        authContext.auth, // Pass the Firebase auth instance
+        recaptchaContainerRef.current,
+        {
+          size: "invisible",
+          callback: (response) => {
+            // reCAPTCHA solved, allow signInWithPhoneNumber. No need to do anything here as it's invisible.
+          },
+          "expired-callback": () => {
+            setErrors({ general: "reCAPTCHA expired. Please try again." });
+            setIsLoading(false);
+          },
+        }
+      );
+    }
+  }, [authContext]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -61,6 +86,74 @@ export default function SignupPage() {
       newErrors.agreeToTerms = "You must agree to the terms and conditions";
 
     return newErrors;
+  };
+
+  const handlePhoneSignup = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setErrors({});
+
+    if (!phone) {
+      setErrors({ phone: "Phone number is required" });
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      if (!recaptchaVerifier.current) {
+        setErrors({ general: "reCAPTCHA is not initialized. Please refresh the page." });
+        setIsLoading(false);
+        return;
+      }
+      await recaptchaVerifier.current.verify(); // Explicitly verify invisible recaptcha
+      const result = await sendPhoneVerificationCode(phone, recaptchaVerifier.current);
+      if (result.success) {
+        setConfirmationResult(result.data);
+      } else {
+        setErrors({ general: result.message });
+      }
+    } catch (error) {
+      console.error("Phone signup initiation error:", error);
+      setErrors({
+        general: error.message || "Failed to send verification code. Please try again.",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleOtpSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setErrors({});
+
+    if (!otp) {
+      setErrors({ otp: "OTP is required" });
+      setIsLoading(false);
+      return;
+    }
+
+    if (!confirmationResult) {
+      setErrors({ general: "No verification request found. Please resend code." });
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      const result = await confirmPhoneNumber(confirmationResult, otp);
+      if (result.success) {
+        window.location.href = "/profile";
+      } else {
+        setErrors({ general: result.message });
+      }
+    } catch (error) {
+      console.error("OTP verification error:", error);
+      setErrors({
+        general: error.message || "OTP verification failed. Please try again.",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -448,15 +541,87 @@ export default function SignupPage() {
                   </svg>
                   Google
                 </button>
-                {/* <button
-                  type="button"
-                  className="flex items-center justify-center px-4 py-2 border border-neutral-300 rounded-md text-sm font-medium text-neutral-700 hover:bg-neutral-50"
-                >
-                  <svg className="w-4 h-4 mr-2" fill="#1877F2" viewBox="0 0 24 24">
-                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                  </svg>
-                  Facebook
-                </button> */}
+
+                {/* Phone Number Signup */}
+                {!confirmationResult ? (
+                  <div className="space-y-4">
+                    <div>
+                      <label
+                        htmlFor="phoneSignup"
+                        className="block text-sm font-medium text-neutral-900 mb-2"
+                      >
+                        Phone Number
+                      </label>
+                      <input
+                        type="tel"
+                        id="phoneSignup"
+                        name="phoneSignup"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        className={`w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400 ${
+                          errors.phone ? "border-red-500" : "border-neutral-300"
+                        }`}
+                        placeholder="e.g., +15551234567"
+                      />
+                      {errors.phone && (
+                        <p className="mt-1 text-xs text-red-600">
+                          {errors.phone}
+                        </p>
+                      )}
+                    </div>
+                    <div id="recaptcha-container" ref={recaptchaContainerRef}></div>
+                    <button
+                      type="button"
+                      onClick={handlePhoneSignup}
+                      disabled={isLoading}
+                      className="w-full bg-blue-600 text-white py-3 px-4 rounded-md text-sm font-medium hover:opacity-90 disabled:opacity-50 transition-opacity duration-200"
+                    >
+                      {isLoading ? "Sending Code..." : "Continue with Phone"}
+                    </button>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    <div>
+                      <label
+                        htmlFor="otpSignup"
+                        className="block text-sm font-medium text-neutral-900 mb-2"
+                      >
+                        Verification Code
+                      </label>
+                      <input
+                        type="text"
+                        id="otpSignup"
+                        name="otpSignup"
+                        value={otp}
+                        onChange={(e) => setOtp(e.target.value)}
+                        className={`w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400 ${
+                          errors.otp ? "border-red-500" : "border-neutral-300"
+                        }`}
+                        placeholder="Enter 6-digit code"
+                      />
+                      {errors.otp && (
+                        <p className="mt-1 text-xs text-red-600">
+                          {errors.otp}
+                        </p>
+                      )}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleOtpSubmit}
+                      disabled={isLoading}
+                      className="w-full bg-blue-600 text-white py-3 px-4 rounded-md text-sm font-medium hover:opacity-90 disabled:opacity-50 transition-opacity duration-200"
+                    >
+                      {isLoading ? "Verifying..." : "Verify Code"}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setConfirmationResult(null)}
+                      className="w-full mt-2 text-sm text-neutral-600 hover:underline"
+                    >
+                      Edit Phone Number
+                    </button>
+                  </div>
+                )}
               </div>
             </form>
 

@@ -7,7 +7,11 @@ import {
   registerWithEmailAndPasswordFirebase,
   loginWithGoogleFirebase,
   logoutFirebase,
+  sendPhoneVerificationCodeFirebase,
+  confirmPhoneNumberFirebase,
 } from "@/lib/auth";
+import { RecaptchaVerifier } from "firebase/auth";
+import { auth } from "@/lib/firebase"; // Import the auth instance
 
 const AuthContext = createContext({});
 
@@ -129,6 +133,37 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const sendPhoneVerificationCode = async (phoneNumber, appVerifier) => {
+    try {
+      const result = await sendPhoneVerificationCodeFirebase(
+        phoneNumber,
+        appVerifier
+      );
+      return result;
+    } catch (error) {
+      console.error("Error in AuthContext (sendPhoneVerificationCode):", error);
+      throw new Error(error.message || "Failed to send verification code");
+    }
+  };
+
+  const confirmPhoneNumber = async (confirmationResult, verificationCode) => {
+    try {
+      const result = await confirmPhoneNumberFirebase(
+        confirmationResult,
+        verificationCode
+      );
+      if (result.success) {
+        setUser(result.data.user);
+        localStorage.setItem("userData", JSON.stringify(result.data.user));
+        localStorage.setItem("authToken", result.data.token);
+      }
+      return result;
+    } catch (error) {
+      console.error("Error in AuthContext (confirmPhoneNumber):", error);
+      throw new Error(error.message || "Failed to confirm phone number");
+    }
+  };
+
   const value = {
     user,
     loading,
@@ -136,6 +171,9 @@ export const AuthProvider = ({ children }) => {
     signup,
     googleLogin,
     logout,
+    sendPhoneVerificationCode,
+    confirmPhoneNumber,
+    auth, // Expose the auth instance
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
