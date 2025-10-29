@@ -41,18 +41,28 @@ export async function POST(request) {
         lastName: lastName || undefined,
         email: fallbackEmail,
         phone: phoneNumber,
-        googleId: uid, // reuse field to store provider uid for consistency
+        firebaseUid: uid, // Use a dedicated field for firebase UIDs
         profilePicture: photoURL,
         registeredBy: "firebase",
-        isEmailVerified: true,
+        isEmailVerified: false, // Phone users might not have verified emails initially
         isActive: true,
       });
       await user.save();
     } else {
-      // Update missing fields
+      // Update existing user with any missing Firebase-related data or phone number
       let updated = false;
-      if (!user.phone) { user.phone = phoneNumber; updated = true; }
-      if (!user.profilePicture && photoURL) { user.profilePicture = photoURL; updated = true; }
+      if (!user.phoneNumber) { // Check if phone number is missing
+        user.phoneNumber = phoneNumber;
+        updated = true;
+      }
+      if (!user.firebaseUid) { // Set firebaseUid if missing
+        user.firebaseUid = uid;
+        updated = true;
+      }
+      if (!user.profilePicture && photoURL) { // Update profile picture if available
+        user.profilePicture = photoURL;
+        updated = true;
+      }
       if (updated) { await user.save(); }
     }
 
