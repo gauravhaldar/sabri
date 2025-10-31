@@ -5,6 +5,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { CartProvider } from "@/contexts/CartContext";
 import { WishlistProvider } from "@/contexts/WishlistContext";
 import { ToastProvider } from "@/contexts/ToastContext";
+import GoogleAnalytics from "./components/GoogleAnalytics";
 
 export const metadata = {
   title: "My Sabri",
@@ -19,20 +20,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
         {/* Google tag (gtag.js) */}
-        <script
-          async
-          src="https://www.googletagmanager.com/gtag/js?id=G-8MJZ78YD56"
-        ></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-8MJZ78YD56');
-            `,
-          }}
-        />
+        
 
         {/* Meta Pixel Code */}
         <script
@@ -66,6 +54,7 @@ export default function RootLayout({ children }) {
           <CartProvider>
             <WishlistProvider>
               <ToastProvider>
+                <GoogleAnalytics />
                 <Navbar />
                 {children}
                 <Footer />
