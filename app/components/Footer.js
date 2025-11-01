@@ -5,9 +5,8 @@ import {
   MapPin,
   Facebook,
   Instagram,
-  Linkedin,
-  Youtube,
 } from "lucide-react";
+import PinterestIcon from "./PinterestIcon";
 import Image from "next/image";
 
 export default function Footer() {
@@ -93,17 +92,17 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-4">
           {/* Social Icons */}
           <div className="flex space-x-4">
-            <a href="#" className="hover:text-black" aria-label="Facebook">
+            <a href="https://www.facebook.com/profile.php?id=61578105114394" className="hover:text-black" aria-label="Facebook">
               <Facebook size={20} />
             </a>
-            <a href="#" className="hover:text-black" aria-label="Instagram">
+            <a href="https://www.instagram.com/mysabri.in?igsh=eTN2emxrMjJqaWho" className="hover:text-black" aria-label="Instagram">
               <Instagram size={20} />
             </a>
-            <a href="#" className="hover:text-black" aria-label="LinkedIn">
-              <Linkedin size={20} />
+            <a href="mailto:info@mysabri.in" className="hover:text-black" aria-label="Email">
+              <Mail size={20} />
             </a>
-            <a href="#" className="hover:text-black" aria-label="YouTube">
-              <Youtube size={20} />
+            <a href="https://in.pinterest.com/sabri_india_/_profile/" className="hover:text-black" aria-label="Pinterest">
+              <PinterestIcon size={20} />
             </a>
           </div>
 
