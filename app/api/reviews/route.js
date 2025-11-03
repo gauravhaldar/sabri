@@ -6,7 +6,8 @@ import Product from "@/lib/models/Product";
 export async function POST(request) {
   try {
     await connectDB();
-    const { userId, productId, orderId, rating, comment } = await request.json();
+    const { userId, productId, orderId, rating, comment } =
+      await request.json();
 
     if (!userId || !productId || !orderId || !rating) {
       return NextResponse.json(
@@ -21,6 +22,7 @@ export async function POST(request) {
       orderId,
       rating: Number(rating),
       comment: comment || "",
+      // status defaults to 'pending' via schema
     });
 
     // Update product averageRating (simple recompute from all reviews of product)
@@ -52,4 +54,46 @@ export async function POST(request) {
   }
 }
 
+export async function GET(request) {
+  try {
+    await connectDB();
+    const { searchParams } = new URL(request.url);
+    const status = searchParams.get("status");
+    const limit = Math.min(parseInt(searchParams.get("limit") || "9", 10), 50);
 
+    const filter = {};
+    if (status) filter.status = status;
+
+    const docs = await Review.find(filter)
+      .sort({ createdAt: -1 })
+      .limit(limit)
+      .populate({ path: "user", select: "firstName lastName" })
+      .populate({ path: "product", select: "name images" });
+
+    // Normalize to UI-friendly shape
+    const items = docs.map((r) => ({
+      id: r._id.toString(),
+      userName:
+        r.user && r.user.firstName && r.user.lastName
+          ? `${r.user.firstName} ${r.user.lastName}`.trim()
+          : r.user?.firstName || r.user?.lastName || "Anonymous",
+      rating: r.rating,
+      text: r.comment || "",
+      productName: r.product?.name || "",
+      productImage:
+        Array.isArray(r.product?.images) && r.product.images[0]
+          ? r.product.images[0]
+          : "",
+      createdAt: r.createdAt,
+      status: r.status,
+    }));
+
+    return NextResponse.json({ success: true, data: { reviews: items } });
+  } catch (error) {
+    console.error("List reviews error:", error);
+    return NextResponse.json(
+      { success: false, message: "Failed to fetch reviews" },
+      { status: 500 }
+    );
+  }
+}

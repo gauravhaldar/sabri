@@ -1,36 +1,36 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 
-const reviews = [
-  {
-    name: "Yash K.",
-    rating: 5,
-    text: "My experience was amazing after purchasing this product. I was eagerly waiting to buy this. Price and quality is amazing you can buy it. It's give a tough competition to gold products.",
-    productName: "Small Heart Hoop Earrings",
-    productImage: "/category/earring.webp",
-  },
-  {
-    name: "Deepali B.",
-    rating: 5,
-    text: "Its the exact product shown in the image. Great for styling in different occasion and everyday use too.",
-    productName: "Chevron Ring",
-    productImage: "/category/ring.webp",
-  },
-  {
-    name: "Meenakshi",
-    rating: 5,
-    text: "Super 😍 quality! I 💕ve the product very much 💖",
-    productName: "Sarvani Mangalsutra Bracelet | 18K Gold Vermeil",
-    productImage: "/category/bracelet.webp",
-  },
-];
-
 export default function Customers() {
   const [index, setIndex] = useState(0);
+  const [reviews, setReviews] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        const res = await fetch(`/api/reviews?status=approved&limit=9`, {
+          next: { revalidate: 60 },
+        });
+        const data = await res.json();
+        if (data?.success && Array.isArray(data?.data?.reviews)) {
+          if (mounted) setReviews(data.data.reviews);
+        }
+      } catch (_) {
+        // ignore
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   const next = () => setIndex((index + 1) % reviews.length);
   const prev = () => setIndex((index - 1 + reviews.length) % reviews.length);
@@ -53,6 +53,11 @@ export default function Customers() {
 
         {/* Review Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-8">
+          {!loading && reviews.length === 0 && (
+            <div className="col-span-full text-gray-500">
+              No reviews yet. Be the first to share your experience!
+            </div>
+          )}
           {reviews.map((review, i) => (
             <motion.div
               key={i}
@@ -66,28 +71,31 @@ export default function Customers() {
               }`}
             >
               <div className="flex justify-center mb-2">
-                {"⭐".repeat(review.rating)}
+                {"⭐".repeat(review.rating || 0)}
               </div>
-              <p className="font-medium text-gray-800">{review.name}</p>
+              <p className="font-medium text-gray-800">{review.userName}</p>
               <p className="text-gray-600 mt-3 text-sm leading-relaxed">
                 {review.text}
               </p>
 
-              <div className="mt-4 flex items-center justify-center bg-gray-100 rounded-lg p-3">
-                <Image
-                  src={review.productImage}
-                  alt={review.productName}
-                  width={64}
-                  height={64}
-                  className="w-14 h-14 sm:w-16 sm:h-16 object-cover rounded"
-                />
-                <a
-                  href="#"
-                  className="ml-3 text-sm font-medium text-gray-800 hover:underline"
-                >
-                  {review.productName}
-                </a>
-              </div>
+              {(review.productImage || review.productName) && (
+                <div className="mt-4 flex items-center justify-center bg-gray-100 rounded-lg p-3">
+                  {review.productImage && (
+                    <Image
+                      src={review.productImage}
+                      alt={review.productName || "Product"}
+                      width={64}
+                      height={64}
+                      className="w-14 h-14 sm:w-16 sm:h-16 object-cover rounded"
+                    />
+                  )}
+                  {review.productName && (
+                    <span className="ml-3 text-sm font-medium text-gray-800">
+                      {review.productName}
+                    </span>
+                  )}
+                </div>
+              )}
             </motion.div>
           ))}
         </div>

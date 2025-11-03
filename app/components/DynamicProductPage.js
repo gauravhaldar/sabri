@@ -90,7 +90,6 @@ export default function DynamicProductPage({
     fetchProduct();
   }, [resolvedParams.slug]);
 
-
   if (loading) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
@@ -604,6 +603,36 @@ export default function DynamicProductPage({
                     <span className="text-lg font-medium text-black">
                       Cash On Delivery
                     </span>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* Customer Reviews Section */}
+            <section className="py-12 bg-white border-t border-neutral-200">
+              <div className="container mx-auto px-4">
+                <div className="max-w-4xl mx-auto">
+                  <div className="flex items-center justify-between mb-8">
+                    <h3 className="text-xl font-medium text-neutral-900">
+                      Customer Reviews
+                    </h3>
+                    <button className="px-6 py-2 bg-neutral-900 text-white text-sm font-medium rounded-md hover:bg-neutral-800 transition-colors">
+                      Write a Review
+                    </button>
+                  </div>
+
+                  {/* Reviews will only show for customers who have purchased this product */}
+                  <div className="text-center py-12">
+                    <div className="max-w-2xl mx-auto">
+                      <h4 className="text-lg font-medium text-neutral-900 mb-4">
+                        Not applicable — because there's only ever one.
+                      </h4>
+                      <p className="text-base text-neutral-700 leading-relaxed">
+                        Every design is a single edition, handcrafted once and
+                        never repeated. You're not just buying jewellery ~
+                        you're claiming a piece that will never exist again.
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
