@@ -436,10 +436,14 @@ export default function DynamicProductPage({
                 </button>
                 {expandedSections.description && (
                   <div className="mt-3">
-                    <p className="text-sm text-gray-600 leading-relaxed">
-                      {product.description ||
-                        `Shine brighter this festive season with this elegant ${categoryName.toLowerCase()}. Curated for those who love a perfect balance of glamour and grace, this item reflects brilliance in every detail.`}
-                    </p>
+                    <div
+                      className="text-sm text-gray-600 leading-relaxed"
+                      dangerouslySetInnerHTML={{
+                        __html:
+                          product.description ||
+                          `Shine brighter this festive season with this elegant ${categoryName.toLowerCase()}. Curated for those who love a perfect balance of glamour and grace, this item reflects brilliance in every detail.`,
+                      }}
+                    />
                   </div>
                 )}
               </div>

@@ -100,9 +100,10 @@ export default async function ProductDetailPage({ params }) {
             )}
 
             {product.description && (
-              <div className="prose max-w-none text-neutral-700 whitespace-pre-line">
-                {product.description}
-              </div>
+              <div
+                className="prose max-w-none text-neutral-700"
+                dangerouslySetInnerHTML={{ __html: product.description }}
+              />
             )}
 
             {/* Specs */}
