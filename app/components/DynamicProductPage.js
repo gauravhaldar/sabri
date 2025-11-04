@@ -625,12 +625,13 @@ export default function DynamicProductPage({
                   <div className="text-center py-12">
                     <div className="max-w-2xl mx-auto">
                       <h4 className="text-lg font-medium text-neutral-900 mb-4">
-                        Not applicable — because there's only ever one.
+                        Not applicable — because there&apos;s only ever one.
                       </h4>
                       <p className="text-base text-neutral-700 leading-relaxed">
                         Every design is a single edition, handcrafted once and
-                        never repeated. You're not just buying jewellery ~
-                        you're claiming a piece that will never exist again.
+                        never repeated. You&apos;re not just buying jewellery ~
+                        you&apos;re claiming a piece that will never exist
+                        again.
                       </p>
                     </div>
                   </div>

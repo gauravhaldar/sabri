@@ -20,7 +20,6 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
         {/* Google tag (gtag.js) */}
-        
 
         {/* Meta Pixel Code */}
         <script
@@ -45,6 +44,7 @@ export default function RootLayout({ children }) {
             width="1"
             style={{ display: "none" }}
             src="https://www.facebook.com/tr?id=1244423037727066&ev=PageView&noscript=1"
+            alt=""
           />
         </noscript>
         {/* End Meta Pixel Code */}
