@@ -65,7 +65,7 @@ export default function Navbar() {
           </button>
 
           {/* Search (center) */}
-          <div className="hidden md:flex flex-1 items-center justify-center">
+          {/* <div className="hidden md:flex flex-1 items-center justify-center">
             <form
               className="relative w-full max-w-lg"
               onSubmit={(e) => {
@@ -102,7 +102,7 @@ export default function Navbar() {
                 }`}
               ></span>
             </form>
-          </div>
+          </div> */}
 
           {/* Icons (right) */}
           <nav
@@ -213,7 +213,7 @@ export default function Navbar() {
             {[
               { name: "New Arrivals", href: "/new-arrivals" },
               { name: "Best Sellers", href: "/best-sellers" },
-              { name: "Fine Silver", href: "/fine-silver" },
+              // { name: "Fine Silver", href: "/fine-silver" },
               { name: "Bracelets", href: "/bracelets" },
               { name: "Necklaces", href: "/necklaces" },
               { name: "Rings", href: "/rings" },
@@ -285,7 +285,7 @@ export default function Navbar() {
             {[
               { name: "New Arrivals", href: "/new-arrivals" },
               { name: "Best Sellers", href: "/best-sellers" },
-              { name: "Fine Silver", href: "/fine-silver" },
+              // { name: "Fine Silver", href: "/fine-silver" },
               { name: "Bracelets", href: "/bracelets" },
               { name: "Necklaces", href: "/necklaces" },
               { name: "Rings", href: "/rings" },

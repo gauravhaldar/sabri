@@ -230,7 +230,7 @@ export default function BraceletsPage() {
           <div className="max-w-4xl mx-auto text-center">
             <div className="inline-block">
               <span className="inline-block bg-white/10 backdrop-blur-sm border border-white/20 text-white text-xs sm:text-sm px-4 py-2 rounded-full font-medium tracking-wide">
-                ✨ BRACELETS
+                 BRACELETS
               </span>
             </div>
           </div>

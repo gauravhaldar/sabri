@@ -214,6 +214,32 @@ export default function DynamicProductPage({
     }));
   };
 
+  const handleShare = async () => {
+    try {
+      const url = window.location.href;
+
+      if (navigator.share) {
+        await navigator.share({
+          title: product?.name || "Product",
+          text: product?.description || "Check out this product",
+          url,
+        });
+        return;
+      }
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(url);
+        toast.success("Link copied to clipboard!");
+        return;
+      }
+
+      toast.error("Sharing is not supported on this browser.");
+    } catch (error) {
+      console.error("Error sharing product:", error);
+      toast.error("Failed to share product");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white">
       <div className="container mx-auto px-4 py-3 sm:py-4 pt-28 sm:pt-40">
@@ -242,7 +268,10 @@ export default function DynamicProductPage({
                 fill
                 className="object-cover"
               />
-              <button className="absolute top-3 right-3 sm:top-4 sm:right-4 p-2 bg-white/90 hover:bg-white rounded-full transition-colors">
+              <button
+                onClick={handleShare}
+                className="absolute top-3 right-3 sm:top-4 sm:right-4 p-2 bg-white/90 hover:bg-white rounded-full transition-colors"
+              >
                 <Share2 className="h-4 w-4 text-gray-600" />
               </button>
             </div>

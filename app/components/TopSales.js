@@ -92,8 +92,9 @@ export default function TopSales() {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
-            {filtered.map((p) => {
+          <>
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+              {filtered.map((p) => {
               const discountPct =
                 p.originalPrice && p.price < p.originalPrice
                   ? Math.round(
@@ -181,7 +182,29 @@ export default function TopSales() {
                 </Link>
               );
             })}
-          </div>
+            </div>
+
+            <div className="mt-6 flex justify-center">
+              <button
+                type="button"
+                onClick={() => {
+                  const routeMap = {
+                    all: "/new-arrivals",
+                    necklaces: "/necklaces",
+                    bracelets: "/bracelets",
+                    earrings: "/earrings",
+                    rings: "/rings",
+                    mens: "/mens",
+                  };
+                  const target = routeMap[active] || "/new-arrivals";
+                  router.push(target);
+                }}
+                className="px-6 py-2 text-sm sm:text-base font-medium border border-neutral-900 text-neutral-900 hover:bg-neutral-900 hover:text-white transition-colors rounded-full"
+              >
+                Explore more
+              </button>
+            </div>
+          </>
         )}
       </div>
     </section>

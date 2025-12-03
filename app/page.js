@@ -44,7 +44,7 @@ export default function Home() {
       <SpecialBanner />
 
       {/* Coverflow slider */}
-      <Slider />
+      {/* <Slider /> */}
 
       {/* Top sales section */}
       <TopSales />
