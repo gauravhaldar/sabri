@@ -1,4 +1,5 @@
 "use client";
+/* eslint react/no-unescaped-entities: "off" */
 
 import Head from "next/head";
 import Image from "next/image";

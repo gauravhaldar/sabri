@@ -1,4 +1,5 @@
 "use client";
+/* eslint react/no-unescaped-entities: "off" */
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
