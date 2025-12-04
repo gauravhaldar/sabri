@@ -8,6 +8,7 @@ import Slider from "./components/Slider";
 import SpecialBanner from "./components/SpecialBanner";
 import Customers from "./components/Customers";
 import ShopWithConfidence from "./components/ShopWithConfidence";
+import Reels from "./components/Reels";
 import TestimonialsFQ from "./components/Testimonials&FQ";
 import Top from "./components/Top";
 
@@ -52,8 +53,11 @@ export default function Home() {
       {/* Shop with confidence section */}
       <ShopWithConfidence />
 
+      {/* Instagram Reels section */}
+      <Reels />
+
       {/* Customers section */}
-      <Customers />
+      {/* <Customers /> */}
 
       {/* Testimonials & FQ section */}
       <TestimonialsFQ />

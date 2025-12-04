@@ -8,8 +8,8 @@ import { ToastProvider } from "@/contexts/ToastContext";
 import GoogleAnalytics from "./components/GoogleAnalytics";
 
 export const metadata = {
-  title: "My Sabri",
-  description: "Jewelry store",
+  title: "Silver Jewellery Set Online – Pure 925 Designs | Mysabri",
+  description: "Shop premium silver jewellery set collections online at Mysabri. Pure 925 designs, elegant craftsmanship, and beautiful gifting options starting at just ₹999",
   verification: {
     google: "gaFxstefSBbycHnFXMP-vkFOpXUAxrfLhWXf81ss5aQ",
   },

@@ -445,6 +445,36 @@ export default function DynamicProductPage({
               >
                 BUY IT NOW
               </button>
+              <div className="mt-3 flex items-center justify-center gap-3 sm:gap-4">
+                <Image
+                  src="/footer/master.png"
+                  alt="Mastercard"
+                  width={32}
+                  height={20}
+                  className="h-5 w-auto"
+                />
+                <Image
+                  src="/footer/rupay.png"
+                  alt="RuPay"
+                  width={32}
+                  height={20}
+                  className="h-5 w-auto"
+                />
+                <Image
+                  src="/footer/visa.png"
+                  alt="Visa"
+                  width={32}
+                  height={20}
+                  className="h-5 w-auto"
+                />
+                <Image
+                  src="/footer/gp.png"
+                  alt="GPay"
+                  width={32}
+                  height={20}
+                  className="h-5 w-auto"
+                />
+              </div>
             </div>
             <div className="space-y-0 mt-6 sm:mt-8">
               <div className="bg-gray-50 p-4 rounded-md">

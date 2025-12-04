@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import Head from "next/head";
 import { Heart, ShoppingBag } from "lucide-react";
 import FiltersDrawer from "../components/FiltersDrawer";
 import { useEarrings } from "../../hooks/useProducts";
@@ -14,6 +15,39 @@ import {
   filterProducts,
   sortProducts,
 } from "../../lib/productUtils";
+
+const FAQS = [
+  {
+    question:
+      "Are Mysabri's silver earrings for women made from real 925 sterling silver?",
+    answer:
+      "Yes, all Mysabri silver earrings are made of genuine 925 sterling silver, which guarantees long-lasting lustre, durability, and skin-friendly comfort. Every item is meticulously created to ensure quality and purity.",
+  },
+  {
+    question:
+      "Which silver earrings are best for women who love everyday wear?",
+    answer:
+      "For everyday use, our silver earrings for women, including stud earrings, petite hoops, and simple drop designs, are suitable. They are lightweight, comfy, and suitable for both formal and informal attire.",
+  },
+  {
+    question:
+      "Do you offer long silver earrings for women suitable for parties or weddings?",
+    answer:
+      "Absolutely! Mysabri has a beautiful collection of long silver earrings for women that are perfect for festive events, weddings, and evening parties. These earrings add elegance and beautifully frame your face.",
+  },
+  {
+    question:
+      "Are sterling silver earrings safe for girls with sensitive ears?",
+    answer:
+      "Our sterling silver earrings for women are hypoallergenic and suitable for delicate skin. Made of pure 925 sterling silver, they provide comfort, lustre, and irritation-free usage, making them ideal for daily use.",
+  },
+  {
+    question:
+      "What are the most popular silver earring designs available at Mysabri?",
+    answer:
+      "Stud earrings, hoop earrings, long drop earrings, and trendy oxidised designs are some of our most popular types. These silver earrings are popular among both ladies and girls because of their elegance, adaptability, and superior polish.",
+  },
+];
 
 const ProductCard = ({ product, onAddToCart }) => {
   const [isWishlisted, setIsWishlisted] = useState(false);
@@ -155,6 +189,7 @@ export default function EarringsPage() {
   const filteredProducts = filterProducts(products, filters);
   const sortedProducts = sortProducts(filteredProducts, sortBy);
   const visibleProducts = sortedProducts.slice(0, visibleCount);
+  const [openFaqIndex, setOpenFaqIndex] = useState(null);
 
   useEffect(() => {
     setVisibleCount(INITIAL_VISIBLE_COUNT);
@@ -197,12 +232,21 @@ export default function EarringsPage() {
 
   return (
     <div className="min-h-screen bg-white">
+      <Head>
+        <title>
+          Buy Silver Earrings for women at 999 | 925 Sterling, Stud & Hoop
+        </title>
+        <meta
+          name="description"
+          content="Elegant Silver Earrings for Women at MySabri. Shop the best 925 sterling silver Earrings, studs, drop & hoop designs crafted to add sparkle to every occasion at 999/-"
+        />
+      </Head>
       {/* Hero Banner */}
       <div className="relative text-white pt-28 sm:pt-40 pb-48 sm:pb-60 overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
-            src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=2070&auto=format&fit=crop"
+            src="/earringb.png"
             alt="Earrings Banner"
             fill
             className="object-cover"
@@ -313,6 +357,190 @@ export default function EarringsPage() {
             </Link>
           </div>
         )}
+        <div className="mt-10 space-y-6 text-gray-800 text-sm sm:text-base leading-relaxed">
+          <h1 className="text-2xl sm:text-3xl font-bold text-black mb-2">
+            Our Best Silver Earrings for Women
+          </h1>
+          <p>
+            The finest silver earrings for women from Mysabri combine style and
+            craftsmanship to give any ensemble a timeless charm. Every item in our
+            collection is created by hand from 925 sterling silver. Our best silver
+            earrings for women guarantee years of purity, luster, and durability.
+            Mysabri offers the ideal set of silver earrings for every event, whether
+            you like striking long drop earrings, stylish silver hoop earrings, or
+            simple silver stud earrings.
+          </p>
+          <p>
+            At MySabri, we think that silver jewelry should represent your uniqueness
+            in addition to enhancing your appearance. Each piece is therefore
+            carefully crafted to strike a balance between comfort and refinement.
+            Discover luxury that suits your taste and price range by looking through
+            our extensive selection of pure silver earrings for women & girls.
+          </p>
+
+          <h2 className="text-xl sm:text-2xl font-semibold text-black">
+            Elegant 925 Sterling Silver Earrings for Women
+          </h2>
+          <p>
+            Our 925 sterling silver earrings for women offer unparalleled quality and
+            luster. These precisely crafted silver earrings add elegance, durability,
+            and a long-lasting gloss to any ensemble. The sterling silver line from
+            Mysabri adds classic elegance and sophistication to your daily look. Get
+            the purest silver jewelry, including earrings, right now.
+          </p>
+
+          <h2 className="text-xl sm:text-2xl font-semibold text-black">
+            Long and Drop Silver Earrings to Elevate Your Look
+          </h2>
+          <p>
+            Perfect for nighttime wear or events, these long silver earrings and
+            silver drop earrings will add to your elegance. These patterns, which are
+            lightweight and adaptable, elegantly draw attention to your neckline and
+            make a statement wherever you go.
+          </p>
+
+          <h2 className="text-xl sm:text-2xl font-semibold text-black">
+            Silver Earrings for Women to Redefine Your Style
+          </h2>
+          <p>
+            With silver earrings for women from Mysabri, you may exude classic
+            elegance. Each pair is made from high-quality 925 sterling silver, which
+            adds beauty and durability. Whether you prefer elegant drops, dramatic
+            hoops, or classic studs, our selection of silver earrings is made to fit
+            any occasion or mood. These earrings enhance your appearance with
+            refinement and shine, making them ideal for both festive occasions and
+            everyday wear. Discover designs that skillfully combine traditional
+            workmanship and modern design, making Mysabri your one-stop shop for
+            exquisite silver earrings and jewelry.
+          </p>
+
+          <h2 className="text-xl sm:text-2xl font-semibold text-black">
+            Long Silver Earrings for Women – Graceful Designs for Every Occasion
+          </h2>
+          <p>
+            Long silver earrings for women from Mysabri will give your look a dash of
+            glitz and refinement. These elegant earrings go well with any ensemble and
+            are ideal for weddings, parties, and festive occasions. Our long silver
+            earrings are crafted with precision, combining lightweight comfort with
+            intricate detailing to create a look that’s both modern and timeless.
+            Regardless of your preference for bold danglers or simple silver
+            earrings, each style exquisitely frames your face, enhancing your look
+            with elegance and shine.
+          </p>
+
+          <h2 className="text-xl sm:text-2xl font-semibold text-black">
+            Sterling Silver Earrings for Girls – Chic and Everyday Ready
+          </h2>
+          <p>
+            Mysabri offers a delightful range of sterling silver earrings for girls
+            that are the ideal combination of simplicity and elegance. Each pair of
+            silver earrings, from delicate studs to small hoops, is made of pure 925
+            sterling silver, making them safe, hypoallergenic, and easy to wear every
+            day. These silver earrings are perfect for school, work, or casual
+            outings, offering uncomplicated appeal for every occasion. Give her a pair
+            now and watch her radiate with confidence and elegance.
+          </p>
+
+          <h2 className="text-xl sm:text-2xl font-semibold text-black">
+            Premium Sterling Silver Earrings to Suit Every Style
+          </h2>
+          <p>
+            Our exquisite selection of sterling silver earrings at Mysabri is made to
+            fit all tastes and personalities. From delicate studs to striking
+            statement pieces, our silver earrings collection has something for
+            everyone, whether you prefer sleek, contemporary jewelry or classic
+            elegance. For optimal purity, luster, and longevity, genuine 925 sterling
+            silver is used to craft each pair of ladies' and girls' silver earrings.
+            Our hypoallergenic, skin-safe earrings are ideal for both special events
+            and everyday usage. Mysabri's silver earrings are the ideal option for
+            self-expression, dressing, and gifting, thanks to their classic styles and
+            finely crafted details. Savor long-lasting elegance with ease and
+            affordability.
+          </p>
+
+          <h2 className="text-xl sm:text-2xl font-semibold text-black">
+            Stylish Silver Hoop Earrings for Every Occasion
+          </h2>
+          <p>
+            Add flair to your look with our silver hoop earrings, available in small,
+            large, and textured designs. Whether it’s a casual outing or festive
+            celebration, these hoops bring effortless charm and modern appeal to your
+            ensemble.
+          </p>
+
+          <h2 className="text-xl sm:text-2xl font-semibold text-black">
+            Long and Drop Silver Earrings to Elevate Your Look
+          </h2>
+          <p>
+            Enhance your elegance with our long silver earrings and silver drop
+            earrings, perfect for parties or evening wear. Lightweight and versatile,
+            these designs highlight your neckline beautifully and make a graceful
+            statement wherever you go.
+          </p>
+
+          <h2 className="text-xl sm:text-2xl font-semibold text-black">
+            Unique Silver Earrings Design for Women and Girls
+          </h2>
+          <p>
+            Mysabri combines traditional artistry with modern fashion to create a vast
+            array of earrings designed for women and girls. Every design, from tiny
+            drops to striking hoops, exudes originality, style, and fine craftsmanship
+            for the contemporary woman.
+          </p>
+
+          <h2 className="text-xl sm:text-2xl font-semibold text-black">
+            Fashionable Silver Stud Earrings for Everyday Use
+          </h2>
+          <p>
+            For ladies who enjoy understated yet sophisticated accessories, our silver
+            stud earrings are ideal. Each pair has a comfortable fit and a polished
+            finish, making them perfect for everyday use. Examine simple looks that
+            incorporate a hint of glitz without overwhelming your appearance.
+          </p>
+
+          <h2 className="text-xl sm:text-2xl font-semibold text-black">
+            925 Silver Rings for Women – Authentic Craftsmanship You Can Trust
+          </h2>
+          <p>
+            Complete your look by pairing these elegant 925 silver rings with our beautifully crafted silver earrings for women. Mysabri offers a wide range of stylish silver earrings — from minimalist studs to premium designer pieces — all made from pure 925 sterling silver. These 925 silver earrings complement our <Link
+              href="https://www.mysabri.in/rings"
+              className="hover:underline"
+            > ring collection </Link>
+            perfectly, helping you create a coordinated and elegant jewellery set for both daily wear and special occasions.
+          </p>
+
+          <h3 className="text-xl sm:text-2xl font-semibold text-black">
+            FAQs For Silver Earrings
+          </h3>
+          <div className="space-y-3 mt-2">
+            {FAQS.map((faq, index) => (
+              <div
+                key={faq.question}
+                className="border border-gray-200 rounded-md overflow-hidden"
+              >
+                <button
+                  type="button"
+                  onClick={() =>
+                    setOpenFaqIndex(openFaqIndex === index ? null : index)
+                  }
+                  className="w-full flex items-center justify-between px-3 py-2 text-left bg-gray-50 hover:bg-gray-100"
+                >
+                  <span className="font-semibold text-sm sm:text-base text-gray-900">
+                    {faq.question}
+                  </span>
+                  <span className="ml-2 text-lg leading-none text-gray-600">
+                    {openFaqIndex === index ? "-" : "+"}
+                  </span>
+                </button>
+                {openFaqIndex === index && (
+                  <div className="px-3 py-2 text-xs sm:text-sm text-gray-700 bg-white">
+                    {faq.answer}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

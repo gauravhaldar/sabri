@@ -233,7 +233,7 @@ export default function NewArrivalsPage() {
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
-            src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=2070&auto=format&fit=crop"
+            src="/nb.png"
             alt="New Arrivals Banner"
             fill
             className="object-cover"
