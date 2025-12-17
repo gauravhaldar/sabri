@@ -186,7 +186,7 @@ export default function Navbar() {
         }`}
       >
         <div className="mx-auto max-w-7xl px-3">
-          <form
+          {/* <form
             className="py-3"
             onSubmit={(e) => {
               e.preventDefault();
@@ -207,7 +207,7 @@ export default function Navbar() {
                   : "bg-white text-neutral-900"
               }`}
             />
-          </form>
+          </form> */}
 
           <div className="grid grid-cols-2 gap-3 pb-3 text-sm">
             {[
@@ -221,7 +221,7 @@ export default function Navbar() {
               { name: "Ring Cum Bangle", href: "/ring-cum-bangle" },
               { name: "Mens", href: "/mens" },
               { name: "Gifts", href: "/gifts" },
-              { name: "Collections", href: "/collections" },
+              // { name: "Collections", href: "/collections" },
             ].map((item) => (
               <Link
                 key={item.name}

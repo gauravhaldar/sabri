@@ -8,32 +8,32 @@ export default function Category({
   items = [
     {
       title: "Rings",
-      imageSrc: "/category/ring.jpg",
+      imageSrc: "/every/ring.jpeg",
       href: "/rings",
     },
     {
       title: "Earrings",
-      imageSrc: "/category/earring.jpg",
+      imageSrc: "/every/earring.jpeg",
       href: "/earrings",
     },
     {
       title: "Necklaces",
-      imageSrc: "/category/necklace.jpg",
+      imageSrc: "/every/neck.jpeg",
       href: "/necklaces",
     },
     {
       title: "Bracelets",
-      imageSrc: "/category/bracelet.jpg",
+      imageSrc: "/every/brace.jpeg",
       href: "/bracelets",
     },
     {
       title: "Gifts",
-      imageSrc: "/category/gifts.jpg",
+      imageSrc: "/every/gifts.jpeg",
       href: "/gifts",
     },
     {
       title: "Men's",
-      imageSrc: "/category/mens.webp",
+      imageSrc: "/every/men.jpeg",
       href: "/mens",
     },
   ],

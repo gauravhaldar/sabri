@@ -244,7 +244,7 @@ export default function NecklacesPage() {
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
-            src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=2070&auto=format&fit=crop"
+            src="/banner/neck.jpeg"
             alt="Necklaces Banner"
             fill
             className="object-cover"
@@ -255,13 +255,11 @@ export default function NecklacesPage() {
         </div>
         
         {/* Content */}
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-block">
-              <span className="inline-block bg-white/10 backdrop-blur-sm border border-white/20 text-white text-xs sm:text-sm px-4 py-2 rounded-full font-medium tracking-wide">
-                 NECKLACES
-              </span>
-            </div>
+        <div className="absolute inset-0 flex items-center justify-center z-10">
+          <div className="text-center mt-18">
+            <span className="inline-block bg-white/10 backdrop-blur-sm border border-white/20 text-white text-xs sm:text-sm px-4 py-2 rounded-full font-medium tracking-wide">
+               NECKLACES
+            </span>
           </div>
         </div>
         
