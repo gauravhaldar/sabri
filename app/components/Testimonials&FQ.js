@@ -70,444 +70,477 @@ export default function MysabriJewellery() {
   const [openFaqIndex, setOpenFaqIndex] = useState(null);
 
   return (
-    <section className="w-full bg-white py-12 sm:py-20 lg:py-28 font-sans text-neutral-800">
+    <section className="w-full bg-gradient-to-br from-amber-50 via-white to-amber-50/30 py-12 sm:py-20 lg:py-28 font-sans text-neutral-800">
       <div className="w-full px-4 sm:px-6 lg:px-16">
         {/* Heading */}
-        <h1 className="text-left text-2xl sm:text-4xl md:text-5xl font-serif font-normal uppercase tracking-wide mb-6 sm:mb-8 text-neutral-900">
-          silver jewellery set
-        </h1>
+        <div className="text-center mb-12 sm:mb-16">
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-serif font-normal uppercase tracking-wide text-neutral-900 mb-4">
+            silver jewellery set
+          </h1>
+          <div className="w-24 h-1 bg-gradient-to-r from-amber-400 to-yellow-500 mx-auto rounded-full"></div>
+        </div>
 
-        <div className="space-y-8 sm:space-y-10 text-neutral-700 text-[14px] sm:text-base leading-relaxed">
-          {/* Intro */}
-          <p>
+        {/* Intro Section */}
+        <div className="max-w-4xl mx-auto text-center mb-16 sm:mb-24 bg-white/60 backdrop-blur-sm rounded-3xl p-8 sm:p-12 shadow-lg border border-amber-100">
+          <p className="text-base sm:text-lg leading-relaxed text-neutral-700">
             A silver jewellery set is an ideal combination of elegance, flair, and
             eternal beauty. Whether you're preparing for a wedding, a party, or an
             everyday stylish appearance, a silver jewellery set always complements
             your inherent beauty. These jewellery sets, made of premium-quality 925
             sterling silver, include wonderfully designed necklaces, earrings,
             bangles, bracelets, and pendants, making them suitable for every
-            occasion.A well-made silver jewellery set not only complements your dress, but it
-            also expresses your individuality and fashion sense. Silver's sheen,
-            durability, and affordability make it a popular option among modern women
-            who want minimalist yet exquisite accessories. From classic handcrafted
-            pieces to fashionable modern designs, silver jewellery sets provide
-            limitless ways to show your personality.Whether you desire a basic and elegant appearance or a bold and
-            fashionable statement, the perfect silver jewellery set can easily
-            complete your style and set you apart. Silver jewellery remains a
-            favourite accessory for people of all ages, making it ideal for gifting,
-            special occasions, and everyday use.
+            occasion.
           </p>
+        </div>
 
-          {/* 1. Stunning Silver Jewellery Set Designs for Every Special Occasion */}
-          <h2 className="text-xl sm:text-3xl font-serif font-normal mt-10 sm:mt-12 text-neutral-900">
-            Stunning Silver Jewellery Set Designs for Every Special Occasion
-          </h2>
-          <p>
-            When it comes to multipurpose accessories, a silver jewellery set is one
-            of the most classic options for women. Whether you're preparing for a
-            wedding, festival, corporate function, or a casual outing, a silver
-            jewellery set complements any ensemble.
-            Modern trends include minimalist silver pendant sets, oxidised silver
-            choker sets, Kundan-inspired silver jewellery, and 925 sterling silver
-            necklace-and-earring sets, each with a distinct combination of style and
-            elegance.
-            {!showMore1 && (
-              <button
-                type="button"
-                onClick={() => setShowMore1(true)}
-                className="ml-1 text-sm font-medium text-neutral-900 underline inline"
-              >
-                Read more
-              </button>
-            )}
-          </p>
-          {showMore1 && (
-            <>
-              <p>
-                For special events like weddings, women love bold and ornate silver
-                jewellery sets with traditional themes and exquisite workmanship. On
-                the other hand, lightweight and simple styles are ideal for everyday
-                wear and workplace outfits, providing both comfort and refinement.
-              </p>
-              <p>
-                Contemporary designs now use silver, pearls, gemstones, and
-                sophisticated geometric patterns to fit any personality. If you're
-                searching for a collection that can be worn for every occasion, from
-                parties to everyday dressing, Mysabri has beautifully crafted silver
-                jewellery sets that will instantly enhance your fashion game.
-              </p>
-              <button
-                type="button"
-                onClick={() => setShowMore1(false)}
-                className="text-sm font-medium text-neutral-900 underline"
-              >
-                Read less
-              </button>
-            </>
-          )}
+        {/* Zig-zag Content Sections */}
+        <div className="space-y-16 sm:space-y-24">
+          
+          {/* Section 1 - Content Left, Image Right */}
+          <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
+            <div className="lg:w-1/2 space-y-4">
+              <h2 className="text-xl sm:text-3xl font-serif font-normal text-neutral-900 mb-6">
+                Stunning Silver Jewellery Set Designs for Every Special Occasion
+              </h2>
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md border border-amber-100/50">
+                <p className="text-sm sm:text-base leading-relaxed text-neutral-700 mb-4">
+                  When it comes to multipurpose accessories, a silver jewellery set is one
+                  of the most classic options for women. Whether you're preparing for a
+                  wedding, festival, corporate function, or a casual outing, a silver
+                  jewellery set complements any ensemble.
+                </p>
+                {!showMore1 && (
+                  <button
+                    type="button"
+                    onClick={() => setShowMore1(true)}
+                    className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                  >
+                    Read more
+                  </button>
+                )}
+                {showMore1 && (
+                  <div className="space-y-4">
+                    <p className="text-sm sm:text-base leading-relaxed text-neutral-700">
+                      For special events like weddings, women love bold and ornate silver
+                      jewellery sets with traditional themes and exquisite workmanship. On
+                      the other hand, lightweight and simple styles are ideal for everyday
+                      wear and workplace outfits, providing both comfort and refinement.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => setShowMore1(false)}
+                      className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                    >
+                      Read less
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="lg:w-1/2">
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
+                <img 
+                  src="/seo/s1.jpeg" 
+                  alt="Elegant silver jewellery set for special occasions"
+                  className="w-full h-80 object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+              </div>
+            </div>
+          </div>
 
-          {/* 2. The Most Elegant Silver Jewellery Set Designs for All Events */}
-          <h2 className="text-xl sm:text-3xl font-serif font-normal mt-10 sm:mt-12 text-neutral-900">
-            The Most Elegant Silver Jewellery Set Designs for All Events
-          </h2>
-          <p>
-            A silver jewellery set is one of the most versatile accessories a woman
-            may have. Its natural sheen, lightweight feel, and timeless beauty make
-            it suitable for both everyday use and special events. Silver jewellery
-            sets are ideal for everyday use since they provide a delicate appeal
-            without being heavy or overbearing.
-            {!showMore2 && (
-              <button
-                type="button"
-                onClick={() => setShowMore2(true)}
-                className="ml-1 text-sm font-medium text-neutral-900 underline inline"
-              >
-                Read more
-              </button>
-            )}
-          </p>
-          {showMore2 && (
-            <>
-              <p>
-                Simple sterling silver pendants, basic earrings, and lightweight
-                silver sets look great with workplace attire, casual dresses, and
-                trendy ethnic wear. Silver jewellery glows even brighter when worn at
-                parties. Intricate designs, oxidised workmanship, and
-                gemstone-enhanced silver settings give a striking and spectacular
-                appearance.
-              </p>
-              <p>
-                Whether it's a wedding, festival, or cocktail party, a finely carved
-                925 silver jewellery set instantly enhances your overall appearance
-                and complements any attire. Silver looks well on all skin tones and
-                complements practically every colour, making it a popular option among
-                modern women. With options ranging from contemporary to classic,
-                silver jewellery sets provide the perfect blend of elegance, comfort,
-                and style for both everyday wear and celebrations.
-              </p>
-              <button
-                type="button"
-                onClick={() => setShowMore2(false)}
-                className="text-sm font-medium text-neutral-900 underline"
-              >
-                Read less
-              </button>
-            </>
-          )}
+          {/* Section 2 - Image Left, Content Right */}
+          <div className="flex flex-col lg:flex-row-reverse items-center gap-8 lg:gap-16">
+            <div className="lg:w-1/2 space-y-4">
+              <h2 className="text-xl sm:text-3xl font-serif font-normal text-neutral-900 mb-6">
+                The Most Elegant Silver Jewellery Set Designs for All Events
+              </h2>
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md border border-amber-100/50">
+                <p className="text-sm sm:text-base leading-relaxed text-neutral-700 mb-4">
+                  A silver jewellery set is one of the most versatile accessories a woman
+                  may have. Its natural sheen, lightweight feel, and timeless beauty make
+                  it suitable for both everyday use and special events.
+                </p>
+                {!showMore2 && (
+                  <button
+                    type="button"
+                    onClick={() => setShowMore2(true)}
+                    className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                  >
+                    Read more
+                  </button>
+                )}
+                {showMore2 && (
+                  <div className="space-y-4">
+                    <p className="text-sm sm:text-base leading-relaxed text-neutral-700">
+                      Simple sterling silver pendants, basic earrings, and lightweight
+                      silver sets look great with workplace attire, casual dresses, and
+                      trendy ethnic wear. Silver jewellery glows even brighter when worn at
+                      parties.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => setShowMore2(false)}
+                      className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                    >
+                      Read less
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="lg:w-1/2">
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
+                <img 
+                  src="/seo/s3.jpeg" 
+                  alt="Versatile silver jewellery for all events"
+                  className="w-full h-80 object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+              </div>
+            </div>
+          </div>
 
-          {/* 3. Trending Silver Jewellery Set Designs Every Woman Will Love */}
-          <h2 className="text-xl sm:text-3xl font-serif font-normal mt-10 sm:mt-12 text-neutral-900">
-            Trending Silver Jewellery Set Designs Every Woman Will Love
-          </h2>
-          <p>
-            Choosing the right silver jewellery set depends on your personal style,
-            wardrobe choices, and the occasions you dress for. If you want a
-            minimalist and modern appearance, choose basic 925 silver jewellery sets
-            with clean lines, modest pendants, and lightweight earrings.
-            {!showMore3 && (
-              <button
-                type="button"
-                onClick={() => setShowMore3(true)}
-                className="ml-1 text-sm font-medium text-neutral-900 underline inline"
-              >
-                Read more
-              </button>
-            )}
-          </p>
-          {showMore3 && (
-            <>
-              <p>
-                These designs go well with casual clothing, western dresses, and
-                office attire without being overly heavy or flashy. For those who
-                prefer classic or festive styles, consider oxidised silver jewellery
-                sets, elaborate patterns, or gemstone-adorned pieces. These sets
-                complement ethnic ensembles such as sarees, lehengas, and kurtis,
-                giving you a bold and sophisticated look.
-              </p>
-              <p>
-                Your skin tone and face shape also influence the best choice. Long,
-                sleek necklaces suit round faces, while heart-shaped or oval faces
-                look wonderful with choker-style silver sets. If you often attend
-                parties or festivities, investing in a high-quality pure silver
-                jewellery set guarantees durability, brightness, and long-term value.
-                Whether you choose traditional, modern, or festive designs, the right
-                silver jewellery set ensures you always appear elegant and
-                confident.
-              </p>
-              <button
-                type="button"
-                onClick={() => setShowMore3(false)}
-                className="text-sm font-medium text-neutral-900 underline"
-              >
-                Read less
-              </button>
-            </>
-          )}
+          {/* Section 3 - Content Left, Image Right */}
+          <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
+            <div className="lg:w-1/2 space-y-4">
+              <h2 className="text-xl sm:text-3xl font-serif font-normal text-neutral-900 mb-6">
+                Trending Silver Jewellery Set Designs Every Woman Will Love
+              </h2>
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md border border-amber-100/50">
+                <p className="text-sm sm:text-base leading-relaxed text-neutral-700 mb-4">
+                  Choosing the right silver jewellery set depends on your personal style,
+                  wardrobe choices, and the occasions you dress for. If you want a
+                  minimalist and modern appearance, choose basic 925 silver jewellery sets.
+                </p>
+                {!showMore3 && (
+                  <button
+                    type="button"
+                    onClick={() => setShowMore3(true)}
+                    className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                  >
+                    Read more
+                  </button>
+                )}
+                {showMore3 && (
+                  <div className="space-y-4">
+                    <p className="text-sm sm:text-base leading-relaxed text-neutral-700">
+                      These designs go well with casual clothing, western dresses, and
+                      office attire without being overly heavy or flashy. For those who
+                      prefer classic or festive styles, consider oxidised silver jewellery
+                      sets with elaborate patterns.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => setShowMore3(false)}
+                      className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                    >
+                      Read less
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="lg:w-1/2">
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
+                <img 
+                  src="/seo/s2.jpeg" 
+                  alt="Trending silver jewellery designs"
+                  className="w-full h-80 object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+              </div>
+            </div>
+          </div>
 
-          {/* 4. Handpicked Silver Jewellery Set Designs for Every Moment That Matters */}
-          <h2 className="text-xl sm:text-3xl font-serif font-normal mt-10 sm:mt-12 text-neutral-900">
-            Handpicked Silver Jewellery Set Designs for Every Moment That Matters
-          </h2>
-          <p>
-            Wearing a 925 sterling silver jewellery set has several style and comfort
-            benefits, making it a popular choice for women of all ages. One of the
-            most significant advantages is durability — 925 silver is crafted from
-            92.5% pure silver, making it sturdy enough for daily use while preserving
-            a lovely natural shine.
-            {!showMore4 && (
-              <button
-                type="button"
-                onClick={() => setShowMore4(true)}
-                className="ml-1 text-sm font-medium text-neutral-900 underline inline"
-              >
-                Read more
-              </button>
-            )}
-          </p>
-          {showMore4 && (
-            <>
-              <p>
-                It does not corrode or lose its shine easily, so your favourite sets
-                will remain beautiful for years. Another advantage is skin
-                friendliness. 925 sterling silver jewellery sets are hypoallergenic,
-                making them suitable for sensitive skin and long periods of wear.
-              </p>
-              <p>
-                Their lightweight feel provides comfort whether you're dressed for
-                work, a casual outing, or a celebratory occasion. A 925 silver
-                jewellery set also offers exceptional versatility. It pairs well with
-                western outfits, ethnic attire, and party dresses, making it a
-                must-have in any wardrobe. If you value elegance, comfort, and
-                long-term value, a 925 sterling silver jewellery set is the perfect
-                companion for everyday sophistication.
-              </p>
-              <button
-                type="button"
-                onClick={() => setShowMore4(false)}
-                className="text-sm font-medium text-neutral-900 underline"
-              >
-                Read less
-              </button>
-            </>
-          )}
+          {/* Section 4 - Image Left, Content Right */}
+          <div className="flex flex-col lg:flex-row-reverse items-center gap-8 lg:gap-16">
+            <div className="lg:w-1/2 space-y-4">
+              <h2 className="text-xl sm:text-3xl font-serif font-normal text-neutral-900 mb-6">
+                Handpicked Silver Jewellery Set Designs for Every Moment
+              </h2>
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md border border-amber-100/50">
+                <p className="text-sm sm:text-base leading-relaxed text-neutral-700 mb-4">
+                  Wearing a 925 sterling silver jewellery set has several style and comfort
+                  benefits, making it a popular choice for women of all ages. One of the
+                  most significant advantages is durability.
+                </p>
+                {!showMore4 && (
+                  <button
+                    type="button"
+                    onClick={() => setShowMore4(true)}
+                    className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                  >
+                    Read more
+                  </button>
+                )}
+                {showMore4 && (
+                  <div className="space-y-4">
+                    <p className="text-sm sm:text-base leading-relaxed text-neutral-700">
+                      925 silver is crafted from 92.5% pure silver, making it sturdy enough for daily use while preserving
+                      a lovely natural shine. It does not corrode or lose its shine easily.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => setShowMore4(false)}
+                      className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                    >
+                      Read less
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="lg:w-1/2">
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
+                <img 
+                  src="/seo/s4.jpeg" 
+                  alt="925 sterling silver jewellery benefits"
+                  className="w-full h-80 object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+              </div>
+            </div>
+          </div>
 
-          {/* 5. Elevate Your Look with the Latest Silver Jewellery Set Designs */}
-          <h2 className="text-xl sm:text-3xl font-serif font-normal mt-10 sm:mt-12 text-neutral-900">
-            Elevate Your Look with the Latest Silver Jewellery Set Designs
-          </h2>
-          <p>
-            Knowing what to look for makes it simple to identify a genuine 925
-            silver jewellery set. Authentic pieces always have a "925" or "Sterling"
-            hallmark, which is commonly etched on the necklace clasp, earrings, or
-            pendants. This symbol indicates that the jewellery contains 92.5% pure
-            silver.
-            {!showMore5 && (
-              <button
-                type="button"
-                onClick={() => setShowMore5(true)}
-                className="ml-1 text-sm font-medium text-neutral-900 underline inline"
-              >
-                Read more
-              </button>
-            )}
-          </p>
-          {showMore5 && (
-            <>
-              <p>
-                Real silver has a smooth, lustrous sheen and develops a natural
-                patina over time, as opposed to fake metals, which appear too glossy
-                or dull. The magnet test is another way to determine authenticity;
-                genuine 925 silver is not magnetic and should not stick to a magnet.
-              </p>
-              <p>
-                You may also perform a soft cloth rub test — real silver leaves a
-                slight black mark due to natural oxidation. Purchasing from reputable
-                retailers such as Mysabri ensures that your silver jewellery set is
-                certified, high-quality, and made from genuine sterling silver.
-              </p>
-              <p>
-                To style your look even more beautifully, explore our elegant collection of 925 Silver Bracelets designed to pair perfectly with any <Link
-              href="https://www.mysabri.in/earrings"
-              className="hover:underline"
-            > silver earrings</Link> Each bracelet is crafted from genuine 92.5 sterling silver, offering the same shine, purity, and long-lasting durability as our earrings. Match your favourite earrings with a stylish bracelet to create a complete and sophisticated silver jewellery set.
-              </p>
-              <button
-                type="button"
-                onClick={() => setShowMore5(false)}
-                className="text-sm font-medium text-neutral-900 underline"
-              >
-                Read less
-              </button>
-            </>
-          )}
+          {/* Section 5 - Content Left, Image Right */}
+          <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
+            <div className="lg:w-1/2 space-y-4">
+              <h2 className="text-xl sm:text-3xl font-serif font-normal text-neutral-900 mb-6">
+                Elevate Your Look with Latest Silver Jewellery Set Designs
+              </h2>
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md border border-amber-100/50">
+                <p className="text-sm sm:text-base leading-relaxed text-neutral-700 mb-4">
+                  Knowing what to look for makes it simple to identify a genuine 925
+                  silver jewellery set. Authentic pieces always have a "925" or "Sterling"
+                  hallmark etched on the necklace clasp, earrings, or pendants.
+                </p>
+                {!showMore5 && (
+                  <button
+                    type="button"
+                    onClick={() => setShowMore5(true)}
+                    className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                  >
+                    Read more
+                  </button>
+                )}
+                {showMore5 && (
+                  <div className="space-y-4">
+                    <p className="text-sm sm:text-base leading-relaxed text-neutral-700">
+                      Real silver has a smooth, lustrous sheen and develops a natural
+                      patina over time. You can also perform a magnet test — genuine 925 silver is not magnetic.
+                    </p>
+                    <p className="text-sm sm:text-base leading-relaxed text-neutral-700">
+                      To style your look even more beautifully, explore our elegant collection of 925 Silver Bracelets designed to pair perfectly with any <Link
+                      href="https://www.mysabri.in/earrings"
+                      className="text-amber-700 hover:text-amber-800 underline font-medium"
+                    > silver earrings</Link>. Each bracelet is crafted from genuine 92.5 sterling silver.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => setShowMore5(false)}
+                      className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                    >
+                      Read less
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="lg:w-1/2">
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
+                <img 
+                  src="/seo/s5.jpeg" 
+                  alt="Authentic 925 silver hallmarks and quality"
+                  className="w-full h-80 object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+              </div>
+            </div>
+          </div>
 
-          {/* 6. Explore the Finest Silver Jewellery Set Designs for Any Occasion */}
-          <h2 className="text-xl sm:text-3xl font-serif font-normal mt-10 sm:mt-12 text-neutral-900">
-            Explore the Finest Silver Jewellery Set Designs for Any Occasion
-          </h2>
-          <p>
-            Finding the ideal silver jewellery set gift does not have to be
-            difficult — there are stunning options for every budget. For an
-            affordable yet elegant gift, simple sterling silver pendant-and-earring
-            sets are an excellent choice.
-            {!showMore6 && (
-              <button
-                type="button"
-                onClick={() => setShowMore6(true)}
-                className="ml-1 text-sm font-medium text-neutral-900 underline inline"
-              >
-                Read more
-              </button>
-            )}
-          </p>
-          {showMore6 && (
-            <>
-              <p>
-                These lightweight designs provide beauty and brilliance at an
-                accessible price point, making them perfect for birthdays,
-                anniversaries, or thoughtful everyday gifting. At mid-range prices,
-                designer 925 silver jewellery sets with sophisticated craftsmanship,
-                gemstone embellishments, or fashionable motifs offer a luxurious look
-                and feel.
-              </p>
-              <p>
-                These sets are ideal for special occasions such as weddings,
-                festivals, and formal celebrations. Premium pure silver jewellery sets
-                with handcrafted detailing are the finest option for someone who loves
-                statement jewellery. They exude refinement and timeless beauty,
-                making them perfect for milestone events. A silver jewellery set,
-                regardless of budget, is always a meaningful, long-lasting gift that
-                blends style, tradition, and elegance.
-              </p>
-              <button
-                type="button"
-                onClick={() => setShowMore6(false)}
-                className="text-sm font-medium text-neutral-900 underline"
-              >
-                Read less
-              </button>
-            </>
-          )}
+          {/* Section 6 - Image Left, Content Right */}
+          <div className="flex flex-col lg:flex-row-reverse items-center gap-8 lg:gap-16">
+            <div className="lg:w-1/2 space-y-4">
+              <h2 className="text-xl sm:text-3xl font-serif font-normal text-neutral-900 mb-6">
+                Finest Silver Jewellery Set Designs for Any Occasion
+              </h2>
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md border border-amber-100/50">
+                <p className="text-sm sm:text-base leading-relaxed text-neutral-700 mb-4">
+                  Finding the ideal silver jewellery set gift does not have to be
+                  difficult — there are stunning options for every budget. Simple sterling silver pendant-and-earring
+                  sets are an excellent choice for affordable elegance.
+                </p>
+                {!showMore6 && (
+                  <button
+                    type="button"
+                    onClick={() => setShowMore6(true)}
+                    className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                  >
+                    Read more
+                  </button>
+                )}
+                {showMore6 && (
+                  <div className="space-y-4">
+                    <p className="text-sm sm:text-base leading-relaxed text-neutral-700">
+                      At mid-range prices, designer 925 silver jewellery sets with sophisticated craftsmanship offer a luxurious look and feel. Premium pure silver sets are perfect for milestone events.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => setShowMore6(false)}
+                      className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                    >
+                      Read less
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="lg:w-1/2">
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
+                <img 
+                  src="/seo/s6.jpeg" 
+                  alt="Silver jewellery gift options for every budget"
+                  className="w-full h-80 object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+              </div>
+            </div>
+          </div>
 
-          {/* 7. Unveiling the Latest Silver Jewellery Set Designs for Timeless Elegance */}
-          <h2 className="text-xl sm:text-3xl font-serif font-normal mt-10 sm:mt-12 text-neutral-900">
-            Unveiling the Latest Silver Jewellery Set Designs for Timeless Elegance
-          </h2>
-          <p>
-            Shop for your favourite silver jewellery set online at Mysabri and
-            experience a curated range of premium designs made from high-quality 925
-            sterling silver. Whether you want an elegant pure silver jewellery set, a
-            fashionable oxidised set, or a traditional silver
-            necklace-and-earring combination, Mysabri has something for you.
-            {!showMore7 && (
-              <button
-                type="button"
-                onClick={() => setShowMore7(true)}
-                className="ml-1 text-sm font-medium text-neutral-900 underline inline"
-              >
-                Read more
-              </button>
-            )}
-          </p>
-          {showMore7 && (
-            <>
-              <p>
-                Each jewellery set is meticulously designed for durability, lustre,
-                and skin-friendly wear — ideal for everyday use or special events.
-                Our sets start at just ₹1399, making luxury accessible without
-                compromising on quality.
-              </p>
-              <p>
-                You can shop for a 925 silver jewellery set from Mysabri with
-                confidence thanks to secure payments, fast shipping, and a reliable
-                online shopping experience. Discover our unique designs, on-trend
-                themes, and timeless classics — all in one place.
-              </p>
-              <button
-                type="button"
-                onClick={() => setShowMore7(false)}
-                className="text-sm font-medium text-neutral-900 underline"
-              >
-                Read less
-              </button>
-            </>
-          )}
+          {/* Section 7 - Content Left, Image Right */}
+          <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
+            <div className="lg:w-1/2 space-y-4">
+              <h2 className="text-xl sm:text-3xl font-serif font-normal text-neutral-900 mb-6">
+                Latest Silver Jewellery Set Designs for Timeless Elegance
+              </h2>
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md border border-amber-100/50">
+                <p className="text-sm sm:text-base leading-relaxed text-neutral-700 mb-4">
+                  Shop for your favourite silver jewellery set online at Mysabri and
+                  experience a curated range of premium designs made from high-quality 925
+                  sterling silver. Our sets start at just ₹1399.
+                </p>
+                {!showMore7 && (
+                  <button
+                    type="button"
+                    onClick={() => setShowMore7(true)}
+                    className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                  >
+                    Read more
+                  </button>
+                )}
+                {showMore7 && (
+                  <div className="space-y-4">
+                    <p className="text-sm sm:text-base leading-relaxed text-neutral-700">
+                      Each jewellery set is meticulously designed for durability, lustre,
+                      and skin-friendly wear. Enjoy secure payments, fast shipping, and a reliable
+                      online shopping experience.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => setShowMore7(false)}
+                      className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                    >
+                      Read less
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="lg:w-1/2">
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
+                <img 
+                  src="/seo/s7.jpeg" 
+                  alt="Mysabri online silver jewellery collection"
+                  className="w-full h-80 object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+              </div>
+            </div>
+          </div>
 
-          {/* 8. Premium Silver Jewellery Set Designs Perfect for Every Celebration */}
-          <h2 className="text-xl sm:text-3xl font-serif font-normal mt-10 sm:mt-12 text-neutral-900">
-            Premium Silver Jewellery Set Designs Perfect for Every Celebration
-          </h2>
-          <p>
-            A premium silver jewellery set is more than just an accessory; it is a
-            timeless statement of beauty, grace, and refinement. Whether you're
-            preparing for a wedding, festival, anniversary, party, or a casual family
-            gathering, the right silver jewellery set can instantly elevate your
-            entire look.
-            {!showMore8 && (
-              <button
-                type="button"
-                onClick={() => setShowMore8(true)}
-                className="ml-1 text-sm font-medium text-neutral-900 underline inline"
-              >
-                Read more
-              </button>
-            )}
-          </p>
-          {showMore8 && (
-            <>
-              <p>
-                These sets, designed with delicate craftsmanship and crafted from
-                high-quality 925 sterling silver, strike the ideal balance between
-                luxury and everyday wearability. Premium silver jewellery sets are
-                loved by modern women because they pair beautifully with everything
-                from traditional sarees and lehengas to western gowns and casual
-                outfits.
-              </p>
-              <p>
-                The latest collections feature oxidised silver sets, minimalist
-                pendant-and-earring combinations, gemstone-studded silver necklaces,
-                and intricately carved choker sets. Whether you choose delicate
-                designs for office wear or bold statement pieces for grand events, a
-                fine silver jewellery set brings unmatched elegance to every
-                celebration and remains a treasured part of your collection.
-              </p>
-              <button
-                type="button"
-                onClick={() => setShowMore8(false)}
-                className="text-sm font-medium text-neutral-900 underline"
-              >
-                Read less
-              </button>
-            </>
-          )}
+          {/* Section 8 - Image Left, Content Right */}
+          <div className="flex flex-col lg:flex-row-reverse items-center gap-8 lg:gap-16">
+            <div className="lg:w-1/2 space-y-4">
+              <h2 className="text-xl sm:text-3xl font-serif font-normal text-neutral-900 mb-6">
+                Premium Silver Jewellery Set Designs Perfect for Celebrations
+              </h2>
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md border border-amber-100/50">
+                <p className="text-sm sm:text-base leading-relaxed text-neutral-700 mb-4">
+                  A premium silver jewellery set is more than just an accessory; it is a
+                  timeless statement of beauty, grace, and refinement. Perfect for weddings, festivals, and special celebrations.
+                </p>
+                {!showMore8 && (
+                  <button
+                    type="button"
+                    onClick={() => setShowMore8(true)}
+                    className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                  >
+                    Read more
+                  </button>
+                )}
+                {showMore8 && (
+                  <div className="space-y-4">
+                    <p className="text-sm sm:text-base leading-relaxed text-neutral-700">
+                      Crafted from high-quality 925 sterling silver, these sets strike the ideal balance between
+                      luxury and everyday wearability. Latest collections feature oxidised silver sets and gemstone-studded designs.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => setShowMore8(false)}
+                      className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                    >
+                      Read less
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="lg:w-1/2">
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
+                <img 
+                  src="/seo/s8.jpeg" 
+                  alt="Premium silver jewellery for celebrations"
+                  className="w-full h-80 object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+              </div>
+            </div>
+          </div>
 
-          {/* FAQs */}
-          <h2 className="text-2xl sm:text-3xl font-serif font-normal mt-12 sm:mt-16 mb-4 sm:mb-6 text-left text-neutral-900">
-            FAQs – Silver Jewellery Set
-          </h2>
+        </div>
 
-          <div className="space-y-3 sm:space-y-4 mt-2">
+        {/* FAQs Section */}
+        <div className="mt-20 sm:mt-32">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl sm:text-3xl font-serif font-normal text-neutral-900 mb-4">
+              FAQs – Silver Jewellery Set
+            </h2>
+            <div className="w-16 h-1 bg-gradient-to-r from-amber-400 to-yellow-500 mx-auto rounded-full"></div>
+          </div>
+
+          <div className="max-w-4xl mx-auto space-y-3 sm:space-y-4">
             {FAQS.map((faq, index) => (
               <div
                 key={faq.question}
-                className="border border-gray-200 rounded-md overflow-hidden"
+                className="bg-white/80 backdrop-blur-sm border border-amber-100/50 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300"
               >
                 <button
                   type="button"
                   onClick={() =>
                     setOpenFaqIndex(openFaqIndex === index ? null : index)
                   }
-                  className="w-full flex items-center justify-between px-3 py-2 text-left bg-gray-50 hover:bg-gray-100"
+                  className="w-full flex items-center justify-between px-4 sm:px-6 py-4 text-left hover:bg-amber-50/50 transition-colors"
                 >
-                  <span className="font-semibold text-sm sm:text-base text-neutral-900">
+                  <span className="font-semibold text-sm sm:text-base text-neutral-900 pr-4">
                     {faq.question}
                   </span>
-                  <span className="ml-2 text-lg leading-none text-gray-600">
-                    {openFaqIndex === index ? "-" : "+"}
+                  <span className="text-lg leading-none text-amber-600 font-bold">
+                    {openFaqIndex === index ? "−" : "+"}
                   </span>
                 </button>
                 {openFaqIndex === index && (
-                  <div className="px-3 py-2 text-xs sm:text-sm text-neutral-700 bg-white">
+                  <div className="px-4 sm:px-6 py-4 text-xs sm:text-sm text-neutral-700 bg-white/50 border-t border-amber-100/30">
                     {faq.answer}
                   </div>
                 )}
@@ -515,6 +548,7 @@ export default function MysabriJewellery() {
             ))}
           </div>
         </div>
+
       </div>
     </section>
   );
