@@ -244,7 +244,7 @@ export default function MysabriJewellery() {
             <div className="lg:w-1/2">
               <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
                 <img 
-                  src="/seo/s2.jpeg" 
+                  src="/seo/s2.png" 
                   alt="Trending silver jewellery designs"
                   className="w-full h-80 object-cover"
                 />
@@ -450,7 +450,7 @@ export default function MysabriJewellery() {
             <div className="lg:w-1/2">
               <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
                 <img 
-                  src="/seo/s7.jpeg" 
+                  src="/seo/s7.png" 
                   alt="Mysabri online silver jewellery collection"
                   className="w-full h-80 object-cover"
                 />
@@ -499,7 +499,7 @@ export default function MysabriJewellery() {
             <div className="lg:w-1/2">
               <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
                 <img 
-                  src="/seo/s8.jpeg" 
+                  src="/seo/s8.png" 
                   alt="Premium silver jewellery for celebrations"
                   className="w-full h-80 object-cover"
                 />

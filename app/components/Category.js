@@ -8,22 +8,22 @@ export default function Category({
   items = [
     {
       title: "Rings",
-      imageSrc: "/every/ring.jpeg",
+      imageSrc: "/every/ring.png",
       href: "/rings",
     },
     {
       title: "Earrings",
-      imageSrc: "/every/earring.jpeg",
+      imageSrc: "/every/earring.png",
       href: "/earrings",
     },
     {
       title: "Necklaces",
-      imageSrc: "/every/neck.jpeg",
+      imageSrc: "/every/neck.png",
       href: "/necklaces",
     },
     {
       title: "Bracelets",
-      imageSrc: "/every/brace.jpeg",
+      imageSrc: "/every/bracelet.png",
       href: "/bracelets",
     },
     {

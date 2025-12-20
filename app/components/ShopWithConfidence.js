@@ -23,27 +23,65 @@ export default function ShopWithConfidence() {
   ];
 
   return (
-    <section className="bg-gray-50 py-16 px-6 text-center">
-      <h2 className="text-2xl md:text-3xl font-semibold mb-12 tracking-wide text-gray-900">
-        SHOP WITH CONFIDENCE
-      </h2>
+    <section className="bg-white py-16 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <h2 className="text-[24px] sm:text-[28px] md:text-[32px] font-serif font-normal tracking-[0.15em] text-gray-900 mb-4 leading-tight" style={{fontFamily: 'Georgia, "Times New Roman", serif'}}>
+            Shop with Confidence
+          </h2>
+          <div className="w-20 h-px bg-gradient-to-r from-transparent via-gray-400 to-transparent mx-auto"></div>
+        </div>
 
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
-        {features.map((item, index) => (
-          <div key={index} className="bg-gray-50 px-6">
-            <div className="flex flex-col items-center">
-              <img
-                src={item.image}
-                alt={item.title}
-                className="w-20 h-20 mb-4 rounded-full object-cover border border-gray-200"
-              />
-              <h3 className="font-semibold text-lg mb-2">{item.title}</h3>
-              <p className="text-sm text-gray-600 leading-relaxed">
-                {item.description}
-              </p>
+        {/* Features Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+          {features.map((item, index) => (
+            <div 
+              key={index} 
+              className="group relative bg-white"
+            >
+              {/* Image Container */}
+              <div className="relative mb-6 overflow-hidden">
+                <div className="aspect-square bg-gray-50 border border-gray-100 overflow-hidden group-hover:border-gray-200 transition-all duration-500">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
+                  />
+                </div>
+                
+                {/* Minimal corner accent */}
+                <div className="absolute top-0 right-0 w-8 h-8 border-r border-t border-gray-200 opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
+              </div>
+
+              {/* Content */}
+              <div className="text-center px-2">
+                <h3 className="text-[18px] sm:text-[20px] font-serif font-medium tracking-[0.1em] text-gray-900 mb-4 group-hover:text-neutral-800 transition-colors duration-300 leading-snug" style={{fontFamily: 'Georgia, "Times New Roman", serif'}}>
+                  {item.title}
+                </h3>
+                
+                <p className="text-[14px] sm:text-[15px] text-gray-600 leading-relaxed max-w-sm mx-auto group-hover:text-gray-700 transition-colors duration-300 font-light" style={{fontFamily: '"Crimson Text", Georgia, serif', lineHeight: '1.7'}}>
+                  {item.description}
+                </p>
+                
+                {/* Simple underline that expands */}
+                <div className="mt-5 mx-auto h-px w-0 bg-gradient-to-r from-amber-600 to-rose-600 group-hover:w-16 transition-all duration-700 ease-out"></div>
+              </div>
+
+              {/* Subtle number indicator */}
+              <div className="absolute top-4 left-4 text-xs text-gray-400 font-serif opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{fontFamily: 'Georgia, serif'}}>
+                {String(index + 1).padStart(2, '0')}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
+
+        {/* Bottom tagline */}
+        {/* <div className="text-center mt-16">
+          <p className="text-xs text-gray-500 tracking-wider uppercase">
+            Crafted with Precision & Care
+          </p>
+        </div> */}
       </div>
     </section>
   );
