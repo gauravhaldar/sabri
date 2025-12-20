@@ -83,13 +83,7 @@ export default function MysabriJewellery() {
         {/* Intro Section */}
         <div className="max-w-4xl mx-auto text-center mb-16 sm:mb-24 bg-white/60 backdrop-blur-sm rounded-3xl p-8 sm:p-12 shadow-lg border border-amber-100">
           <p className="text-base sm:text-lg leading-relaxed text-neutral-700">
-            A silver jewellery set is an ideal combination of elegance, flair, and
-            eternal beauty. Whether you're preparing for a wedding, a party, or an
-            everyday stylish appearance, a silver jewellery set always complements
-            your inherent beauty. These jewellery sets, made of premium-quality 925
-            sterling silver, include wonderfully designed necklaces, earrings,
-            bangles, bracelets, and pendants, making them suitable for every
-            occasion.
+            A silver jewellery set is an ideal combination of elegance, flair, and eternal beauty. Whether you're preparing for a wedding, a party, or an everyday stylish appearance, a silver jewellery set always complements your inherent beauty. These jewellery sets, crafted from premium-quality 925 sterling silver, feature beautifully designed necklaces, earrings, bangles, bracelets, and pendants, making them suitable for every occasion. A well-made silver jewellery set not only complements your dress, but it also expresses your individuality and fashion sense.
           </p>
         </div>
 
