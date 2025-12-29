@@ -14,7 +14,7 @@ import Top from "./components/Top";
 
 export default function Home() {
   return (
-    <>
+    <div className="overflow-x-hidden">
       {/* Hero banner */}
       <section className="relative">
         <VideoBanner src="/hero.mp4" poster="/hero.jpg" heightClass="h-[65svh] sm:h-[80svh] md:h-[95vh]">
@@ -64,6 +64,6 @@ export default function Home() {
 
       {/* Top section */}
       <Top />
-    </>
+    </div>
   );
 }

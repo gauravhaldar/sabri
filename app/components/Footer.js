@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import {
   Mail,
   MapPin,
@@ -81,6 +82,9 @@ export default function Footer() {
               <a href="/about-us">About Us</a>
             </li> */}
             <li>
+              <Link href="/women">Women</Link>
+            </li>
+            <li>
               <a href="/blog">Blog</a>
             </li>
             <li>
@@ -95,16 +99,16 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-4">
           {/* Social Icons */}
           <div className="flex space-x-4">
-            <a href="https://www.facebook.com/profile.php?id=61578105114394" className="hover:text-black" aria-label="Facebook">
+            <a href="https://www.facebook.com/profile.php?id=61578105114394" target="_blank" rel="noopener noreferrer" className="hover:text-black" aria-label="Facebook">
               <Facebook size={20} />
             </a>
-            <a href="https://www.instagram.com/mysabri.in?igsh=eTN2emxrMjJqaWho" className="hover:text-black" aria-label="Instagram">
+            <a href="https://www.instagram.com/mysabri.in?igsh=eTN2emxrMjJqaWho" target="_blank" rel="noopener noreferrer" className="hover:text-black" aria-label="Instagram">
               <Instagram size={20} />
             </a>
             <a href="mailto:info@mysabri.in" className="hover:text-black" aria-label="Email">
               <Mail size={20} />
             </a>
-            <a href="https://in.pinterest.com/sabri_india_/_profile/" className="hover:text-black" aria-label="Pinterest">
+            <a href="https://in.pinterest.com/sabri_india_/_profile/" target="_blank" rel="noopener noreferrer" className="hover:text-black" aria-label="Pinterest">
               <PinterestIcon size={20} />
             </a>
           </div>

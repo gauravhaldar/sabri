@@ -28,31 +28,31 @@ export default function Category({
     },
     {
       title: "Gifts",
-      imageSrc: "/every/gifts.jpeg",
+      imageSrc: "/every/gifts.png",
       href: "/gifts",
     },
     {
       title: "Men's",
-      imageSrc: "/every/men.jpeg",
+      imageSrc: "/every/men.png",
       href: "/mens",
     },
   ],
 }) {
   return (
-    <section className="w-full bg-white">
-      <div className="mx-auto max-w-7xl px-0 sm:px-1 lg:px-2">
+    <section className="w-full bg-white overflow-hidden">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Heading */}
         <h2 className="text-center text-[18px] sm:text-[20px] md:text-[22px] tracking-wide uppercase py-6">
           {title}
         </h2>
 
         {/* Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 border border-neutral-200">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 lg:gap-6">
           {items.map((item, idx) => (
             <Link
               href={item.href || "#"}
               key={`${item.title}-${idx}`}
-              className="group relative isolate aspect-[3/4] overflow-hidden border-r border-b border-neutral-200 last:border-r-0"
+              className="group relative isolate aspect-[3/4] overflow-hidden rounded-lg"
             >
               {/* Image */}
               <div className="absolute inset-0">

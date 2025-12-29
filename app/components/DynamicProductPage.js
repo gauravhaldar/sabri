@@ -10,6 +10,10 @@ import {
   Plus,
   Minus,
   ShoppingBag,
+  ChevronLeft,
+  ChevronRight,
+  Search,
+  X,
 } from "lucide-react";
 import {
   transformProductFromBackend,
@@ -44,6 +48,9 @@ export default function DynamicProductPage({
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [zoomLevel, setZoomLevel] = useState(1);
+  const [isZoomMode, setIsZoomMode] = useState(false);
+  const [imagePosition, setImagePosition] = useState({ x: 0, y: 0 });
 
   // Unwrap params Promise using React.use()
   const resolvedParams = use(params);
@@ -240,6 +247,50 @@ export default function DynamicProductPage({
     }
   };
 
+  const handlePreviousImage = () => {
+    setSelectedImage((prev) => (prev - 1 + images.length) % images.length);
+  };
+
+  const handleNextImage = () => {
+    setSelectedImage((prev) => (prev + 1) % images.length);
+  };
+
+  const handleZoomIn = () => {
+    setZoomLevel((prev) => Math.min(prev + 0.5, 3));
+  };
+
+  const handleZoomOut = () => {
+    setZoomLevel((prev) => Math.max(prev - 0.5, 1));
+  };
+
+  const handleZoomToggle = () => {
+    if (!isZoomMode) {
+      setIsZoomMode(true);
+      setZoomLevel(2);
+      setImagePosition({ x: 0, y: 0 });
+    } else {
+      setIsZoomMode(false);
+      setZoomLevel(1);
+      setImagePosition({ x: 0, y: 0 });
+    }
+  };
+
+  const handleImageMouseMove = (e) => {
+    if (!isZoomMode) return;
+    
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width - 0.5) * -100;
+    const y = ((e.clientY - rect.top) / rect.height - 0.5) * -100;
+    
+    setImagePosition({ x, y });
+  };
+
+  const handleImageMouseLeave = () => {
+    if (isZoomMode) {
+      setImagePosition({ x: 0, y: 0 });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white">
       <div className="container mx-auto px-4 py-3 sm:py-4 pt-28 sm:pt-40">
@@ -255,19 +306,112 @@ export default function DynamicProductPage({
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-24">
           <div className="space-y-4">
             <div
-              className="relative overflow-hidden bg-gray-50"
+              className={`relative overflow-hidden bg-gray-50 ${isZoomMode ? 'cursor-zoom-in' : 'cursor-zoom-in'}`}
               style={
                 selectedImage === 1
                   ? { aspectRatio: "9/16" }
                   : { aspectRatio: "1/1" }
               }
+              onMouseMove={handleImageMouseMove}
+              onMouseLeave={handleImageMouseLeave}
+              onClick={handleZoomToggle}
             >
-              <Image
-                src={images[selectedImage] || getProductImageUrl(product)}
-                alt={product.name}
-                fill
-                className="object-cover"
-              />
+              <div
+                className="relative w-full h-full overflow-hidden"
+                style={{
+                  transform: `scale(${zoomLevel}) translate(${imagePosition.x}%, ${imagePosition.y}%)`,
+                  transformOrigin: 'center',
+                  transition: isZoomMode ? 'transform 0.3s ease-out' : 'transform 0.2s ease-out'
+                }}
+              >
+                <Image
+                  src={images[selectedImage] || getProductImageUrl(product)}
+                  alt={product.name}
+                  fill
+                  className="object-cover"
+                  draggable={false}
+                />
+              </div>
+              
+              {/* Zoom Controls */}
+              {isZoomMode && (
+                <div className="absolute top-3 left-3 flex gap-2 bg-white/90 rounded-lg p-1 shadow-md">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleZoomOut();
+                    }}
+                    className="p-1 rounded hover:bg-gray-100 transition-colors"
+                    aria-label="Zoom out"
+                  >
+                    <Minus className="h-4 w-4 text-gray-700" />
+                  </button>
+                  <span className="px-2 py-1 text-sm text-gray-700 font-medium">
+                    {Math.round(zoomLevel * 100)}%
+                  </span>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleZoomIn();
+                    }}
+                    className="p-1 rounded hover:bg-gray-100 transition-colors"
+                    aria-label="Zoom in"
+                  >
+                    <Plus className="h-4 w-4 text-gray-700" />
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleZoomToggle();
+                    }}
+                    className="p-1 rounded hover:bg-gray-100 transition-colors ml-1"
+                    aria-label="Exit zoom"
+                  >
+                    <X className="h-4 w-4 text-gray-700" />
+                  </button>
+                </div>
+              )}
+              
+              {/* Navigation Buttons */}
+              {images.length > 1 && !isZoomMode && (
+                <>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handlePreviousImage();
+                    }}
+                    className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/80 hover:bg-white text-gray-800 p-1.5 sm:p-2 shadow-md transition-all duration-200 hover:scale-105"
+                    aria-label="Previous image"
+                  >
+                    <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5" />
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleNextImage();
+                    }}
+                    className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/80 hover:bg-white text-gray-800 p-1.5 sm:p-2 shadow-md transition-all duration-200 hover:scale-105"
+                    aria-label="Next image"
+                  >
+                    <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5" />
+                  </button>
+                </>
+              )}
+              
+              {/* Zoom Hint Button */}
+              {!isZoomMode && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleZoomToggle();
+                  }}
+                  className="absolute top-3 left-3 p-2 bg-white/90 hover:bg-white rounded-full transition-colors shadow-md"
+                  aria-label="Zoom in"
+                >
+                  <Search className="h-4 w-4 text-gray-600" />
+                </button>
+              )}
+              
               <button
                 onClick={handleShare}
                 className="absolute top-3 right-3 sm:top-4 sm:right-4 p-2 bg-white/90 hover:bg-white rounded-full transition-colors"

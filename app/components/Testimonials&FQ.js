@@ -3,6 +3,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 const FAQS = [
   {
@@ -133,10 +134,11 @@ export default function MysabriJewellery() {
             </div>
             <div className="lg:w-1/2">
               <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
-                <img 
+                <Image 
                   src="/seo/s1.jpeg" 
                   alt="Elegant silver jewellery set for special occasions"
-                  className="w-full h-80 object-cover"
+                  fill
+                  className="object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
               </div>
@@ -185,10 +187,11 @@ export default function MysabriJewellery() {
             </div>
             <div className="lg:w-1/2">
               <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
-                <img 
+                <Image 
                   src="/seo/s3.jpeg" 
                   alt="Versatile silver jewellery for all events"
-                  className="w-full h-80 object-cover"
+                  fill
+                  className="object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
               </div>
@@ -237,10 +240,11 @@ export default function MysabriJewellery() {
             </div>
             <div className="lg:w-1/2">
               <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
-                <img 
+                <Image 
                   src="/seo/s2.png" 
                   alt="Trending silver jewellery designs"
-                  className="w-full h-80 object-cover"
+                  fill
+                  className="object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
               </div>
@@ -287,10 +291,11 @@ export default function MysabriJewellery() {
             </div>
             <div className="lg:w-1/2">
               <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
-                <img 
+                <Image 
                   src="/seo/s4.jpeg" 
                   alt="925 sterling silver jewellery benefits"
-                  className="w-full h-80 object-cover"
+                  fill
+                  className="object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
               </div>
@@ -343,10 +348,11 @@ export default function MysabriJewellery() {
             </div>
             <div className="lg:w-1/2">
               <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
-                <img 
+                <Image 
                   src="/seo/s5.jpeg" 
                   alt="Authentic 925 silver hallmarks and quality"
-                  className="w-full h-80 object-cover"
+                  fill
+                  className="object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
               </div>
@@ -392,10 +398,11 @@ export default function MysabriJewellery() {
             </div>
             <div className="lg:w-1/2">
               <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
-                <img 
+                <Image 
                   src="/seo/s6.jpeg" 
                   alt="Silver jewellery gift options for every budget"
-                  className="w-full h-80 object-cover"
+                  fill
+                  className="object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
               </div>
@@ -443,10 +450,11 @@ export default function MysabriJewellery() {
             </div>
             <div className="lg:w-1/2">
               <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
-                <img 
+                <Image 
                   src="/seo/s7.png" 
                   alt="Mysabri online silver jewellery collection"
-                  className="w-full h-80 object-cover"
+                  fill
+                  className="object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
               </div>
@@ -492,10 +500,11 @@ export default function MysabriJewellery() {
             </div>
             <div className="lg:w-1/2">
               <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
-                <img 
+                <Image 
                   src="/seo/s8.png" 
                   alt="Premium silver jewellery for celebrations"
-                  className="w-full h-80 object-cover"
+                  fill
+                  className="object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
               </div>

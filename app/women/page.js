@@ -1,19 +1,54 @@
 "use client";
+/* eslint react/no-unescaped-entities: "off" */
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import Head from "next/head";
 import { Heart, ShoppingBag } from "lucide-react";
 import FiltersDrawer from "../components/FiltersDrawer";
-import { useBestSellers } from "../../hooks/useProducts";
+import { useProducts } from "../../hooks/useProducts";
 import {
-  filterProducts,
-  sortProducts,
   getProductImageUrl,
   getProductHoverImageUrl,
   getProductDisplayPrice,
   isProductOnSale,
+  filterProducts,
+  sortProducts,
 } from "../../lib/productUtils";
+
+const FAQS = [
+  {
+    question:
+      "What types of women's jewelry are available at Mysabri?",
+    answer:
+      "Mysabri offers a comprehensive collection of women's jewelry including rings, earrings, necklaces, bracelets, and gift sets. All our pieces are crafted from genuine 925 sterling silver, ensuring quality, durability, and timeless elegance for every occasion.",
+  },
+  {
+    question:
+      "Are Mysabri's women's jewelry pieces suitable for everyday wear?",
+    answer:
+      "Yes, our women's jewelry collection is designed for both everyday wear and special occasions. From delicate studs and simple rings to elegant necklaces and bracelets, each piece is lightweight, comfortable, and versatile enough to complement any outfit.",
+  },
+  {
+    question:
+      "Do you offer jewelry sets for women suitable for weddings and parties?",
+    answer:
+      "Absolutely! Mysabri features beautiful coordinated jewelry sets perfect for weddings, parties, and festive events. Our matching earrings and necklaces, along with complementary bracelets, create elegant ensembles that will make you stand out on any special occasion.",
+  },
+  {
+    question:
+      "Is the women's jewelry hypoallergenic and safe for sensitive skin?",
+    answer:
+      "Yes, all our women's jewelry is made from 925 sterling silver, making it hypoallergenic and safe for sensitive skin. Each piece is crafted to provide comfort, prevent irritation, and ensure you can wear your favorite jewelry all day without any concerns.",
+  },
+  {
+    question:
+      "What are the most popular jewelry designs for women at Mysabri?",
+    answer:
+      "Our most popular designs include elegant stud earrings, classic rings, delicate necklaces, and stylish bracelets. Whether you prefer traditional motifs or contemporary styles, our collection offers versatility and sophistication that appeals to modern women of all ages.",
+  },
+];
 
 const ProductCard = ({ product, onAddToCart }) => {
   const [isWishlisted, setIsWishlisted] = useState(false);
@@ -30,58 +65,28 @@ const ProductCard = ({ product, onAddToCart }) => {
     setIsWishlisted(!isWishlisted);
   };
 
-  // Use utility functions to get proper data
   const productImage = getProductImageUrl(product);
   const hoverImage = getProductHoverImageUrl(product);
   const { current, original, discount } = getProductDisplayPrice(product);
   const isOnSale = isProductOnSale(product);
   const rating = Number(product.averageRating || product.rating?.average || 0);
 
-  // Global smooth zoom and crossfade
-  const baseImgClass =
-    "object-cover transform-gpu will-change-[transform,opacity] select-none pointer-events-none group-hover:opacity-0 group-hover:scale-[1.10]";
-
-  const hoverImgClass =
-    "object-cover opacity-0 transform-gpu will-change-[transform,opacity] select-none pointer-events-none group-hover:opacity-100 group-hover:scale-[1.10]";
-
-  const baseImgStyle = {
-    transform: "scale(1)",
-    transformOrigin: "50% 50%",
-    backfaceVisibility: "hidden",
-    transition:
-      "transform 1600ms cubic-bezier(0.22, 0.61, 0.36, 1) 80ms, opacity 700ms cubic-bezier(0.33, 1, 0.68, 1) 200ms",
-  };
-
-  // Start hover image slightly pre-zoomed for continuous zoom feel
-  const hoverImgStyle = {
-    transform: "scale(1)",
-    transformOrigin: "50% 50%",
-    backfaceVisibility: "hidden",
-    transition:
-      "transform 1600ms cubic-bezier(0.22, 0.61, 0.36, 1) 80ms, opacity 700ms cubic-bezier(0.33, 1, 0.68, 1) 200ms",
-  };
-
   return (
     <div className="bg-white group">
-      <Link
-        href={`/best-sellers/${product.slug || product._id || product.id}`}
-        className="block"
-      >
+      <Link href={`/women/${product.slug || product.id}`} className="block">
         <div className="relative aspect-square overflow-hidden">
           <Image
             src={productImage}
             alt={product.name}
             fill
-            className={baseImgClass}
-            style={baseImgStyle}
+            className="object-cover transition-opacity duration-300 group-hover:opacity-0"
           />
           {hoverImage && (
             <Image
               src={hoverImage}
               alt={`${product.name} hover`}
               fill
-              className={hoverImgClass}
-              style={hoverImgStyle}
+              className="object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100"
             />
           )}
           <button
@@ -114,21 +119,15 @@ const ProductCard = ({ product, onAddToCart }) => {
               {discount}% OFF
             </div>
           )}
-          {product.stock <= 0 ? (
+          {product.stock <= 0 && (
             <div className="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1">
               OUT OF STOCK
             </div>
-          ) : product.isBestSeller ? (
-            <div className="absolute top-2 right-2 bg-yellow-500 text-white text-xs font-bold px-2 py-1">
-              BEST SELLER
-            </div>
-          ) : null}
+          )}
         </div>
       </Link>
       <div className="p-3">
-        <Link
-          href={`/best-sellers/${product.slug || product._id || product.id}`}
-        >
+        <Link href={`/women/${product.slug || product.id}`}>
           <h3 className="text-xs font-light text-black mb-1.5 line-clamp-2 leading-tight hover:text-gray-600 transition-colors">
             {product.name}
           </h3>
@@ -173,13 +172,12 @@ const ProductCard = ({ product, onAddToCart }) => {
   );
 };
 
-export default function BestSellersPage() {
+export default function WomenPage() {
   const [cartItems, setCartItems] = useState([]);
-  const [sortBy, setSortBy] = useState("featured"); // featured | price-asc | price-desc
+  const [sortBy, setSortBy] = useState("featured");
   const [filters, setFilters] = useState({
-    priceMin: "",
-    priceMax: "",
-    onSale: false,
+    priceMin: 0,
+    priceMax: 50000,
     minRating: 0,
   });
   const [filtersOpen, setFiltersOpen] = useState(false);
@@ -187,11 +185,19 @@ export default function BestSellersPage() {
   const LOAD_MORE_COUNT = 12;
   const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_COUNT);
 
-  const { products, loading, error } = useBestSellers();
+  // Fetch all products with high limit, then filter out men's products
+  const { products, loading, error } = useProducts(null, { limit: 1000 });
 
-  const filteredProducts = filterProducts(products, filters);
+  // Filter out men's products
+  const womenProducts = products.filter(product => {
+    const category = product.category?.toLowerCase();
+    return category !== 'mens' && category !== 'men' && category !== 'male';
+  });
+
+  const filteredProducts = filterProducts(womenProducts, filters);
   const sortedProducts = sortProducts(filteredProducts, sortBy);
   const visibleProducts = sortedProducts.slice(0, visibleCount);
+  const [openFaqIndex, setOpenFaqIndex] = useState(null);
 
   useEffect(() => {
     setVisibleCount(INITIAL_VISIBLE_COUNT);
@@ -202,64 +208,31 @@ export default function BestSellersPage() {
     console.log("Added to cart:", product.name);
   };
 
-  // Show loading state
   if (loading) {
     return (
-      <div className="min-h-screen bg-white">
-        <div className="bg-gray-50 py-8 pt-40">
-          <div className="container mx-auto px-4">
-            <div className="text-center">
-              <h1 className="text-3xl font-bold text-black mb-2">
-                Best Sellers
-              </h1>
-              <p className="text-gray-600">Loading products...</p>
-            </div>
-          </div>
-        </div>
-        <div className="container mx-auto px-4 py-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {[...Array(8)].map((_, i) => (
-              <div key={i} className="bg-white animate-pulse">
-                <div className="aspect-square bg-gray-200"></div>
-                <div className="p-3">
-                  <div className="h-4 bg-gray-200 rounded mb-2"></div>
-                  <div className="h-3 bg-gray-200 rounded mb-1"></div>
-                  <div className="h-3 bg-gray-200 rounded w-2/3"></div>
-                </div>
-              </div>
-            ))}
-          </div>
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading products...</p>
         </div>
       </div>
     );
   }
 
-  // Show error state
   if (error) {
     return (
-      <div className="min-h-screen bg-white">
-        <div className="bg-gray-50 py-8 pt-40">
-          <div className="container mx-auto px-4">
-            <div className="text-center">
-              <h1 className="text-3xl font-bold text-black mb-2">
-                Best Sellers
-              </h1>
-            </div>
-          </div>
-        </div>
-        <div className="container mx-auto px-4 py-8">
-          <div className="text-center py-16">
-            <h2 className="text-xl font-semibold text-red-600 mb-4">
-              Error Loading Products
-            </h2>
-            <p className="text-gray-600 mb-6">{error}</p>
-            <button
-              onClick={() => window.location.reload()}
-              className="bg-black text-white px-6 py-3 hover:bg-gray-800 transition-colors duration-200"
-            >
-              Try Again
-            </button>
-          </div>
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">
+            Error Loading Products
+          </h2>
+          <p className="text-gray-600 mb-6">{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="bg-black text-white px-6 py-3 hover:bg-gray-800 transition-colors duration-200"
+          >
+            Try Again
+          </button>
         </div>
       </div>
     );
@@ -267,13 +240,22 @@ export default function BestSellersPage() {
 
   return (
     <div className="min-h-screen bg-white">
+      <Head>
+        <title>
+          Women's Jewelry Collection | 925 Sterling Silver Rings, Earrings & More
+        </title>
+        <meta
+          name="description"
+          content="Explore elegant women's jewelry collection at MySabri. Shop 925 sterling silver rings, earrings, necklaces, and bracelets crafted for timeless beauty and everyday elegance."
+        />
+      </Head>
       {/* Hero Banner */}
       <div className="relative text-white pt-28 sm:pt-40 pb-64 sm:pb-80 overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
-            src="/banner/men.png"
-            alt="Best Sellers Banner"
+            src="/banner/banner-women.png"
+            alt="Women's Jewelry Collection Banner"
             fill
             className="object-cover"
             priority
@@ -286,21 +268,21 @@ export default function BestSellersPage() {
         <div className="absolute inset-0 flex items-center justify-center z-10">
           <div className="text-center mt-18">
             <span className="inline-block bg-white/10 backdrop-blur-sm border border-white/20 text-white text-xs sm:text-sm px-4 py-2 rounded-full font-medium tracking-wide">
-               BEST SELLERS
+               WOMEN&apos;S COLLECTION
             </span>
           </div>
         </div>
         
         {/* Decorative Elements */}
-        <div className="absolute top-20 left-10 w-20 h-20 bg-yellow-400/10 rounded-full blur-2xl"></div>
-        <div className="absolute bottom-10 right-10 w-32 h-32 bg-blue-400/10 rounded-full blur-3xl"></div>
+        <div className="absolute top-20 left-10 w-20 h-20 bg-pink-400/10 rounded-full blur-2xl"></div>
+        <div className="absolute bottom-10 right-10 w-32 h-32 bg-purple-400/10 rounded-full blur-3xl"></div>
       </div>
 
       <div className="bg-gray-50 py-6 sm:py-8">
         <div className="container mx-auto px-4">
           <div className="text-center">
             <h1 className="text-2xl sm:text-3xl font-bold text-black mb-2">
-              Best Sellers
+              Women&apos;s Collection
             </h1>
             <p className="text-sm sm:text-base text-gray-600">
               {filteredProducts.length}{" "}
@@ -312,7 +294,6 @@ export default function BestSellersPage() {
       <div className="container mx-auto px-4 py-6 sm:py-8">
         {filteredProducts.length > 0 ? (
           <>
-            {/* Filters Drawer + Sort */}
             <div className="mb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
               <button
                 onClick={() => setFiltersOpen(true)}
@@ -341,7 +322,6 @@ export default function BestSellersPage() {
               onChange={setFilters}
               onClose={() => setFiltersOpen(false)}
             />
-
             <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
               {visibleProducts.map((product) => (
                 <ProductCard
@@ -373,7 +353,7 @@ export default function BestSellersPage() {
               No products found
             </h2>
             <p className="text-gray-600 mb-6">
-              We couldn&apos;t find any best seller products.
+              We couldn&apos;t find any women&apos;s products.
             </p>
             <Link
               href="/"
@@ -383,6 +363,77 @@ export default function BestSellersPage() {
             </Link>
           </div>
         )}
+        <div className="mt-10 space-y-6 text-gray-800 text-sm sm:text-base leading-relaxed">
+          <h1 className="text-2xl sm:text-3xl font-bold text-black mb-2">
+            Our Exquisite Women's Jewelry Collection
+          </h1>
+          <p>
+            Discover the timeless elegance of Mysabri's women's jewelry collection, where each piece tells a story of craftsmanship and beauty. Our carefully curated selection features everything from delicate everyday essentials to stunning statement pieces, all crafted from genuine 925 sterling silver. Whether you're searching for the perfect gift or treating yourself to something special, our collection offers versatility and sophistication for every style and occasion.
+          </p>
+          <p>
+            At MySabri, we believe that jewelry should be an expression of your unique personality. That's why each piece in our women's collection is designed with attention to detail, ensuring comfort, durability, and lasting beauty. From minimalist designs that complement your daily look to elaborate pieces that make you shine at special events, our jewelry celebrates the modern woman's multifaceted lifestyle.
+          </p>
+
+          <h2 className="text-xl sm:text-2xl font-semibold text-black">
+            Elegant 925 Sterling Silver for Everyday Luxury
+          </h2>
+          <p>
+            Our commitment to quality is reflected in every piece of women's jewelry we create. Using only genuine 925 sterling silver, we ensure that each item not only looks beautiful but also stands the test of time. This precious metal provides the perfect balance of durability and luster, making it ideal for everyday wear while maintaining its brilliant shine for years to come.
+          </p>
+
+          <h2 className="text-xl sm:text-2xl font-semibold text-black">
+            Versatile Designs for Every Occasion
+          </h2>
+          <p>
+            From professional settings to social gatherings, our women's jewelry collection adapts to every moment of your life. Our versatile pieces transition seamlessly from day to night, offering you the flexibility to express your style wherever you go. Whether you prefer subtle sophistication or bold statements, our collection has something that resonates with your personal aesthetic.
+          </p>
+
+          <h2 className="text-xl sm:text-2xl font-semibold text-black">
+            Hypoallergenic and Skin-Friendly Jewelry
+          </h2>
+          <p>
+            Your comfort and safety are our top priorities. All our women's jewelry is hypoallergenic and suitable for sensitive skin, allowing you to wear your favorite pieces without any irritation. The high-quality sterling silver we use ensures that even those with the most sensitive skin can enjoy our beautiful designs without compromise.
+          </p>
+
+          <h2 className="text-xl sm:text-2xl font-semibold text-black">
+            The Perfect Gift for Every Woman
+          </h2>
+          <p>
+            Looking for a meaningful gift? Our women's jewelry collection offers thoughtful options for birthdays, anniversaries, weddings, or just because. Each piece comes beautifully packaged and ready to be presented to someone special. With timeless designs that never go out of style, our jewelry makes for cherished gifts that will be treasured for years to come.
+          </p>
+
+          <h3 className="text-xl sm:text-2xl font-semibold text-black">
+            FAQs For Women's Jewelry
+          </h3>
+          <div className="space-y-3 mt-2">
+            {FAQS.map((faq, index) => (
+              <div
+                key={faq.question}
+                className="border border-gray-200 rounded-md overflow-hidden"
+              >
+                <button
+                  type="button"
+                  onClick={() =>
+                    setOpenFaqIndex(openFaqIndex === index ? null : index)
+                  }
+                  className="w-full flex items-center justify-between px-3 py-2 text-left bg-gray-50 hover:bg-gray-100"
+                >
+                  <span className="font-semibold text-sm sm:text-base text-gray-900">
+                    {faq.question}
+                  </span>
+                  <span className="ml-2 text-lg leading-none text-gray-600">
+                    {openFaqIndex === index ? "-" : "+"}
+                  </span>
+                </button>
+                {openFaqIndex === index && (
+                  <div className="px-3 py-2 text-xs sm:text-sm text-gray-700 bg-white">
+                    {faq.answer}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

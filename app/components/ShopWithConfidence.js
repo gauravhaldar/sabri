@@ -1,12 +1,14 @@
 "use client";
 
+import Image from "next/image";
+
 export default function ShopWithConfidence() {
   const features = [
     {
       image: "/swc/noskin.png",
       title: "No Skin Drama",
       description:
-        "Our jewellery is hypoallergenic, anti-tarnish, and gentle on sensitive skin. No nickel. No brass. Just silver that loves you back.",
+        " Our jewellery is hypoallergenic, anti-tarnish, and gentle on sensitive skin. No nickel. No brass. Just silver that loves you back.",
     },
     {
       image: "/swc/puresilver.png",
@@ -27,10 +29,13 @@ export default function ShopWithConfidence() {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
-          <h2 className="text-[24px] sm:text-[28px] md:text-[32px] font-serif font-normal tracking-[0.15em] text-gray-900 mb-4 leading-tight" style={{fontFamily: 'Georgia, "Times New Roman", serif'}}>
-            Shop with Confidence
-          </h2>
-          <div className="w-20 h-px bg-gradient-to-r from-transparent via-gray-400 to-transparent mx-auto"></div>
+          <div className="inline-block bg-contain bg-no-repeat bg-center rounded-3xl px-6 py-6 sm:px-8 sm:py-12 md:px-12 md:py-14 lg:px-16 lg:py-16 xl:px-20 xl:py-18 mx-auto w-full max-w-[280px] sm:max-w-[400px] md:max-w-[600px] lg:max-w-[800px] xl:max-w-[1000px] min-h-[140px] sm:min-h-[160px] md:min-h-[180px] lg:min-h-[200px]" style={{backgroundImage: 'url(/shopwithconfidence/12.png)'}}>
+            <div className="flex items-center justify-center h-full min-h-[140px] sm:min-h-[160px] md:min-h-[180px] lg:min-h-[200px]">
+              <h2 className="text-[16px] sm:text-[20px] md:text-[22px] lg:text-[26px] xl:text-[30px] font-playfair font-bold tracking-[0.2em] text-gray-900 leading-tight" style={{fontFamily: 'Georgia, "Times New Roman", serif'}}>
+                Shop with Confidence
+              </h2>
+            </div>
+          </div>
         </div>
 
         {/* Features Grid */}
@@ -43,10 +48,11 @@ export default function ShopWithConfidence() {
               {/* Image Container */}
               <div className="relative mb-6 overflow-hidden">
                 <div className="aspect-square bg-gray-50 border border-gray-100 overflow-hidden group-hover:border-gray-200 transition-all duration-500">
-                  <img
+                  <Image
                     src={item.image}
                     alt={item.title}
-                    className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
+                    fill
+                    className="object-cover transition-all duration-700 group-hover:scale-105"
                   />
                 </div>
                 
@@ -56,7 +62,7 @@ export default function ShopWithConfidence() {
 
               {/* Content */}
               <div className="text-center px-2">
-                <h3 className="text-[18px] sm:text-[20px] font-serif font-medium tracking-[0.1em] text-gray-900 mb-4 group-hover:text-neutral-800 transition-colors duration-300 leading-snug" style={{fontFamily: 'Georgia, "Times New Roman", serif'}}>
+                <h3 className="text-[18px] sm:text-[20px] font-sans font-bold tracking-[0.1em] text-gray-900 mb-4 group-hover:text-neutral-800 transition-colors duration-300 leading-snug" style={{fontFamily: 'Georgia, "Times New Roman", serif'}}>
                   {item.title}
                 </h3>
                 
@@ -69,7 +75,7 @@ export default function ShopWithConfidence() {
               </div>
 
               {/* Subtle number indicator */}
-              <div className="absolute top-4 left-4 text-xs text-gray-400 font-serif opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{fontFamily: 'Georgia, serif'}}>
+              <div className="absolute top-4 left-4 text-xs text-gray-400 font-s opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{fontFamily: 'Georgia, serif'}}>
                 {String(index + 1).padStart(2, '0')}
               </div>
             </div>
