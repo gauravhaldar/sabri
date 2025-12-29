@@ -16,6 +16,7 @@ const nextConfig = {
       process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
   },
   images: {
+    unoptimized: true,
     remotePatterns: [
       { protocol: "https", hostname: "picsum.photos" },
       { protocol: "https", hostname: "images.unsplash.com" },

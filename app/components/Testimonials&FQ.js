@@ -133,14 +133,14 @@ export default function MysabriJewellery() {
               </div>
             </div>
             <div className="lg:w-1/2">
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
-                <Image 
+              <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
+                <img 
                   src="/seo/s1.jpeg" 
                   alt="Elegant silver jewellery set for special occasions"
-                  fill
-                  className="object-cover"
+                  width="400"
+                  height="300"
+                  className="w-full h-auto block"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
               </div>
             </div>
           </div>
@@ -186,14 +186,14 @@ export default function MysabriJewellery() {
               </div>
             </div>
             <div className="lg:w-1/2">
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
-                <Image 
+              <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
+                <img 
                   src="/seo/s3.jpeg" 
                   alt="Versatile silver jewellery for all events"
-                  fill
-                  className="object-cover"
+                  width="400"
+                  height="300"
+                  className="w-full h-auto block"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
               </div>
             </div>
           </div>
@@ -239,14 +239,14 @@ export default function MysabriJewellery() {
               </div>
             </div>
             <div className="lg:w-1/2">
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
-                <Image 
+              <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
+                <img 
                   src="/seo/s2.png" 
                   alt="Trending silver jewellery designs"
-                  fill
-                  className="object-cover"
+                  width="400"
+                  height="300"
+                  className="w-full h-auto block"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
               </div>
             </div>
           </div>
@@ -290,14 +290,14 @@ export default function MysabriJewellery() {
               </div>
             </div>
             <div className="lg:w-1/2">
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
-                <Image 
+              <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
+                <img 
                   src="/seo/s4.jpeg" 
                   alt="925 sterling silver jewellery benefits"
-                  fill
-                  className="object-cover"
+                  width="400"
+                  height="300"
+                  className="w-full h-auto block"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
               </div>
             </div>
           </div>
@@ -347,14 +347,14 @@ export default function MysabriJewellery() {
               </div>
             </div>
             <div className="lg:w-1/2">
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
-                <Image 
+              <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
+                <img 
                   src="/seo/s5.jpeg" 
                   alt="Authentic 925 silver hallmarks and quality"
-                  fill
-                  className="object-cover"
+                  width="400"
+                  height="300"
+                  className="w-full h-auto block"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
               </div>
             </div>
           </div>
@@ -397,14 +397,14 @@ export default function MysabriJewellery() {
               </div>
             </div>
             <div className="lg:w-1/2">
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
-                <Image 
+              <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
+                <img 
                   src="/seo/s6.jpeg" 
                   alt="Silver jewellery gift options for every budget"
-                  fill
-                  className="object-cover"
+                  width="400"
+                  height="300"
+                  className="w-full h-auto block"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
               </div>
             </div>
           </div>
@@ -449,14 +449,14 @@ export default function MysabriJewellery() {
               </div>
             </div>
             <div className="lg:w-1/2">
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
-                <Image 
+              <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
+                <img 
                   src="/seo/s7.png" 
                   alt="Mysabri online silver jewellery collection"
-                  fill
-                  className="object-cover"
+                  width="400"
+                  height="300"
+                  className="w-full h-auto block"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
               </div>
             </div>
           </div>
@@ -499,14 +499,14 @@ export default function MysabriJewellery() {
               </div>
             </div>
             <div className="lg:w-1/2">
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
-                <Image 
+              <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
+                <img 
                   src="/seo/s8.png" 
                   alt="Premium silver jewellery for celebrations"
-                  fill
-                  className="object-cover"
+                  width="400"
+                  height="300"
+                  className="w-full h-auto block"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
               </div>
             </div>
           </div>
