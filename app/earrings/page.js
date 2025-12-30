@@ -50,7 +50,7 @@ const FAQS = [
   },
 ];
 
-const ProductCard = ({ product, onAddToCart }) => {
+const ProductCard = ({ product, onAddToCart, onProductClick, visibleCount }) => {
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
 
@@ -65,6 +65,17 @@ const ProductCard = ({ product, onAddToCart }) => {
     setIsWishlisted(!isWishlisted);
   };
 
+  const handleProductClick = () => {
+    // Save current scroll position and product info before navigating
+    sessionStorage.setItem('earrings-scroll-position', window.scrollY.toString());
+    sessionStorage.setItem('earrings-last-product', product._id || product.id);
+    sessionStorage.setItem('earrings-visible-count', visibleCount.toString());
+    
+    if (onProductClick) {
+      onProductClick(product);
+    }
+  };
+
   const productImage = getProductImageUrl(product);
   const hoverImage = getProductHoverImageUrl(product);
   const { current, original, discount } = getProductDisplayPrice(product);
@@ -72,8 +83,8 @@ const ProductCard = ({ product, onAddToCart }) => {
   const rating = Number(product.averageRating || product.rating?.average || 0);
 
   return (
-    <div className="bg-white group">
-      <Link href={`/earrings/${product.slug || product.id}`} className="block">
+    <div className="bg-white group" data-product-id={product._id || product.id}>
+      <div onClick={handleProductClick} className="block cursor-pointer">
         <div className="relative aspect-square overflow-hidden">
           <Image
             src={productImage}
@@ -125,13 +136,13 @@ const ProductCard = ({ product, onAddToCart }) => {
             </div>
           )}
         </div>
-      </Link>
+      </div>
       <div className="p-3">
-        <Link href={`/earrings/${product.slug || product.id}`}>
+        <div onClick={handleProductClick} className="cursor-pointer">
           <h3 className="text-xs font-light text-black mb-1.5 line-clamp-2 leading-tight hover:text-gray-600 transition-colors">
             {product.name}
           </h3>
-        </Link>
+        </div>
         <div className="flex items-center gap-1.5 mb-1">
           <span className="text-xs font-light text-black">
             ₹{current.toLocaleString()}
@@ -184,6 +195,8 @@ export default function EarringsPage() {
   const INITIAL_VISIBLE_COUNT = 12;
   const LOAD_MORE_COUNT = 12;
   const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_COUNT);
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const [lastProductId, setLastProductId] = useState(null);
 
   const { products, loading, error } = useEarrings();
 
@@ -192,8 +205,144 @@ export default function EarringsPage() {
   const visibleProducts = sortedProducts.slice(0, visibleCount);
   const [openFaqIndex, setOpenFaqIndex] = useState(null);
 
+  // Load saved scroll position and product on mount
   useEffect(() => {
-    setVisibleCount(INITIAL_VISIBLE_COUNT);
+    const savedPosition = sessionStorage.getItem('earrings-scroll-position');
+    const savedProductId = sessionStorage.getItem('earrings-last-product');
+    const savedVisibleCount = sessionStorage.getItem('earrings-visible-count');
+    const savedProducts = sessionStorage.getItem('earrings-loaded-products');
+
+    console.log('=== RESTORE: Loading saved state ===');
+    console.log('Saved position:', savedPosition);
+    console.log('Saved product ID:', savedProductId);
+    console.log('Saved visible count:', savedVisibleCount);
+    console.log('Saved products data:', savedProducts ? 'Yes' : 'No');
+
+    if (savedPosition) {
+      setScrollPosition(parseInt(savedPosition));
+    }
+    if (savedProductId) {
+      setLastProductId(savedProductId);
+    }
+    if (savedVisibleCount) {
+      const count = parseInt(savedVisibleCount);
+      console.log('=== RESTORE: Setting visible count to:', count);
+      setVisibleCount(count);
+    }
+    
+    // Clear saved products data after loading
+    if (savedProducts) {
+      sessionStorage.removeItem('earrings-loaded-products');
+    }
+  }, []);
+
+  // Restore scroll position after products are loaded
+  useEffect(() => {
+    console.log('=== RESTORE: Checking restoration conditions ===');
+    console.log('Products loaded:', products.length);
+    console.log('Scroll position:', scrollPosition);
+    console.log('Last product ID:', lastProductId);
+    console.log('Current visible count:', visibleCount);
+    console.log('Sorted products length:', sortedProducts.length);
+
+    if (products.length > 0 && (scrollPosition > 0 || lastProductId)) {
+      console.log('=== RESTORE: Starting restoration process ===');
+      
+      // If we have a specific product to scroll to
+      if (lastProductId) {
+        console.log('=== RESTORE: Looking for product:', lastProductId);
+        const productIndex = sortedProducts.findIndex(p => p._id === lastProductId || p.id === lastProductId);
+        console.log('=== RESTORE: Product index found:', productIndex);
+        
+        if (productIndex !== -1) {
+          // Calculate how many items to show to include this product
+          const itemsPerRow = 4; // Assuming 4 columns on desktop
+          const rowsNeeded = Math.ceil((productIndex + 1) / itemsPerRow);
+          const itemsNeeded = rowsNeeded * itemsPerRow;
+          console.log('=== RESTORE: Items needed:', itemsNeeded);
+          
+          if (itemsNeeded > visibleCount) {
+            console.log('=== RESTORE: Setting visible count to:', Math.min(itemsNeeded, sortedProducts.length));
+            setVisibleCount(Math.min(itemsNeeded, sortedProducts.length));
+            
+            // Scroll to the specific product after ensuring it's visible
+          setTimeout(() => {
+            console.log('=== RESTORE: Attempting to scroll to product after count update');
+            const productElement = document.querySelector(`[data-product-id="${lastProductId}"]`);
+            if (productElement) {
+              productElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              console.log('=== RESTORE: Scrolled to product element smoothly');
+            } else if (scrollPosition > 0) {
+              console.log('=== RESTORE: Product element not found, using scroll position');
+              window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+            }
+            
+            // Clear saved state
+            sessionStorage.removeItem('earrings-last-product');
+            sessionStorage.removeItem('earrings-scroll-position');
+            sessionStorage.removeItem('earrings-visible-count');
+            setLastProductId(null);
+            setScrollPosition(0);
+          }, 800); // Increased delay to ensure DOM updates
+          } else {
+            // Product is already visible, scroll immediately
+            setTimeout(() => {
+              console.log('=== RESTORE: Product already visible, scrolling immediately');
+              const productElement = document.querySelector(`[data-product-id="${lastProductId}"]`);
+              if (productElement) {
+                productElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                console.log('=== RESTORE: Scrolled to product element smoothly');
+              } else if (scrollPosition > 0) {
+                console.log('=== RESTORE: Product element not found, using scroll position');
+                window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+              }
+              
+              // Clear saved state
+              sessionStorage.removeItem('earrings-last-product');
+              sessionStorage.removeItem('earrings-scroll-position');
+              sessionStorage.removeItem('earrings-visible-count');
+              setLastProductId(null);
+              setScrollPosition(0);
+            }, 500);
+          }
+        } else {
+          console.log('=== RESTORE: Product not found, using scroll position');
+          // Fallback to scroll position if product not found
+          setTimeout(() => {
+            if (scrollPosition > 0) {
+              window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+              sessionStorage.removeItem('earrings-scroll-position');
+              setScrollPosition(0);
+            }
+            sessionStorage.removeItem('earrings-last-product');
+            setLastProductId(null);
+          }, 500);
+        }
+      } else if (scrollPosition > 0) {
+        console.log('=== RESTORE: Using scroll position only');
+        setTimeout(() => {
+          window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+          sessionStorage.removeItem('earrings-scroll-position');
+          setScrollPosition(0);
+        }, 500);
+      }
+    }
+  }, [products, sortedProducts, visibleCount, scrollPosition, lastProductId]);
+
+  useEffect(() => {
+    // Only reset if this is a new session (no saved state)
+    const hasSavedState = sessionStorage.getItem('earrings-scroll-position') || 
+                         sessionStorage.getItem('earrings-last-product') || 
+                         sessionStorage.getItem('earrings-visible-count') ||
+                         sessionStorage.getItem('earrings-loaded-products');
+    
+    console.log('=== RESET: Checking if should reset ===');
+    console.log('Has saved state:', !!hasSavedState);
+    
+    if (!hasSavedState) {
+      console.log('=== RESET: Resetting to initial count ===');
+      setVisibleCount(INITIAL_VISIBLE_COUNT);
+    }
   }, [sortBy, filters, products]);
 
   const handleAddToCart = (product) => {
@@ -321,6 +470,13 @@ export default function EarringsPage() {
                   key={product._id || product.id}
                   product={product}
                   onAddToCart={handleAddToCart}
+                  onProductClick={(product) => {
+                    // Save the actual loaded products data to prevent reloading
+                    const loadedProducts = sortedProducts.slice(0, visibleCount);
+                    sessionStorage.setItem('earrings-loaded-products', JSON.stringify(loadedProducts));
+                    window.location.href = `/earrings/${product.slug || product.id}`;
+                  }}
+                  visibleCount={visibleCount}
                 />
               ))}
             </div>

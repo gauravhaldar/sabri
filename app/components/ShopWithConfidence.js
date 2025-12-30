@@ -29,7 +29,7 @@ export default function ShopWithConfidence() {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
-          <div className="inline-block bg-contain bg-no-repeat bg-center rounded-3xl px-6 py-6 sm:px-8 sm:py-12 md:px-12 md:py-14 lg:px-16 lg:py-16 xl:px-20 xl:py-18 mx-auto w-full max-w-[280px] sm:max-w-[400px] md:max-w-[600px] lg:max-w-[800px] xl:max-w-[1000px] min-h-[140px] sm:min-h-[160px] md:min-h-[180px] lg:min-h-[200px]" style={{backgroundImage: 'url(/shopwithconfidence/12.png)'}}>
+          <div className="inline-block bg-contain bg-no-repeat bg-center rounded-3xl px-8 py-8 sm:px-10 sm:py-16 md:px-12 md:py-14 lg:px-16 xl:px-20 xl:py-18 mx-auto w-full max-w-[320px] sm:max-w-[400px] md:max-w-[600px] lg:max-w-[800px] xl:max-w-[1000px] min-h-[160px] sm:min-h-[180px] md:min-h-[200px] lg:min-h-[220px]" style={{backgroundImage: 'url(/shopwithconfidence/12.png)'}}>
             <div className="flex items-center justify-center h-full min-h-[140px] sm:min-h-[160px] md:min-h-[180px] lg:min-h-[200px]">
               <h2 className="text-[16px] sm:text-[20px] md:text-[22px] lg:text-[26px] xl:text-[30px] font-playfair font-bold tracking-[0.2em] text-gray-900 leading-tight" style={{fontFamily: 'Georgia, "Times New Roman", serif'}}>
                  YOUR TRUST OUR PROMISE

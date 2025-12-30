@@ -62,7 +62,7 @@ const FAQS = [
   },
 ];
 
-const ProductCard = ({ product, onAddToCart }) => {
+const ProductCard = ({ product, onAddToCart, visibleCount, onProductClick }) => {
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
 
@@ -84,8 +84,8 @@ const ProductCard = ({ product, onAddToCart }) => {
   const rating = Number(product.averageRating || product.rating?.average || 0);
 
   return (
-    <div className="bg-white group">
-      <Link href={`/rings/${product.slug || product.id}`} className="block">
+    <div className="bg-white group" data-product-id={product._id || product.id}>
+      <div onClick={() => onProductClick(product)} className="block cursor-pointer">
         <div className="relative aspect-square overflow-hidden">
           <Image
             src={productImage}
@@ -137,13 +137,13 @@ const ProductCard = ({ product, onAddToCart }) => {
             </div>
           )}
         </div>
-      </Link>
+      </div>
       <div className="p-3">
-        <Link href={`/rings/${product.slug || product.id}`}>
+        <div onClick={() => onProductClick(product)} className="cursor-pointer">
           <h3 className="text-xs font-light text-black mb-1.5 line-clamp-2 leading-tight hover:text-gray-600 transition-colors">
             {product.name}
           </h3>
-        </Link>
+        </div>
         <div className="flex items-center gap-1.5 mb-1">
           <span className="text-xs font-light text-black">
             ₹{current.toLocaleString()}
@@ -196,6 +196,8 @@ export default function RingsPage() {
   const INITIAL_VISIBLE_COUNT = 12;
   const LOAD_MORE_COUNT = 12;
   const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_COUNT);
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const [lastProductId, setLastProductId] = useState(null);
 
   const { products, loading, error } = useRings();
 
@@ -204,13 +206,131 @@ export default function RingsPage() {
   const visibleProducts = sortedProducts.slice(0, visibleCount);
   const [openFaqIndex, setOpenFaqIndex] = useState(null);
 
+  // Load saved scroll position and product on mount
   useEffect(() => {
-    setVisibleCount(INITIAL_VISIBLE_COUNT);
+    const savedPosition = sessionStorage.getItem('rings-scroll-position');
+    const savedProductId = sessionStorage.getItem('rings-last-product');
+    const savedVisibleCount = sessionStorage.getItem('rings-visible-count');
+    const savedProducts = sessionStorage.getItem('rings-loaded-products');
+
+    if (savedPosition) {
+      setScrollPosition(parseInt(savedPosition));
+    }
+    if (savedProductId) {
+      setLastProductId(savedProductId);
+    }
+    if (savedVisibleCount) {
+      const count = parseInt(savedVisibleCount);
+      setVisibleCount(count);
+    }
+    
+    // Clear saved products data after loading
+    if (savedProducts) {
+      sessionStorage.removeItem('rings-loaded-products');
+    }
+  }, []);
+
+  // Restore scroll position after products are loaded
+  useEffect(() => {
+    if (products.length > 0 && (scrollPosition > 0 || lastProductId)) {
+      // If we have a specific product to scroll to
+      if (lastProductId) {
+        const productIndex = sortedProducts.findIndex(p => p._id === lastProductId || p.id === lastProductId);
+        
+        if (productIndex !== -1) {
+          // Calculate how many items to show to include this product
+          const itemsPerRow = 4; // Assuming 4 columns on desktop
+          const rowsNeeded = Math.ceil((productIndex + 1) / itemsPerRow);
+          const itemsNeeded = rowsNeeded * itemsPerRow;
+          
+          if (itemsNeeded > visibleCount) {
+            setVisibleCount(Math.min(itemsNeeded, sortedProducts.length));
+            
+            // Scroll to the specific product after ensuring it's visible
+            setTimeout(() => {
+              const productElement = document.querySelector(`[data-product-id="${lastProductId}"]`);
+              if (productElement) {
+                productElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              } else if (scrollPosition > 0) {
+                window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+              }
+              
+              // Clear saved state
+              sessionStorage.removeItem('rings-last-product');
+              sessionStorage.removeItem('rings-scroll-position');
+              sessionStorage.removeItem('rings-visible-count');
+              setLastProductId(null);
+              setScrollPosition(0);
+            }, 800);
+          } else {
+            // Product is already visible, scroll immediately
+            setTimeout(() => {
+              const productElement = document.querySelector(`[data-product-id="${lastProductId}"]`);
+              if (productElement) {
+                productElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              } else if (scrollPosition > 0) {
+                window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+              }
+              
+              // Clear saved state
+              sessionStorage.removeItem('rings-last-product');
+              sessionStorage.removeItem('rings-scroll-position');
+              sessionStorage.removeItem('rings-visible-count');
+              setLastProductId(null);
+              setScrollPosition(0);
+            }, 500);
+          }
+        } else {
+          // Fallback to scroll position if product not found
+          setTimeout(() => {
+            if (scrollPosition > 0) {
+              window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+              sessionStorage.removeItem('rings-scroll-position');
+              setScrollPosition(0);
+            }
+            sessionStorage.removeItem('rings-last-product');
+            setLastProductId(null);
+          }, 500);
+        }
+      } else if (scrollPosition > 0) {
+        setTimeout(() => {
+          window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+          sessionStorage.removeItem('rings-scroll-position');
+          setScrollPosition(0);
+        }, 500);
+      }
+    }
+  }, [products, sortedProducts, visibleCount, scrollPosition, lastProductId]);
+
+  useEffect(() => {
+    // Only reset if this is a new session (no saved state)
+    const hasSavedState = sessionStorage.getItem('rings-scroll-position') || 
+                         sessionStorage.getItem('rings-last-product') || 
+                         sessionStorage.getItem('rings-visible-count') ||
+                         sessionStorage.getItem('rings-loaded-products');
+    
+    if (!hasSavedState) {
+      setVisibleCount(INITIAL_VISIBLE_COUNT);
+    }
   }, [sortBy, filters, products]);
 
   const handleAddToCart = (product) => {
     setCartItems((prev) => [...prev, product]);
     console.log("Added to cart:", product.name);
+  };
+
+  const handleProductClick = (product) => {
+    // Save current scroll position and product info before navigating
+    sessionStorage.setItem('rings-scroll-position', window.scrollY.toString());
+    sessionStorage.setItem('rings-last-product', product._id || product.id);
+    sessionStorage.setItem('rings-visible-count', visibleCount.toString());
+    
+    // Save the actual loaded products data to prevent reloading
+    const loadedProducts = sortedProducts.slice(0, visibleCount);
+    sessionStorage.setItem('rings-loaded-products', JSON.stringify(loadedProducts));
+    
+    // Navigate to product page
+    window.location.href = `/rings/${product.slug || product._id || product.id}`;
   };
 
   if (loading) {
@@ -331,6 +451,8 @@ export default function RingsPage() {
                   key={product._id || product.id}
                   product={product}
                   onAddToCart={handleAddToCart}
+                  visibleCount={visibleCount}
+                  onProductClick={handleProductClick}
                 />
               ))}
             </div>

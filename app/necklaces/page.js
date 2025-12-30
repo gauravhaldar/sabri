@@ -46,7 +46,7 @@ const FAQS = [
   },
 ];
 
-const ProductCard = ({ product, onAddToCart }) => {
+const ProductCard = ({ product, onAddToCart, visibleCount, onProductClick }) => {
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
 
@@ -68,11 +68,8 @@ const ProductCard = ({ product, onAddToCart }) => {
   const rating = Number(product.averageRating || product.rating?.average || 0);
 
   return (
-    <div className="bg-white group">
-      <Link
-        href={`/necklaces/${product.slug || product._id || product.id}`}
-        className="block"
-      >
+    <div className="bg-white group" data-product-id={product._id || product.id}>
+      <div onClick={() => onProductClick(product)} className="block cursor-pointer">
         <div className="relative aspect-square overflow-hidden">
           <Image
             src={productImage}
@@ -124,13 +121,13 @@ const ProductCard = ({ product, onAddToCart }) => {
             </div>
           )}
         </div>
-      </Link>
+      </div>
       <div className="p-3">
-        <Link href={`/necklaces/${product.slug || product._id || product.id}`}>
+        <div onClick={() => onProductClick(product)} className="cursor-pointer">
           <h3 className="text-xs font-light text-black mb-1.5 line-clamp-2 leading-tight hover:text-gray-600 transition-colors">
             {product.name}
           </h3>
-        </Link>
+        </div>
         <div className="flex items-center gap-1.5 mb-1">
           <span className="text-xs font-light text-black">
             ₹{current.toLocaleString()}
@@ -180,6 +177,8 @@ export default function NecklacesPage() {
     minRating: 0,
   });
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const [lastProductId, setLastProductId] = useState(null);
   const [visibleCount, setVisibleCount] = useState(Number.MAX_SAFE_INTEGER);
 
   const { products, loading, error } = useNecklaces();
@@ -189,6 +188,48 @@ export default function NecklacesPage() {
   const visibleProducts = sortedProducts.slice(0, visibleCount);
   const [openFaqIndex, setOpenFaqIndex] = useState(null);
 
+  // Load saved scroll position and product on mount
+  useEffect(() => {
+    const savedPosition = sessionStorage.getItem('necklaces-scroll-position');
+    const savedProductId = sessionStorage.getItem('necklaces-last-product');
+
+    if (savedPosition) {
+      setScrollPosition(parseInt(savedPosition));
+    }
+    if (savedProductId) {
+      setLastProductId(savedProductId);
+    }
+  }, []);
+
+  // Restore scroll position after products are loaded
+  useEffect(() => {
+    if (products.length > 0 && (scrollPosition > 0 || lastProductId)) {
+      // If we have a specific product to scroll to
+      if (lastProductId) {
+        setTimeout(() => {
+          const productElement = document.querySelector(`[data-product-id="${lastProductId}"]`);
+          if (productElement) {
+            productElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          } else if (scrollPosition > 0) {
+            window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+          }
+          
+          // Clear saved state
+          sessionStorage.removeItem('necklaces-last-product');
+          sessionStorage.removeItem('necklaces-scroll-position');
+          setLastProductId(null);
+          setScrollPosition(0);
+        }, 500);
+      } else if (scrollPosition > 0) {
+        setTimeout(() => {
+          window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+          sessionStorage.removeItem('necklaces-scroll-position');
+          setScrollPosition(0);
+        }, 500);
+      }
+    }
+  }, [products, scrollPosition, lastProductId]);
+
   useEffect(() => {
     setVisibleCount(Number.MAX_SAFE_INTEGER);
   }, [sortBy, filters, products]);
@@ -196,6 +237,15 @@ export default function NecklacesPage() {
   const handleAddToCart = (product) => {
     setCartItems((prev) => [...prev, product]);
     console.log("Added to cart:", product.name);
+  };
+
+  const handleProductClick = (product) => {
+    // Save current scroll position and product info before navigating
+    sessionStorage.setItem('necklaces-scroll-position', window.scrollY.toString());
+    sessionStorage.setItem('necklaces-last-product', product._id || product.id);
+    
+    // Navigate to product page
+    window.location.href = `/necklaces/${product.slug || product._id || product.id}`;
   };
 
   if (loading) {
@@ -316,6 +366,8 @@ export default function NecklacesPage() {
                   key={product._id || product.id}
                   product={product}
                   onAddToCart={handleAddToCart}
+                  visibleCount={visibleCount}
+                  onProductClick={handleProductClick}
                 />
               ))}
             </div>

@@ -134,12 +134,12 @@ export default function MysabriJewellery() {
             </div>
             <div className="lg:w-1/2">
               <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
-                <img 
+                <Image 
                   src="/seo/s1.jpeg" 
                   alt="Elegant silver jewellery set for special occasions"
-                  width="400"
-                  height="300"
-                  className="w-full h-auto block"
+                  width={400}
+                  height={300}
+                  className="w-full h-auto"
                 />
               </div>
             </div>
@@ -240,12 +240,12 @@ export default function MysabriJewellery() {
             </div>
             <div className="lg:w-1/2">
               <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
-                <img 
+                <Image 
                   src="/seo/s2.png" 
                   alt="Trending silver jewellery designs"
-                  width="400"
-                  height="300"
-                  className="w-full h-auto block"
+                  width={400}
+                  height={300}
+                  className="w-full h-auto"
                 />
               </div>
             </div>
