@@ -6,11 +6,15 @@ export async function GET(request) {
   try {
     await connectDB();
 
+    console.log("Fetching necklaces from database...");
+
     const products = await Product.find({
       isActive: true,
       category: "necklaces",
     })
       .sort({ createdAt: -1 });
+
+    console.log(`Found ${products.length} necklaces in database`);
 
     return NextResponse.json({
       success: true,
@@ -24,6 +28,7 @@ export async function GET(request) {
       {
         success: false,
         message: "Server error fetching necklaces",
+        error: error.message,
       },
       { status: 500 }
     );

@@ -7,7 +7,7 @@ import Link from "next/link";
 import Head from "next/head";
 import { Heart, ShoppingBag } from "lucide-react";
 import FiltersDrawer from "../components/FiltersDrawer";
-import { useProducts } from "../../hooks/useProducts";
+import { useNecklaces } from "../../hooks/useProducts";
 import {
   getProductImageUrl,
   getProductHoverImageUrl,
@@ -180,11 +180,9 @@ export default function NecklacesPage() {
     minRating: 0,
   });
   const [filtersOpen, setFiltersOpen] = useState(false);
-  const INITIAL_VISIBLE_COUNT = 12;
-  const LOAD_MORE_COUNT = 12;
-  const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_COUNT);
+  const [visibleCount, setVisibleCount] = useState(Number.MAX_SAFE_INTEGER);
 
-  const { products, loading, error } = useProducts("necklaces", filters);
+  const { products, loading, error } = useNecklaces();
 
   const filteredProducts = filterProducts(products, filters);
   const sortedProducts = sortProducts(filteredProducts, sortBy);
@@ -192,7 +190,7 @@ export default function NecklacesPage() {
   const [openFaqIndex, setOpenFaqIndex] = useState(null);
 
   useEffect(() => {
-    setVisibleCount(INITIAL_VISIBLE_COUNT);
+    setVisibleCount(Number.MAX_SAFE_INTEGER);
   }, [sortBy, filters, products]);
 
   const handleAddToCart = (product) => {
@@ -321,21 +319,6 @@ export default function NecklacesPage() {
                 />
               ))}
             </div>
-            {visibleCount < sortedProducts.length && (
-              <div className="text-center mt-8 sm:mt-12">
-                <button
-                  onClick={() =>
-                    setVisibleCount((prev) =>
-                      Math.min(prev + LOAD_MORE_COUNT, sortedProducts.length)
-                    )
-                  }
-                  className="bg-white border border-gray-300 text-gray-700 px-6 sm:px-8 py-2.5 sm:py-3 hover:bg-gray-50 transition-colors duration-200 text-sm"
-                >
-                  Load More ({Math.max(sortedProducts.length - visibleCount, 0)}
-                  )
-                </button>
-              </div>
-            )}
           </>
         ) : (
           <div className="text-center py-16">
