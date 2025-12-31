@@ -6,6 +6,7 @@ import { CartProvider } from "@/contexts/CartContext";
 import { WishlistProvider } from "@/contexts/WishlistContext";
 import { ToastProvider } from "@/contexts/ToastContext";
 import GoogleAnalytics from "./components/GoogleAnalytics";
+import LoadingScreen from "./components/LoadingScreen";
 
 export const metadata = {
   title: "Silver Jewellery Set Online – Pure 925 Designs | Mysabri",
@@ -50,6 +51,7 @@ export default function RootLayout({ children }) {
         {/* End Meta Pixel Code */}
       </head>
       <body className="antialiased">
+        <LoadingScreen />
         <AuthProvider>
           <CartProvider>
             <WishlistProvider>
