@@ -5,19 +5,19 @@ import Image from "next/image";
 export default function ShopWithConfidence() {
   const features = [
     {
-      image: "/swc/noskin.png",
+      image: "/swc/no-skin-drama.png",
       title: "No Skin Drama",
       description:
         " Our jewellery is hypoallergenic, anti-tarnish, and gentle on sensitive skin. No nickel. No brass. Just silver that loves you back.",
     },
     {
-      image: "/swc/puresilver.png",
+      image: "/swc/silver.png",
       title: "Pure Silver Indian Jewellery",
       description:
         "Each piece is carefully handcrafted by skilled silversmiths using the finest 925 sterling silver and finished with love to ensure it lasts generations, not just seasons. Whether it’s for a festive occasion or a casual coffee run, Mysabri’s silver jewellery adds the perfect touch of grace and confidence.",
     },
     {
-      image: "/swc/fmf.png",
+      image: "/swc/fashion-meets.png",
       title: "Fashion Meets Function",
       description:
         "Every clasp, chain, and stone at Mysabri is made with care. Our silver jewellery is designed to look beautiful and live beautifully with you — a reflection of modern luxury.",
@@ -28,12 +28,9 @@ export default function ShopWithConfidence() {
     <section className="w-full bg-gradient-to-br from-amber-100 via-white to-amber-100/60 py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-16">
-          <div className="inline-block bg-contain bg-no-repeat bg-center rounded-3xl px-8 py-8 sm:px-10 sm:py-16 md:px-12 md:py-14 lg:px-16 xl:px-20 xl:py-18 mx-auto w-full max-w-[320px] sm:max-w-[400px] md:max-w-[600px] lg:max-w-[800px] xl:max-w-[1000px] min-h-[160px] sm:min-h-[180px] md:min-h-[200px] lg:min-h-[220px]" style={{backgroundImage: 'url(/shopwithconfidence/12.png)'}}>
+        <div className="text-center mb-8 sm:mb-12 md:mb-16">
+          <div className="inline-block bg-contain bg-no-repeat bg-center rounded-3xl px-12 py-20 sm:px-14 sm:py-24 md:px-16 md:py-20 lg:px-16 xl:px-20 xl:py-18 mx-auto w-full max-w-[480px] sm:max-w-[540px] md:max-w-[600px] lg:max-w-[800px] xl:max-w-[1000px] min-h-[200px] sm:min-h-[240px] md:min-h-[280px] lg:min-h-[300px]" style={{backgroundImage: 'url(/shopwithconfidence/YOUR-TRUST.png)'}}>
             <div className="flex items-center justify-center h-full min-h-[140px] sm:min-h-[160px] md:min-h-[180px] lg:min-h-[200px]">
-              <h2 className="text-[16px] sm:text-[20px] md:text-[22px] lg:text-[26px] xl:text-[30px] font-playfair font-bold tracking-[0.2em] text-gray-900 leading-tight" style={{fontFamily: 'Georgia, "Times New Roman", serif'}}>
-                 YOUR TRUST OUR PROMISE
-              </h2>
             </div>
           </div>
         </div>

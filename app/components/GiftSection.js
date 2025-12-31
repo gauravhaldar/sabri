@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function GiftSection({
-  title = "THE GIFTING EDIT",
+  title = "JEWELLERY FOR EVERY RELATIONSHIP",
   cards = [
     { label: "", target: "", image: "/gift/gf.webp", route: "/women" },
     { label: "", target: "", image: "/gift/bf.webp", route: "/mens" },

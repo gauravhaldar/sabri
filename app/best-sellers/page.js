@@ -387,7 +387,7 @@ export default function BestSellersPage() {
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
-            src="/banner/men.png"
+            src="/banner/best-seller.png"
             alt="Best Sellers Banner"
             fill
             className="object-cover"

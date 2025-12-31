@@ -322,7 +322,7 @@ export default function MensPage() {
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
-            src="/banner/men.png"
+            src="/banner/mens.png"
             alt="Men's Collection Banner"
             fill
             className="object-cover"
