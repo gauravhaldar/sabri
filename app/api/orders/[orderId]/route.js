@@ -5,7 +5,7 @@ import Order from "@/lib/models/Order";
 export async function GET(request, { params }) {
   try {
     await connectDB();
-    const { orderId } = params;
+    const { orderId } = await params;
     if (!orderId) {
       return NextResponse.json(
         { success: false, message: "Order ID is required" },
