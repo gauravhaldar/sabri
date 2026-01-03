@@ -566,8 +566,8 @@ export default function AddressModal({
                         value={address.name}
                         onChange={handleInputChange}
                         className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.name
-                            ? "border-red-300 focus:ring-red-500 focus:border-red-500"
-                            : "border-gray-300"
+                          ? "border-red-300 focus:ring-red-500 focus:border-red-500"
+                          : "border-gray-300"
                           }`}
                         required
                       />
@@ -627,11 +627,11 @@ export default function AddressModal({
                                       handleCountryCodeSelect(country)
                                     }
                                     className={`w-full flex items-center gap-3 px-3 py-2 text-left hover:bg-gray-50 transition-colors ${selectedCountryCode.code ===
-                                        country.code &&
-                                        selectedCountryCode.country ===
-                                        country.country
-                                        ? "bg-blue-50 text-blue-700"
-                                        : "text-gray-900"
+                                      country.code &&
+                                      selectedCountryCode.country ===
+                                      country.country
+                                      ? "bg-blue-50 text-blue-700"
+                                      : "text-gray-900"
                                       }`}
                                   >
                                     <span className="text-lg">
@@ -665,8 +665,8 @@ export default function AddressModal({
                           onChange={handleInputChange}
                           placeholder="Enter phone number"
                           className={`flex-1 px-3 py-2 border border-l-0 rounded-r-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.phone
-                              ? "border-red-300 focus:ring-red-500 focus:border-red-500"
-                              : "border-gray-300"
+                            ? "border-red-300 focus:ring-red-500 focus:border-red-500"
+                            : "border-gray-300"
                             }`}
                           required
                         />
@@ -688,8 +688,8 @@ export default function AddressModal({
                       value={address.email}
                       onChange={handleInputChange}
                       className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.email
-                          ? "border-red-300 focus:ring-red-500 focus:border-red-500"
-                          : "border-gray-300"
+                        ? "border-red-300 focus:ring-red-500 focus:border-red-500"
+                        : "border-gray-300"
                         }`}
                       required
                     />
@@ -792,8 +792,8 @@ export default function AddressModal({
                           value={address.zipCode}
                           onChange={handleInputChange}
                           className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.zipCode
-                              ? "border-red-300 focus:ring-red-500 focus:border-red-500"
-                              : "border-gray-300"
+                            ? "border-red-300 focus:ring-red-500 focus:border-red-500"
+                            : "border-gray-300"
                             }`}
                           required
                         />
@@ -801,32 +801,6 @@ export default function AddressModal({
                           <p className="mt-1 text-sm text-red-600">
                             {errors.zipCode}
                           </p>
-                        )}
-                        {/* Shipping Validation Message */}
-                        {address.zipCode && address.zipCode.length >= 5 && (
-                          <div className="mt-2">
-                            {shippingValidation === null ? (
-                              <div className="flex items-center gap-2 text-sm text-gray-500">
-                                <div className="animate-spin w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full"></div>
-                                Checking delivery availability...
-                              </div>
-                            ) : shippingValidation.available ? (
-                              <div className="flex items-center gap-2 text-sm text-green-600">
-                                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                                ✅ We deliver to {shippingValidation.data.state}
-                                !
-                                <span className="text-gray-600">
-                                  Shipping: ₹
-                                  {shippingValidation.data.finalCharge}
-                                </span>
-                              </div>
-                            ) : (
-                              <div className="flex items-center gap-2 text-sm text-red-600">
-                                <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-                                ❌ {shippingValidation.message}
-                              </div>
-                            )}
-                          </div>
                         )}
                       </div>
                       <div>
