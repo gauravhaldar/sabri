@@ -354,87 +354,151 @@ export default function AddressModal({
       return;
     }
 
+    // Check if running in secure context (required for geolocation)
+    if (window.isSecureContext === false) {
+      toast.error("Geolocation requires a secure connection (HTTPS)");
+      return;
+    }
+
     setIsGettingLocation(true);
 
     navigator.geolocation.getCurrentPosition(
       async (position) => {
         try {
           const { latitude, longitude } = position.coords;
-          
+          console.log("Location coordinates:", { latitude, longitude });
+
           // Use reverse geocoding to get address from coordinates
           const response = await fetch(
             `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
           );
-          
+
+          if (!response.ok) {
+            throw new Error(`Geocoding API error: ${response.status}`);
+          }
+
           const data = await response.json();
-          
-          if (data && data.localityInfo) {
+          console.log("Geocoding response:", data);
+
+          if (data) {
             let detectedZipCode = data.postcode || "";
-            
+            let detectedCity = data.city || data.locality || "";
+            let detectedState = data.principalSubdivision || "";
+            let detectedAddressLine = "";
+
+            // Try to build address from localityInfo
+            if (data.localityInfo?.administrative) {
+              const adminLevels = data.localityInfo.administrative;
+              // Get the most specific locality name for address line
+              detectedAddressLine = adminLevels[adminLevels.length - 1]?.name ||
+                adminLevels[adminLevels.length - 2]?.name || "";
+
+              // Fallback for city if not found
+              if (!detectedCity && adminLevels.length >= 3) {
+                detectedCity = adminLevels[2]?.name || adminLevels[1]?.name || "";
+              }
+
+              // Fallback for state
+              if (!detectedState && adminLevels.length >= 2) {
+                detectedState = adminLevels[1]?.name || "";
+              }
+            }
+
             // If no zip code found, try alternative geocoding service
             if (!detectedZipCode) {
               try {
+                console.log("Trying fallback geocoding for zip code...");
                 const fallbackResponse = await fetch(
-                  `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&addressdetails=1`
+                  `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&addressdetails=1`,
+                  {
+                    headers: {
+                      'User-Agent': 'SabriApp/1.0'
+                    }
+                  }
                 );
                 const fallbackData = await fallbackResponse.json();
+                console.log("Fallback geocoding response:", fallbackData);
+
                 detectedZipCode = fallbackData.address?.postcode || "";
+
+                // Also try to get more address details from fallback
+                if (!detectedCity) {
+                  detectedCity = fallbackData.address?.city ||
+                    fallbackData.address?.town ||
+                    fallbackData.address?.village || "";
+                }
+                if (!detectedState) {
+                  detectedState = fallbackData.address?.state || "";
+                }
+                if (!detectedAddressLine && fallbackData.address) {
+                  detectedAddressLine = fallbackData.address?.suburb ||
+                    fallbackData.address?.neighbourhood ||
+                    fallbackData.address?.road || "";
+                }
               } catch (fallbackError) {
                 console.log("Fallback geocoding failed:", fallbackError);
               }
             }
-            
+
             // Update address fields with geocoded data
             setAddress(prev => ({
               ...prev,
-              addressLine1: data.localityInfo.administrative[2]?.name || data.localityInfo.administrative[1]?.name || "",
-              city: data.city || data.localityInfo.administrative[2]?.name || "",
-              state: data.principalSubdivision || data.localityInfo.administrative[1]?.name || "",
-              zipCode: detectedZipCode,
+              addressLine1: detectedAddressLine || prev.addressLine1,
+              city: detectedCity || prev.city,
+              state: detectedState || prev.state,
+              zipCode: detectedZipCode || prev.zipCode,
               country: data.countryName || "India"
             }));
-            
+
             // Provide specific feedback about zip code detection
             if (detectedZipCode) {
               toast.success(`Location detected! Zip code: ${detectedZipCode}`);
               // Validate shipping for the detected zip code
               await validateShipping(detectedZipCode);
+            } else if (detectedCity || detectedState) {
+              toast.success("Location detected! Please enter your zip code manually.");
             } else {
-              toast.success("Location detected, but zip code not found. Please enter it manually.");
+              toast.error("Could not determine address from location. Please enter manually.");
             }
           } else {
             toast.error("Could not determine address from location");
           }
         } catch (error) {
           console.error("Error getting address from coordinates:", error);
-          toast.error("Failed to get address from location");
+          toast.error("Failed to get address from location. Please enter manually.");
         } finally {
           setIsGettingLocation(false);
         }
       },
       (error) => {
         console.error("Geolocation error:", error);
+        console.error("Error code:", error.code, "Message:", error.message);
+
         let errorMessage = "Failed to get your location";
-        
+
+        // Use numeric codes for GeolocationPositionError
+        // 1 = PERMISSION_DENIED, 2 = POSITION_UNAVAILABLE, 3 = TIMEOUT
         switch (error.code) {
-          case error.PERMISSION_DENIED:
-            errorMessage = "Location access denied. Please allow location access and try again.";
+          case 1: // PERMISSION_DENIED
+            errorMessage = "Location access denied. Please allow location access in your browser settings and try again.";
             break;
-          case error.POSITION_UNAVAILABLE:
-            errorMessage = "Location information is unavailable.";
+          case 2: // POSITION_UNAVAILABLE
+            errorMessage = "Location information is unavailable. Please check your device's location settings.";
             break;
-          case error.TIMEOUT:
-            errorMessage = "Location request timed out.";
+          case 3: // TIMEOUT
+            errorMessage = "Location request timed out. Please try again.";
             break;
+          default:
+            errorMessage = `Location error: ${error.message || 'Unknown error'}`;
         }
-        
+
         toast.error(errorMessage);
         setIsGettingLocation(false);
       },
       {
-        enableHighAccuracy: true,
-        timeout: 10000,
-        maximumAge: 300000 // 5 minutes
+        enableHighAccuracy: false, // Set to false for faster response, more reliable
+        timeout: 15000, // Increased timeout to 15 seconds
+        maximumAge: 300000 // 5 minutes cache
       }
     );
   };
@@ -501,11 +565,10 @@ export default function AddressModal({
                         name="name"
                         value={address.name}
                         onChange={handleInputChange}
-                        className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                          errors.name
+                        className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.name
                             ? "border-red-300 focus:ring-red-500 focus:border-red-500"
                             : "border-gray-300"
-                        }`}
+                          }`}
                         required
                       />
                       {errors.name && (
@@ -533,9 +596,8 @@ export default function AddressModal({
                               {selectedCountryCode.code}
                             </span>
                             <ChevronDown
-                              className={`w-4 h-4 transition-transform ${
-                                isCountryDropdownOpen ? "rotate-180" : ""
-                              }`}
+                              className={`w-4 h-4 transition-transform ${isCountryDropdownOpen ? "rotate-180" : ""
+                                }`}
                             />
                           </button>
 
@@ -564,14 +626,13 @@ export default function AddressModal({
                                     onClick={() =>
                                       handleCountryCodeSelect(country)
                                     }
-                                    className={`w-full flex items-center gap-3 px-3 py-2 text-left hover:bg-gray-50 transition-colors ${
-                                      selectedCountryCode.code ===
+                                    className={`w-full flex items-center gap-3 px-3 py-2 text-left hover:bg-gray-50 transition-colors ${selectedCountryCode.code ===
                                         country.code &&
-                                      selectedCountryCode.country ===
+                                        selectedCountryCode.country ===
                                         country.country
                                         ? "bg-blue-50 text-blue-700"
                                         : "text-gray-900"
-                                    }`}
+                                      }`}
                                   >
                                     <span className="text-lg">
                                       {country.flag}
@@ -603,11 +664,10 @@ export default function AddressModal({
                           value={address.phone}
                           onChange={handleInputChange}
                           placeholder="Enter phone number"
-                          className={`flex-1 px-3 py-2 border border-l-0 rounded-r-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                            errors.phone
+                          className={`flex-1 px-3 py-2 border border-l-0 rounded-r-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.phone
                               ? "border-red-300 focus:ring-red-500 focus:border-red-500"
                               : "border-gray-300"
-                          }`}
+                            }`}
                           required
                         />
                       </div>
@@ -627,11 +687,10 @@ export default function AddressModal({
                       name="email"
                       value={address.email}
                       onChange={handleInputChange}
-                      className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                        errors.email
+                      className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.email
                           ? "border-red-300 focus:ring-red-500 focus:border-red-500"
                           : "border-gray-300"
-                      }`}
+                        }`}
                       required
                     />
                     {errors.email && (
@@ -732,11 +791,10 @@ export default function AddressModal({
                           name="zipCode"
                           value={address.zipCode}
                           onChange={handleInputChange}
-                          className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                            errors.zipCode
+                          className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.zipCode
                               ? "border-red-300 focus:ring-red-500 focus:border-red-500"
                               : "border-gray-300"
-                          }`}
+                            }`}
                           required
                         />
                         {errors.zipCode && (
