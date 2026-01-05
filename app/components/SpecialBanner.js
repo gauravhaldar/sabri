@@ -7,8 +7,8 @@ import Image from "next/image";
 export default function SpecialBanner({
   title = "GIFTING SPECIAL",
   slides = [
-    { image: "/specialbanner/1.png", caption: "", sub: " ", cta: "SHOP NOW" },
-    { image: "/specialbanner/2.png", caption: "", sub: "", cta: "SHOP NOW" },
+    { image: "/specialbanner/3.png", caption: "", sub: " ", cta: "SHOP NOW" },
+    { image: "/specialbanner/4.png", caption: "", sub: "", cta: "SHOP NOW" },
   ],
   autoplayMs = 2000,
 }) {

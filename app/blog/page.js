@@ -389,26 +389,6 @@ export default function BlogPage() {
               </article>
             ))}
           </div>
-
-          {/* Newsletter Signup */}
-          <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-2xl p-8 text-center">
-            <h2 className="text-2xl font-serif font-semibold text-neutral-900 mb-4">
-              Stay Updated
-            </h2>
-            <p className="text-gray-600 mb-6 max-w-md mx-auto">
-              Get the latest silver jewellery tips, styling guides, and exclusive offers delivered to your inbox
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-              />
-              <button className="bg-amber-600 hover:bg-amber-700 text-white font-medium px-6 py-3 rounded-lg transition-colors">
-                Subscribe
-              </button>
-            </div>
-          </div>
         </div>
       </main>
 
