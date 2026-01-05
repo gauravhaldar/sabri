@@ -198,6 +198,14 @@ export default function RingsPage() {
   const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_COUNT);
   const [scrollPosition, setScrollPosition] = useState(0);
   const [lastProductId, setLastProductId] = useState(null);
+  const [showMore1, setShowMore1] = useState(false);
+  const [showMore2, setShowMore2] = useState(false);
+  const [showMore3, setShowMore3] = useState(false);
+  const [showMore4, setShowMore4] = useState(false);
+  const [showMore5, setShowMore5] = useState(false);
+  const [showMore6, setShowMore6] = useState(false);
+  const [showMore7, setShowMore7] = useState(false);
+  const [showMore8, setShowMore8] = useState(false);
 
   const { products, loading, error } = useRings();
 
@@ -488,279 +496,462 @@ export default function RingsPage() {
             </Link>
           </div>
         )}
-        <div className="mt-10 space-y-6 text-gray-800 text-sm sm:text-base leading-relaxed">
-          <h1 className="text-2xl sm:text-3xl font-bold text-black mb-2">
-              SILVER RING FOR WOMEN AT MYSABRI
-            </h1>
-          <p>
-            At Mysabri, we offer the perfect silver rings for women, crafted to blend
-            timeless beauty, exceptional craftsmanship, and modern elegance. Our
-            unique selection features excellent 925 sterling silver rings for women,
-            as well as beautifully designed pure silver rings, all of which are
-            crafted with meticulous attention to detail. Whether you're searching for
-            beautiful engagement silver rings for women that represent eternal love or
-            a simple silver band for everyday use, we have something for every taste.
-          </p>
-          <p>
-            Every ring in our collection is made of real 925 sterling silver, which
-            guarantees long-lasting durability and a beautiful lustre that never
-            fades. From sleek, basic bands to elaborately detailed statement designs,
-            our sterling silver rings for women are designed to complement every mood,
-            dress, or event.
-          </p>
-          <p>
-            Our minimalist and simple silver ring designs are ideal for everyday use,
-            while our superior handcrafted pieces are thoughtful gifts for loved ones.
-            Discover elegance, comfort, and style with our carefully picked collection
-            of 925 silver rings and pure silver rings for women, designed to
-            highlight your inherent beauty and upgrade your everyday appearance.
-          </p>
-
-          <h2 className="text-xl sm:text-2xl font-semibold text-black">
-            925 Silver Ring for Women – Authentic Craftsmanship You Can Trust
-          </h2>
-          <p>
-            Every creation at Mysabri begins with genuine 925 silver rings for women,
-            which are meticulously created by talented Indian craftsmen. Our jewelry
-            combines traditional workmanship with modern elegance, resulting in
-            timeless pieces that you may wear every day or keep for years. Each ring
-            undergoes purity testing to confirm that it includes real 92.5% sterling
-            silver, preserving its inherent brightness, durability, and long-lasting
-            beauty.
-          </p>
-          <p>
-            Mysabri provides a chosen collection of silver rings for women, ranging
-            from plain to eye-catching standout designs, beginning at ₹999. Our silver
-            rings for women are meant to provide excellent quality without the high
-            price tag, resulting in great value and craftsmanship.
-          </p>
-          <p>
-            Every ring is nickel-free, skin-friendly, and meticulously handmade for
-            maximum comfort and longevity. From simple everyday wear to sophisticated
-            designs for special occasions, Mysabri is your go-to source for real
-            silver rings for women in India, where purity, elegance, and
-            affordability blend effortlessly.
-          </p>
-
-          <h2 className="text-xl sm:text-2xl font-semibold text-black">
-            Pure 925 Sterling Silver Rings – Crafted with Authentic Indian Artistry
-          </h2>
-          <p>
-            Explore stylish silver rings designed to elevate your everyday and
-            festive looks. Mysabri blends traditional artistry with modern aesthetics
-            to bring you sleek bands, floral motifs, and contemporary silhouettes.
-            These versatile 925 silver rings for women make gifting meaningful and
-            accessorizing effortless.
-          </p>
-          <p>
-            Classic silver ring designs for women that combine elegance with casual
-            flair. Every ring at Mysabri is expertly created from real 925 sterling
-            silver and is intended to accentuate your unique style. Our silver rings
-            for women design, which ranges from sleek contemporary bands to elaborate
-            floral designs, offers a harmony of style and power that makes them ideal
-            for giving or showing off.
-          </p>
-
-          <h2 className="text-xl sm:text-2xl font-semibold text-black">
-            Sterling Silver Rings for Women – Redefining Modern Elegance
-          </h2>
-          <p>
-            Mysabri honours the essence of sterling silver rings for women, elegant,
-            robust, and eternally flexible. We are made of hallmarked 925 silver
-            rings, expressing purity and purpose. Every design is influenced by the
-            rhythm of modern life, from the gleam of a silver engagement ring for
-            women to the simplicity of an everyday band.
-          </p>
-          <p>
-            Our artists mix traditional silversmithing techniques with modern style to
-            create rings that feel both sumptuous and effortless. Mysabri's silver
-            ring design for women collection is ideal for individuals who value beauty
-            in the details, with clean lines, smooth finishes, and subtle shine that
-            boosts your daily confidence. Our sterling silver rings for women provide a
-            touch of elegance to every occasion, be it work, love, or celebration.
-          </p>
-
-          <h2 className="text-xl sm:text-2xl font-semibold text-black">
-            Engagement Silver Rings for Women – A Promise in Pure Silver
-          </h2>
-          <p>
-            Celebrate your forever moment with Mysabri's engagement silver rings for
-            women, designed to symbolise love that endures. Handcrafted from 925
-            sterling silver, each ring captures the essence of commitment — pure,
-            radiant, and eternal. Our collection features minimal solitaire styles,
-            vintage-inspired designs, and gemstone-studded bands that bring modern
-            romance to life.
-          </p>
-          <p>
-            Unlike mass-produced jewellery, every Mysabri engagement ring is shaped
-            with emotion and care. The lustrous finish of pure silver rings for women
-            adds a timeless charm to your story, while our ethical craftsmanship
-            ensures quality you can feel. For those who seek beauty, meaning, and
-            authenticity, Mysabri's engagement silver rings for women are a reflection
-            of love — pure and everlasting.
-          </p>
-
-          <h2 className="text-xl sm:text-2xl font-semibold text-black">
-            Latest Silver Rings for Women Designs for Everyday Elegance
-          </h2>
-          <p>
-            The most gorgeous and trendy silver rings for women, adding simple beauty
-            to your everyday look. Today's designs combine simplicity, modern charm,
-            and timeless appeal, making them appropriate for business, casual
-            outings, and special occasions. From sleek minimalist bands to elaborate
-            silver ring designs for women, each item gives a polished touch to your
-            personality without being too heavy or overpowering.
-          </p>
-          <p>
-            You'll also find fashionable alternatives such as textured rings,
-            stone-studded designs, adjustable bands, and oxidized motifs, all designed
-            to complement diverse fashion tastes. Dainty stacking rings are popular
-            among ladies who want understated elegance, while those who prefer a
-            stronger look can experiment with wide-band or engraved varieties.
-          </p>
-          <p>
-            The latest silver rings for women are ideal for everyday use, giving, or
-            adding to your trademark accessory collection. They provide durability,
-            sparkle, and unrivaled adaptability. Whether you're dressed up or going
-            casual, these patterns make every appearance effortlessly stunning.
-          </p>
-
-          <h2 className="text-xl sm:text-2xl font-semibold text-black">
-            Stylish Silver Ring Design for Women to Match Every Outfit
-          </h2>
-          <p>
-            Choosing the appropriate silver ring design for women may transform any
-            look, whether it's casual, ethnic, or modern stylish. Today's trendy
-            silver rings come in a range of patterns, including simple bands, floral
-            motifs, textured designs, geometric forms, and stone-studded elegance,
-            making them versatile for any outfit. These adaptable patterns allow you
-            to easily convey your particular style, regardless of the circumstance.
-          </p>
-          <p>
-            From everyday business wear to celebratory occasions, a well-crafted
-            silver ring design for women provides charm and refinement without
-            overwhelming your ensemble. Dainty rings are ideal for understated
-            elegance, but flamboyant designer designs immediately make a statement.
-            You may also mix and match different ring types to achieve a fashionable
-            stacking effect that complements your entire appearance.
-          </p>
-          <p>
-            Whether you desire something classic or trendy, the proper silver ring
-            design for women will keep you stylish and confident every day.
-          </p>
-
-          <h2 className="text-xl sm:text-2xl font-semibold text-black">
-            Trendy Silver Toe Rings for Women for Traditional and Modern Looks
-          </h2>
-          <p>
-            Explore one of the best collections on Mysabri of silver toe rings for
-            women and everyday wear jewellery — all crafted from 925 sterling silver at
-            transparent prices. We believe luxury should be accessible, so every
-            silver toe rings for women is priced fairly without compromising quality or
-            craftsmanship.
-          </p>
-
-          <h2 className="text-xl sm:text-2xl font-semibold text-black">
-            Best Silver Thumb Rings for Women to Elevate Your Style
-          </h2>
-          <p>
-            Add a dramatic and modern touch to your jewelry collection with the
-            latest silver thumb rings for women. Thumb rings, which are designed to
-            stand out, make a strong style statement and quickly improve your entire
-            appearance. Whether you favor simple bands, boho-inspired patterns,
-            oxidized finishes, or big statement pieces, there's a thumb ring to suit
-            you.
-          </p>
-          <p>
-            Today's popular silver thumb rings for women are made of high-quality 92.5
-            sterling silver, assuring durability, long-lasting luster, and
-            skin-friendly comfort. These rings look well with both western and ethnic
-            clothes, making them perfect for casual outings, parties, holiday wear,
-            and even everyday use.
-          </p>
-          <p>
-            If you enjoy playing with accessories, thumb rings are an excellent method
-            to demonstrate confidence and personality. A silver thumb ring for women
-            may be worn alone for a clean, sophisticated look or layered with other
-            rings for a stacked, stylish design. It will always boost your entire
-            appearance with elegance and personality.
-          </p>
-
-          <h2 className="text-xl sm:text-2xl font-semibold text-black">
-            Why Silver Rings for Women Are the Perfect Choice for Daily Wear
-          </h2>
-          <p>
-            Silver rings for women are excellent alternatives for everyday use because
-            they strike the ideal blend of elegance, durability, and comfort. These
-            rings, made of 92.5 sterling silver, are skin-friendly, lightweight, and
-            great for extended use, making them appropriate for both casual and
-            business situations.
-          </p>
-          <p>
-            Unlike heavy or showy jewelry, silver rings for women have a gentle sheen
-            that enhances any ensemble without being overpowering. Whether you like a
-            plain band, a fashionable stacking ring, or a complex silver ring design
-            for women, these items will complement your everyday style.
-          </p>
-          <p>
-            Another significant benefit is its long-lasting durability. Real sterling
-            silver does not fade readily and, with proper care, may retain its
-            brilliant brilliance for years. Furthermore, silver is less expensive than
-            other precious metals, making it simple to create a diverse collection.
-          </p>
-          <p>
-            From professional meetings to weekend excursions, silver rings for women
-            bring classic elegance and confidence to your daily style, making them the
-            ideal accent for any occasion.
-          </p>
-
-          <h2 className="text-xl sm:text-2xl font-semibold text-black">
-              Pure 925 Silver Rings Crafted with Perfection
-          </h2>
-          <p>
-            
-            Since all of Mysabri's creations are crafted from pure<Link
-              href="https://www.mysabri.in/new-arrivals"
-              className="hover:underline"
-            > 925 sterling silver</Link>
-            , their authenticity and long-lasting luster are guaranteed. Our
-            sterling silver rings for women are renowned for their high quality,
-            hypoallergenic nature, and softness toward the skin. Our collection honors
-            purity, toughness, and contemporary Indian artistry, regardless of your
-            preference for understated elegance or striking statement pieces.
-          </p>
-
-          <h3 className="text-xl sm:text-2xl font-semibold text-black">FAQs About Silver Rings</h3>
-          <div className="space-y-3 mt-2">
-            {FAQS.map((faq, index) => (
-              <div
-                key={faq.question}
-                className="border border-gray-200 rounded-md overflow-hidden"
-              >
-                <button
-                  type="button"
-                  onClick={() =>
-                    setOpenFaqIndex(openFaqIndex === index ? null : index)
-                  }
-                  className="w-full flex items-center justify-between px-3 py-2 text-left bg-gray-50 hover:bg-gray-100"
-                >
-                  <span className="font-semibold text-sm sm:text-base text-gray-900">
-                    {faq.question}
-                  </span>
-                  <span className="ml-2 text-lg leading-none text-gray-600">
-                    {openFaqIndex === index ? "-" : "+"}
-                  </span>
-                </button>
-                {openFaqIndex === index && (
-                  <div className="px-3 py-2 text-xs sm:text-sm text-gray-700 bg-white">
-                    {faq.answer}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
+
+      {/* Testimonials&FQ Zig-zag Content */}
+      <section className="w-full bg-gradient-to-br from-amber-50 via-white to-amber-50/30 py-12 sm:py-20 lg:py-28 font-sans text-neutral-800">
+        <div className="w-full px-4 sm:px-6 lg:px-16">
+          {/* Heading */}
+          <div className="text-center mb-12 sm:mb-16">
+            <h1 className="text-2xl sm:text-4xl md:text-5xl font-serif font-normal uppercase tracking-wide text-neutral-900 mb-4">
+              Silver Ring for Women
+            </h1>
+            <div className="w-24 h-1 bg-gradient-to-r from-amber-400 to-yellow-500 mx-auto rounded-full"></div>
+          </div>
+
+          {/* Intro Section */}
+          <div className="max-w-4xl mx-auto text-center mb-16 sm:mb-24 bg-white/60 backdrop-blur-sm rounded-3xl p-8 sm:p-12 shadow-lg border border-amber-100">
+            <p className="text-base sm:text-lg leading-relaxed text-neutral-700">
+              At Mysabri, we offer the perfect silver rings for women, crafted to blend timeless beauty, exceptional craftsmanship, and modern elegance. Our unique selection features excellent 925 sterling silver rings for women, as well as beautifully designed pure silver rings, all of which are crafted with meticulous attention to detail.
+            </p>
+          </div>
+
+          {/* Zig-zag Content Sections */}
+          <div className="space-y-16 sm:space-y-24">
+            
+            {/* Section 1 - Content Left, Image Right */}
+            <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
+              <div className="lg:w-1/2 space-y-4">
+                <h2 className="text-xl sm:text-3xl font-serif font-normal text-neutral-900 mb-6">
+                  925 Silver Ring for Women – Authentic Craftsmanship You Can Trust
+                </h2>
+                <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md border border-amber-100/50">
+                  <p className="text-sm sm:text-base leading-relaxed text-neutral-700 mb-4">
+                    Every creation at Mysabri begins with genuine 925 silver rings for women, which are meticulously created by talented Indian craftsmen. Our jewelry combines traditional workmanship with modern elegance, resulting in timeless pieces that you may wear every day or keep for years.
+                  </p>
+                  {!showMore1 && (
+                    <button
+                      type="button"
+                      onClick={() => setShowMore1(true)}
+                      className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                    >
+                      Read more
+                    </button>
+                  )}
+                  {showMore1 && (
+                    <div className="space-y-4">
+                      <p className="text-sm sm:text-base leading-relaxed text-neutral-700">
+                        Each ring undergoes purity testing to confirm that it includes real 92.5% sterling silver, preserving its inherent brightness, durability, and long-lasting beauty. Mysabri provides a chosen collection of silver rings for women, ranging from plain to eye-catching standout designs, beginning at ₹999.
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => setShowMore1(false)}
+                        className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                      >
+                        Read less
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className="lg:w-1/2">
+                <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
+                  <Image 
+                    src="/seo/r1.png" 
+                    alt="925 sterling silver rings for women"
+                    width={400}
+                    height={300}
+                    className="w-full h-auto"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Section 2 - Image Left, Content Right */}
+            <div className="flex flex-col lg:flex-row-reverse items-center gap-8 lg:gap-16">
+              <div className="lg:w-1/2 space-y-4">
+                <h2 className="text-xl sm:text-3xl font-serif font-normal text-neutral-900 mb-6">
+                  Pure 925 Sterling Silver Rings – Crafted with Authentic Indian Artistry
+                </h2>
+                <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md border border-amber-100/50">
+                  <p className="text-sm sm:text-base leading-relaxed text-neutral-700 mb-4">
+                    Explore stylish silver rings designed to elevate your everyday and festive looks. Mysabri blends traditional artistry with modern aesthetics to bring you sleek bands, floral motifs, and contemporary silhouettes.
+                  </p>
+                  {!showMore2 && (
+                    <button
+                      type="button"
+                      onClick={() => setShowMore2(true)}
+                      className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                    >
+                      Read more
+                    </button>
+                  )}
+                  {showMore2 && (
+                    <div className="space-y-4">
+                      <p className="text-sm sm:text-base leading-relaxed text-neutral-700">
+                        These versatile 925 silver rings for women make gifting meaningful and accessorizing effortless. Classic silver ring designs for women that combine elegance with casual flair. Every ring at Mysabri is expertly created from real 925 sterling silver and is intended to accentuate your unique style.
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => setShowMore2(false)}
+                        className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                      >
+                        Read less
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className="lg:w-1/2">
+                <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
+                  <Image 
+                    src="/seo/r2.png" 
+                    alt="Indian artistry silver rings"
+                    width={400}
+                    height={300}
+                    className="w-full h-auto"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Section 3 - Content Left, Image Right */}
+            <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
+              <div className="lg:w-1/2 space-y-4">
+                <h2 className="text-xl sm:text-3xl font-serif font-normal text-neutral-900 mb-6">
+                  Engagement Silver Rings for Women – A Promise in Pure Silver
+                </h2>
+                <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md border border-amber-100/50">
+                  <p className="text-sm sm:text-base leading-relaxed text-neutral-700 mb-4">
+                    Celebrate your forever moment with Mysabri's engagement silver rings for women, designed to symbolise love that endures. Handcrafted from 925 sterling silver, each ring captures the essence of commitment — pure, radiant, and eternal.
+                  </p>
+                  {!showMore3 && (
+                    <button
+                      type="button"
+                      onClick={() => setShowMore3(true)}
+                      className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                    >
+                      Read more
+                    </button>
+                  )}
+                  {showMore3 && (
+                    <div className="space-y-4">
+                      <p className="text-sm sm:text-base leading-relaxed text-neutral-700">
+                        Our collection features minimal solitaire styles, vintage-inspired designs, and gemstone-studded bands that bring modern romance to life. Unlike mass-produced jewellery, every Mysabri engagement ring is shaped with emotion and care.
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => setShowMore3(false)}
+                        className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                      >
+                        Read less
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className="lg:w-1/2">
+                <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
+                  <Image 
+                    src="/seo/r4.png" 
+                    alt="Engagement silver rings for women"
+                    width={400}
+                    height={300}
+                    className="w-full h-auto"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Section 4 - Image Left, Content Right */}
+            <div className="flex flex-col lg:flex-row-reverse items-center gap-8 lg:gap-16">
+              <div className="lg:w-1/2 space-y-4">
+                <h2 className="text-xl sm:text-3xl font-serif font-normal text-neutral-900 mb-6">
+                  Latest Silver Rings for Women Designs for Everyday Elegance
+                </h2>
+                <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md border border-amber-100/50">
+                  <p className="text-sm sm:text-base leading-relaxed text-neutral-700 mb-4">
+                    The most gorgeous and trendy silver rings for women, adding simple beauty to your everyday look. Today's designs combine simplicity, modern charm, and timeless appeal, making them appropriate for business, casual outings, and special occasions.
+                  </p>
+                  {!showMore4 && (
+                    <button
+                      type="button"
+                      onClick={() => setShowMore4(true)}
+                      className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                    >
+                      Read more
+                    </button>
+                  )}
+                  {showMore4 && (
+                    <div className="space-y-4">
+                      <p className="text-sm sm:text-base leading-relaxed text-neutral-700">
+                        From sleek minimalist bands to elaborate silver ring designs for women, each item gives a polished touch to your personality without being too heavy or overpowering. You'll also find fashionable alternatives such as textured rings, stone-studded designs, adjustable bands, and oxidized motifs.
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => setShowMore4(false)}
+                        className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                      >
+                        Read less
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className="lg:w-1/2">
+                <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
+                  <Image 
+                    src="/seo/r5.png" 
+                    alt="Latest silver ring designs"
+                    width={400}
+                    height={300}
+                    className="w-full h-auto"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Section 5 - Content Left, Image Right */}
+            <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
+              <div className="lg:w-1/2 space-y-4">
+                <h2 className="text-xl sm:text-3xl font-serif font-normal text-neutral-900 mb-6">
+                  Stylish Silver Ring Design for Women to Match Every Outfit
+                </h2>
+                <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md border border-amber-100/50">
+                  <p className="text-sm sm:text-base leading-relaxed text-neutral-700 mb-4">
+                    Choosing the appropriate silver ring design for women may transform any look, whether it's casual, ethnic, or modern stylish. Today's trendy silver rings come in a range of patterns, including simple bands, floral motifs, textured designs, geometric forms, and stone-studded elegance.
+                  </p>
+                  {!showMore5 && (
+                    <button
+                      type="button"
+                      onClick={() => setShowMore5(true)}
+                      className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                    >
+                      Read more
+                    </button>
+                  )}
+                  {showMore5 && (
+                    <div className="space-y-4">
+                      <p className="text-sm sm:text-base leading-relaxed text-neutral-700">
+                        These adaptable patterns allow you to easily convey your particular style, regardless of the circumstance. From everyday business wear to celebratory occasions, a well-crafted silver ring design for women provides charm and refinement without overwhelming your ensemble.
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => setShowMore5(false)}
+                        className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                      >
+                        Read less
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className="lg:w-1/2">
+                <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
+                  <Image 
+                    src="/seo/r6.png" 
+                    alt="Stylish silver ring designs"
+                    width={400}
+                    height={300}
+                    className="w-full h-auto"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Section 6 - Image Left, Content Right */}
+            <div className="flex flex-col lg:flex-row-reverse items-center gap-8 lg:gap-16">
+              <div className="lg:w-1/2 space-y-4">
+                <h2 className="text-xl sm:text-3xl font-serif font-normal text-neutral-900 mb-6">
+                  Trendy Silver Toe Rings for Women for Traditional and Modern Looks
+                </h2>
+                <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md border border-amber-100/50">
+                  <p className="text-sm sm:text-base leading-relaxed text-neutral-700 mb-4">
+                    Explore one of the best collections on Mysabri of silver toe rings for women and everyday wear jewellery — all crafted from 925 sterling silver at transparent prices.
+                  </p>
+                  {!showMore6 && (
+                    <button
+                      type="button"
+                      onClick={() => setShowMore6(true)}
+                      className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                    >
+                      Read more
+                    </button>
+                  )}
+                  {showMore6 && (
+                    <div className="space-y-4">
+                      <p className="text-sm sm:text-base leading-relaxed text-neutral-700">
+                        We believe luxury should be accessible, so every silver toe rings for women is priced fairly without compromising quality or craftsmanship. Perfect for both traditional and modern looks.
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => setShowMore6(false)}
+                        className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                      >
+                        Read less
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className="lg:w-1/2">
+                <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
+                  <Image 
+                    src="/seo/r8.png" 
+                    alt="Silver toe rings for women"
+                    width={400}
+                    height={300}
+                    className="w-full h-auto"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Section 7 - Content Left, Image Right */}
+            <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
+              <div className="lg:w-1/2 space-y-4">
+                <h2 className="text-xl sm:text-3xl font-serif font-normal text-neutral-900 mb-6">
+                  Best Silver Thumb Rings for Women to Elevate Your Style
+                </h2>
+                <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md border border-amber-100/50">
+                  <p className="text-sm sm:text-base leading-relaxed text-neutral-700 mb-4">
+                    Add a dramatic and modern touch to your jewelry collection with the latest silver thumb rings for women. Thumb rings, which are designed to stand out, make a strong style statement and quickly improve your entire appearance.
+                  </p>
+                  {!showMore7 && (
+                    <button
+                      type="button"
+                      onClick={() => setShowMore7(true)}
+                      className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                    >
+                      Read more
+                    </button>
+                  )}
+                  {showMore7 && (
+                    <div className="space-y-4">
+                      <p className="text-sm sm:text-base leading-relaxed text-neutral-700">
+                        Whether you favor simple bands, boho-inspired patterns, oxidized finishes, or big statement pieces, there's a thumb ring to suit you. Today's popular silver thumb rings for women are made of high-quality 92.5 sterling silver, assuring durability, long-lasting luster, and skin-friendly comfort.
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => setShowMore7(false)}
+                        className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                      >
+                        Read less
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className="lg:w-1/2">
+                <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
+                  <Image 
+                    src="/seo/r12.png" 
+                    alt="Silver thumb rings for women"
+                    width={400}
+                    height={300}
+                    className="w-full h-auto"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Section 8 - Image Left, Content Right */}
+            <div className="flex flex-col lg:flex-row-reverse items-center gap-8 lg:gap-16">
+              <div className="lg:w-1/2 space-y-4">
+                <h2 className="text-xl sm:text-3xl font-serif font-normal text-neutral-900 mb-6">
+                  Why Silver Rings for Women Are the Perfect Choice for Daily Wear
+                </h2>
+                <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md border border-amber-100/50">
+                  <p className="text-sm sm:text-base leading-relaxed text-neutral-700 mb-4">
+                    Silver rings for women are excellent alternatives for everyday use because they strike the ideal blend of elegance, durability, and comfort. These rings, made of 92.5 sterling silver, are skin-friendly, lightweight, and great for extended use.
+                  </p>
+                  {!showMore8 && (
+                    <button
+                      type="button"
+                      onClick={() => setShowMore8(true)}
+                      className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                    >
+                      Read more
+                    </button>
+                  )}
+                  {showMore8 && (
+                    <div className="space-y-4">
+                      <p className="text-sm sm:text-base leading-relaxed text-neutral-700">
+                        Unlike heavy or showy jewelry, silver rings for women have a gentle sheen that enhances any ensemble without being overpowering. Another significant advantage is its long-lasting durability. Real sterling silver does not fade readily and, with proper care, may retain its brilliant brilliance for years.
+                      </p>
+                      <p className="text-sm sm:text-base leading-relaxed text-neutral-700">
+                        To complete your look, explore our elegant collection of <Link
+                        href="https://www.mysabri.in/earrings"
+                        className="text-amber-700 hover:text-amber-800 underline font-medium"
+                      > silver earrings</Link> designed to pair perfectly with any silver ring.
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => setShowMore8(false)}
+                        className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                      >
+                        Read less
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className="lg:w-1/2">
+                <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
+                  <Image 
+                    src="/seo/r14.png" 
+                    alt="Silver rings for daily wear"
+                    width={400}
+                    height={300}
+                    className="w-full h-auto"
+                  />
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          {/* FAQs Section */}
+          <div className="mt-20 sm:mt-32">
+            <div className="text-center mb-8">
+              <h2 className="text-2xl sm:text-3xl font-serif font-normal text-neutral-900 mb-4">
+                FAQs – Silver Rings for Women
+              </h2>
+              <div className="w-16 h-1 bg-gradient-to-r from-amber-400 to-yellow-500 mx-auto rounded-full"></div>
+            </div>
+
+            <div className="max-w-4xl mx-auto space-y-3 sm:space-y-4">
+              {FAQS.map((faq, index) => (
+                <div
+                  key={faq.question}
+                  className="bg-white/80 backdrop-blur-sm border border-amber-100/50 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300"
+                >
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setOpenFaqIndex(openFaqIndex === index ? null : index)
+                    }
+                    className="w-full flex items-center justify-between px-4 sm:px-6 py-4 text-left hover:bg-amber-50/50 transition-colors"
+                  >
+                    <span className="font-semibold text-sm sm:text-base text-neutral-900 pr-4">
+                      {faq.question}
+                    </span>
+                    <span className="text-lg leading-none text-amber-600 font-bold">
+                      {openFaqIndex === index ? "−" : "+"}
+                    </span>
+                  </button>
+                  {openFaqIndex === index && (
+                    <div className="px-4 sm:px-6 py-4 text-xs sm:text-sm text-neutral-700 bg-white/50 border-t border-amber-100/30">
+                      {faq.answer}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+        </div>
+      </section>
     </div>
   );
 }

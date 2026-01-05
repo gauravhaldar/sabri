@@ -85,10 +85,10 @@ export default function Footer() {
               <Link href="/women">Women</Link>
             </li>
             <li>
-              <a href="/blog">Blog</a>
+              <Link href="/blog">Blog</Link>
             </li>
             <li>
-              <a href="/contact-us">Contact Us</a>
+              <Link href="/contact-us">Contact Us</Link>
             </li>
           </ul>
         </div>

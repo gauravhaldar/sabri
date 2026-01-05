@@ -1,330 +1,424 @@
 "use client";
 /* eslint react/no-unescaped-entities: "off" */
 
+import { useState } from "react";
 import Head from "next/head";
 import Image from "next/image";
+import Link from "next/link";
+
+// Blog posts data
+const blogPosts = [
+  {
+    id: 1,
+    title: "Why 925 Sterling Silver Jewellery Is Best Choice for Daily & Festive Wear",
+    excerpt: "Discover why modern women across India are choosing 925 sterling silver jewellery for work, college, and festive occasions – and how you can style it effortlessly for every day and celebrations.",
+    image: "/bb.png",
+    category: "Jewellery Guide",
+    readTime: "8 min read",
+    date: "Dec 15, 2024",
+    slug: "why-925-sterling-silver-jewellery-is-best-choice"
+  },
+  {
+    id: 2,
+    title: "Silver Jewellery Trends for Brides & Bridesmaids: The Styles Every Girl Is Loving This Wedding Season",
+    excerpt: "If you are a bride or bridesmaid trying to figure out which jewellery will actually make you feel confident, glowing, and truly 'you,' let me tell you something: you can never go wrong with SILVER JEWELLERY. It is classy, versatile, budget-friendly, and honestly, it looks good on every girl.",
+    image: "/blog/blog222.png",
+    category: "Wedding Trends",
+    readTime: "10 min read",
+    date: "Dec 10, 2024",
+    slug: "silver-jewellery-trends-brides-bridesmaids"
+  },
+  {
+    id: 3,
+    title: "Top 10 Silver Necklace Designs Trending Right Now",
+    excerpt: "Discover the top 10 silver necklace designs trending right now. From minimalist pendants to bold statement pieces, explore stylish 925 sterling silver necklaces for every occasion.",
+    image: "/blog/blog3.png",
+    category: "Trending Designs",
+    readTime: "8 min read",
+    date: "Dec 5, 2024",
+    slug: "styling-silver-earrings-every-face-shape"
+  }
+];
+
+// Full blog content component
+function FullBlogPost({ post, onClose }) {
+  return (
+    <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm overflow-y-auto">
+      <div className="min-h-full flex items-center justify-center p-4">
+        <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto my-8">
+          {/* Header */}
+          <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex justify-between items-start">
+            <div>
+              <span className="text-sm font-medium text-amber-600 uppercase tracking-wide">{post.category}</span>
+              <h1 className="text-2xl sm:text-3xl font-serif font-semibold text-neutral-900 mt-2">
+                {post.title}
+              </h1>
+              <div className="flex items-center gap-4 mt-3 text-sm text-gray-600">
+                <span>{post.date}</span>
+                <span>•</span>
+                <span>{post.readTime}</span>
+              </div>
+            </div>
+            <button
+              onClick={onClose}
+              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          {/* Content */}
+          <div className="p-6 sm:p-8">
+            {post.id === 1 && (
+              <div className="space-y-6">
+                <div className="relative w-full aspect-[16/9] rounded-2xl overflow-hidden bg-neutral-100 mb-6">
+                  <Image
+                    src="/bb.png"
+                    alt="925 sterling silver jewellery collection"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                
+                <div className="space-y-4">
+                  <p>
+                    Jewellery is an important aspect of personal style, and selecting the proper metal may make all the
+                    difference. While gold and diamond jewellery have historically dominated the market, 925 sterling silver
+                    jewellery has quickly become popular among modern ladies. 925 silver is beautiful, sturdy, inexpensive,
+                    and extremely adaptable, making it ideal for both everyday use and exceptional celebratory events.
+                  </p>
+                  <p>
+                    Whether you choose minimalist jewelry for everyday use or dazzling pieces for special occasions, 925
+                    sterling silver finds the ideal mix between elegance and utility. Here's why it's the ideal pick for
+                    both regular and holiday outfits.
+                  </p>
+                </div>
+
+                <h2 className="text-xl sm:text-2xl font-semibold text-neutral-900">What is 925 Sterling Silver?</h2>
+                <div className="space-y-4">
+                  <p>
+                    Sterling silver is an alloy composed of 92.5% pure silver and 7.5% additional reinforcing elements (often
+                    copper). This combination boosts the jewellery's longevity without sacrificing its inherent brilliance.
+                    The hallmark "925" indicates genuine sterling silver and ensures purity and long-lasting quality.
+                  </p>
+                  <p>
+                    This combination makes 925 silver sturdy, elegant, and skin-friendly—ideal for ladies who desire
+                    long-lasting jewelry.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4 my-8">
+                  <div className="relative aspect-[4/5] rounded-2xl overflow-hidden bg-neutral-100">
+                    <Image
+                      src="/bb1.png"
+                      alt="Woman wearing silver jewellery daily"
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="relative aspect-[4/5] rounded-2xl overflow-hidden bg-neutral-100">
+                    <Image
+                      src="/bb2.png"
+                      alt="Sterling silver jewellery styled for festive wear"
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                </div>
+
+                <h2 className="text-xl sm:text-2xl font-semibold text-neutral-900">Perfect for Daily Wear—Durable and Long-Lasting</h2>
+                <div className="space-y-4">
+                  <p>
+                    Many people think silver jewelry is fragile, yet 925 sterling silver is surprisingly resilient. The
+                    additional alloy strengthens the metal, making it appropriate for daily usage.
+                  </p>
+                  <p className="font-medium">Why it's perfect for everyday wear:</p>
+                  <ul className="list-disc list-inside space-y-2 text-sm sm:text-base ml-4">
+                    <li>Does not shatter or bend easily.</li>
+                    <li>Safe for every skin type, especially sensitive skin.</li>
+                    <li>More resistant to scratches than pure silver.</li>
+                    <li>Easy to maintain with simple cleaning.</li>
+                  </ul>
+                </div>
+
+                <h2 className="text-xl sm:text-2xl font-semibold text-neutral-900">Stunning Shine that Complements Festive Outfits</h2>
+                <div className="space-y-4">
+                  <p>
+                    Diwali, Durga Puja, Eid, and Christmas all call for colorful, festive, and fashionable jewelry. 925 silver
+                    jewellery has a stunning natural sheen that quickly boosts your holiday outfit.
+                  </p>
+                  <p className="font-medium">Silver works beautifully with:</p>
+                  <ul className="list-disc list-inside space-y-2 text-sm sm:text-base ml-4">
+                    <li>Sarees</li>
+                    <li>Lehengas</li>
+                    <li>Kurtis</li>
+                    <li>Western dresses</li>
+                    <li>Indo-Western fusion clothing</li>
+                  </ul>
+                </div>
+
+                <div className="bg-amber-50 border border-amber-200 rounded-xl p-6 my-8">
+                  <h3 className="text-lg font-semibold text-amber-900 mb-3"> Quick Tips</h3>
+                  <ul className="space-y-2 text-sm text-amber-800">
+                    <li>• Store in airtight pouches to prevent tarnishing</li>
+                    <li>• Clean with silver polishing cloth regularly</li>
+                    <li>• Avoid contact with perfumes and lotions</li>
+                    <li>• Remove before swimming or bathing</li>
+                  </ul>
+                </div>
+              </div>
+            )}
+
+            {post.id === 2 && (
+              <div className="space-y-6">
+                <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 mb-6">
+                  <h3 className="text-lg font-semibold text-blue-900 mb-3"> Expert Care Guide</h3>
+                  <p className="text-blue-800">Proper maintenance can extend the life of your silver rings by years. Follow our comprehensive care routine.</p>
+                </div>
+                
+                <h2 className="text-xl sm:text-2xl font-semibold text-neutral-900">Daily Care Routine</h2>
+                <div className="space-y-4">
+                  <p>Establish a simple daily routine to keep your silver rings looking their best.</p>
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <h4 className="font-medium mb-2">Morning Check:</h4>
+                    <ul className="text-sm space-y-1">
+                      <li>• Inspect for any damage or loose stones</li>
+                      <li>• Clean with soft microfiber cloth</li>
+                      <li>• Apply thin layer of silver polish if needed</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <h2 className="text-xl sm:text-2xl font-semibold text-neutral-900">Weekly Deep Cleaning</h2>
+                <div className="space-y-4">
+                  <p>Once a week, give your silver rings extra attention with these steps:</p>
+                  <ol className="list-decimal list-inside space-y-3 ml-4">
+                    <li>Prepare warm water with mild soap</li>
+                    <li>Soak rings for 5-10 minutes</li>
+                    <li>Gently scrub with soft toothbrush</li>
+                    <li>Rinse thoroughly and dry completely</li>
+                    <li>Apply silver polish for extra shine</li>
+                  </ol>
+                </div>
+
+                <h2 className="text-xl sm:text-2xl font-semibold text-neutral-900">Professional Maintenance</h2>
+                <div className="space-y-4">
+                  <p>Consider professional cleaning 2-3 times per year for:</p>
+                  <ul className="list-disc list-inside space-y-2 ml-4">
+                    <li>Deep cleaning of intricate designs</li>
+                    <li>Stone setting inspection and tightening</li>
+                    <li>Professional polishing and restoration</li>
+                    <li>Rhodium plating for extra protection</li>
+                  </ul>
+                </div>
+              </div>
+            )}
+
+            {post.id === 3 && (
+              <div className="space-y-6">
+                <div className="bg-purple-50 border border-purple-200 rounded-xl p-6 mb-6">
+                  <h3 className="text-lg font-semibold text-purple-900 mb-3"> Face Shape Guide</h3>
+                  <p className="text-purple-800">Discover the most flattering silver earrings for your unique face shape with our expert styling guide.</p>
+                </div>
+
+                <h2 className="text-xl sm:text-2xl font-semibold text-neutral-900">Round Face Shape</h2>
+                <div className="space-y-4">
+                  <p>For round faces, create angular lines to add definition and length.</p>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="bg-white rounded-lg p-4 border">
+                      <h4 className="font-medium mb-2">Best Styles:</h4>
+                      <ul className="text-sm space-y-1">
+                        <li>• Dangle earrings</li>
+                        <li>• Angular geometric shapes</li>
+                        <li>• Long drop earrings</li>
+                      </ul>
+                    </div>
+                    <div className="bg-white rounded-lg p-4 border">
+                      <h4 className="font-medium mb-2">Avoid:</h4>
+                      <ul className="text-sm space-y-1">
+                        <li>• Round hoops</li>
+                        <li>• Button earrings</li>
+                        <li>• Small studs</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <h2 className="text-xl sm:text-2xl font-semibold text-neutral-900">Oval Face Shape</h2>
+                <div className="space-y-4">
+                  <p>Oval faces are versatile and can pull off most earring styles. Focus on proportion and balance.</p>
+                  <div className="bg-green-50 rounded-lg p-4">
+                    <h4 className="font-medium mb-2 text-green-900">Perfect Choices:</h4>
+                    <ul className="text-sm space-y-1 text-green-800">
+                      <li>• Oval hoops</li>
+                      <li>• Teardrop earrings</li>
+                      <li>• Medium-sized studs</li>
+                      <li>• Soft triangular shapes</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <h2 className="text-xl sm:text-2xl font-semibold text-neutral-900">Square Face Shape</h2>
+                <div className="space-y-4">
+                  <p>Soften angular features with curved and rounded earring designs.</p>
+                  <div className="bg-orange-50 rounded-lg p-4">
+                    <h4 className="font-medium mb-2 text-orange-900">Recommended:</h4>
+                    <ul className="text-sm space-y-1 text-orange-800">
+                      <li>• Round hoops</li>
+                      <li>• Curved dangle earrings</li>
+                      <li>• Oval-shaped drops</li>
+                      <li>• Medium-sized circular designs</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <h2 className="text-xl sm:text-2xl font-semibold text-neutral-900">Heart Face Shape</h2>
+                <div className="space-y-4">
+                  <p>Balance the wider forehead and narrower chin with strategic earring choices.</p>
+                  <div className="bg-pink-50 rounded-lg p-4">
+                    <h4 className="font-medium mb-2 text-pink-900">Ideal Styles:</h4>
+                    <ul className="text-sm space-y-1 text-pink-800">
+                      <li>• Triangle-shaped earrings</li>
+                      <li>• Narrow chandelier styles</li>
+                      <li>• Teardrop with pointed bottom</li>
+                      <li>• Medium-sized angular designs</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function BlogPage() {
+  const [selectedPost, setSelectedPost] = useState(null);
+
+  const handleCardClick = (post) => {
+    setSelectedPost(post);
+    // Prevent body scroll when modal is open
+    document.body.style.overflow = 'hidden';
+  };
+
+  const handleCloseModal = () => {
+    setSelectedPost(null);
+    // Restore body scroll
+    document.body.style.overflow = 'unset';
+  };
+
   return (
     <>
       <Head>
-        <title>Why 925 Sterling Silver Jewellery Is the Best Choice | Mysabri Blog</title>
+        <title>Silver Jewellery Blog | Mysabri</title>
         <meta
           name="description"
-          content="Learn why 925 sterling silver jewellery is perfect for daily and festive wear – durable, affordable, hypoallergenic and timeless. Discover tips, benefits and FAQs."
+          content="Discover expert tips, styling guides, and care advice for silver jewellery. Learn about 925 sterling silver, ring maintenance, earring styling, and more."
         />
       </Head>
 
-      <main className="pt-24 sm:pt-32 pb-16 px-4 sm:px-6 lg:px-8 bg-white text-neutral-900">
-        <article className="max-w-4xl mx-auto">
-          {/* Hero section */}
-          <header className="mb-8 sm:mb-10">
-            <div className="relative w-full aspect-[16/9] rounded-2xl overflow-hidden bg-neutral-100 mb-4">
-              <Image
-                src="/bb.png"
-                alt="925 sterling silver jewellery collection"
-                fill
-                className="object-cover"
-                priority
-              />
-            </div>
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-serif font-semibold leading-tight mb-3">
-              Why 925 Sterling Silver Jewellery Is the Best Choice for Daily &amp; Festive Wear
+      <main className="pt-32 sm:pt-40 pb-16 px-4 sm:px-6 lg:px-8 bg-white text-neutral-900 min-h-screen">
+        <div className="max-w-6xl mx-auto">
+          {/* Page Header */}
+          <header className="text-center mb-12">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif font-semibold text-neutral-900 mb-4">
+              Silver Jewellery Blog
             </h1>
-            <p className="text-sm sm:text-base text-neutral-600">
-              Discover why modern women across India are choosing 925 sterling silver jewellery for work, college,
-              and festive occasions – and how you can style it effortlessly for every day and celebrations.
+            <p className="text-lg text-gray-600 mb-6 max-w-md mx-auto">
+              Expert tips, styling guides, and care advice for your precious silver jewellery collection
             </p>
           </header>
 
-          {/* Intro */}
-          <section className="space-y-4 mb-8">
-            <p>
-              Jewellery is an important aspect of personal style, and selecting the proper metal may make all the
-              difference. While gold and diamond jewellery have historically dominated the market, 925 sterling silver
-              jewellery has quickly become popular among modern ladies. 925 silver is beautiful, sturdy, inexpensive,
-              and extremely adaptable, making it ideal for both everyday use and exceptional celebratory events.
-            </p>
-            <p>
-              Whether you choose minimalist jewelry for everyday use or dazzling pieces for special occasions, 925
-              sterling silver finds the ideal mix between elegance and utility. Here&apos;s why it&apos;s the ideal pick for
-              both regular and holiday outfits.
-            </p>
-          </section>
+          {/* Blog Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-12">
+            {blogPosts.map((post) => (
+              <article
+                key={post.id}
+                className="group bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:border-amber-300 hover:scale-[1.02]"
+              >
+                <Link href={`/blog/${post.slug}`} className="block">
+                  {/* Image */}
+                  <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
+                    <Image
+                      src={post.image}
+                      alt={post.title}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    
+                    {/* Category badge */}
+                    <div className="absolute top-4 left-4">
+                      <span className="bg-amber-500 text-white text-xs font-medium px-3 py-1 rounded-full">
+                        {post.category}
+                      </span>
+                    </div>
+                  </div>
 
-          {/* What is 925 Sterling Silver */}
-          <section className="space-y-4 mb-10">
-            <h2 className="text-xl sm:text-2xl font-semibold">
-              What is 925 Sterling Silver?
+                  {/* Content */}
+                  <div className="p-6">
+                    <div className="flex items-center gap-3 text-sm text-gray-500 mb-3">
+                      <span>{post.date}</span>
+                      <span>•</span>
+                      <span>{post.readTime}</span>
+                    </div>
+                    
+                    <h2 className="text-lg sm:text-xl font-serif font-semibold text-neutral-900 mb-3 line-clamp-2 group-hover:text-amber-700 transition-colors">
+                      {post.title}
+                    </h2>
+                    
+                    <p className="text-gray-600 text-sm sm:text-base line-clamp-3 mb-4">
+                      {post.excerpt}
+                    </p>
+                    
+                    <div className="flex items-center justify-between">
+                      <span className="text-amber-600 hover:text-amber-700 font-medium text-sm flex items-center gap-2 transition-colors">
+                        Read More
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              </article>
+            ))}
+          </div>
+
+          {/* Newsletter Signup */}
+          <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-2xl p-8 text-center">
+            <h2 className="text-2xl font-serif font-semibold text-neutral-900 mb-4">
+              Stay Updated
             </h2>
-            <p>
-              Sterling silver is an alloy composed of 92.5% pure silver and 7.5% additional reinforcing elements (often
-              copper). This combination boosts the jewellery&apos;s longevity without sacrificing its inherent brilliance.
-              The hallmark "925" indicates genuine sterling silver and ensures purity and long-lasting quality.
+            <p className="text-gray-600 mb-6 max-w-md mx-auto">
+              Get the latest silver jewellery tips, styling guides, and exclusive offers delivered to your inbox
             </p>
-            <p>
-              This combination makes 925 silver sturdy, elegant, and skin-friendly—ideal for ladies who desire
-              long-lasting jewelry.
-            </p>
-          </section>
-
-          {/* Supporting image strip */}
-          <section className="grid grid-cols-2 gap-3 sm:gap-4 mb-10">
-            <div className="relative aspect-[4/5] rounded-2xl overflow-hidden bg-neutral-100">
-              <Image
-                src="/bb1.png"
-                alt="Woman wearing silver jewellery daily"
-                fill
-                className="object-cover"
+            <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
               />
+              <button className="bg-amber-600 hover:bg-amber-700 text-white font-medium px-6 py-3 rounded-lg transition-colors">
+                Subscribe
+              </button>
             </div>
-            <div className="relative aspect-[4/5] rounded-2xl overflow-hidden bg-neutral-100">
-              <Image
-                src="/bb2.png"
-                alt="Sterling silver jewellery styled for festive wear"
-                fill
-                className="object-cover"
-              />
-            </div>
-          </section>
-
-          {/* 1. Daily wear */}
-          <section className="space-y-4 mb-8">
-            <h2 className="text-xl sm:text-2xl font-semibold">
-              1. Perfect for Daily Wear—Durable and Long-Lasting
-            </h2>
-            <p>
-              Many people think silver jewelry is fragile, yet 925 sterling silver is surprisingly resilient. The
-              additional alloy strengthens the metal, making it appropriate for daily usage.
-            </p>
-            <p className="font-medium">Why it&apos;s perfect for everyday wear:</p>
-            <ul className="list-disc list-inside space-y-1 text-sm sm:text-base">
-              <li>Does not shatter or bend easily.</li>
-              <li>Safe for every skin type, especially sensitive skin.</li>
-              <li>More resistant to scratches than pure silver.</li>
-              <li>Easy to maintain with simple cleaning.</li>
-            </ul>
-            <p>
-              Whether you wear rings, bracelets, pendants, or earrings every day, sterling silver retains its brightness
-              over time.
-            </p>
-          </section>
-
-          {/* 2. Festive shine */}
-          <section className="space-y-4 mb-8">
-            <h2 className="text-xl sm:text-2xl font-semibold">
-              2. Stunning Shine that Complements Festive Outfits
-            </h2>
-            <p>
-              Diwali, Durga Puja, Eid, and Christmas all call for colorful, festive, and fashionable jewelry. 925 silver
-              jewellery has a stunning natural sheen that quickly boosts your holiday outfit.
-            </p>
-            <p className="font-medium">Silver works beautifully with:</p>
-            <ul className="list-disc list-inside space-y-1 text-sm sm:text-base">
-              <li>Sarees</li>
-              <li>Lehengas</li>
-              <li>Kurtis</li>
-              <li>Western dresses</li>
-              <li>Indo-Western fusion clothing</li>
-            </ul>
-            <p>
-              Whether you favour oxidized silver, stone-studded patterns, or classic polished jewelry, sterling silver
-              items complement any holiday look.
-            </p>
-          </section>
-
-          {/* 3. Affordable luxury */}
-          <section className="space-y-4 mb-8">
-            <h2 className="text-xl sm:text-2xl font-semibold">
-              3. Affordable Luxury Without Sacrificing Quality
-            </h2>
-            <p>
-              One of the main reasons ladies adore 925 silver is its luxurious appearance at a reasonable price. You
-              receive luxury-grade jewelry for a fraction of the cost of gold or diamonds.
-            </p>
-            <p className="font-medium">Benefits of affordable luxury:</p>
-            <ul className="list-disc list-inside space-y-1 text-sm sm:text-base">
-              <li>Buy more designs within your budget.</li>
-              <li>Trendy options that don&apos;t feel overly expensive.</li>
-              <li>Perfect for gifting to loved ones.</li>
-              <li>Experience excellent quality without overpaying.</li>
-            </ul>
-            <p>
-              This makes 925 silver excellent for college students, office workers, and bridesmaids seeking fashionable
-              jewelry without breaking the budget.
-            </p>
-          </section>
-
-          {/* 4. Variety of designs */}
-          <section className="space-y-4 mb-8">
-            <h2 className="text-xl sm:text-2xl font-semibold">
-              4. Various Designs for Every Occasion
-            </h2>
-            <p>
-              Sterling silver jewelry is available in a wide range of designs, including simple, bold, classic, modern,
-              and everything in between.
-            </p>
-            <p className="font-medium">Best for daily wear:</p>
-            <ul className="list-disc list-inside space-y-1 text-sm sm:text-base">
-              <li>Minimalist pendants</li>
-              <li>Simple earrings</li>
-              <li>Studs and hoops</li>
-              <li>Thin bracelets</li>
-              <li>Lightweight rings</li>
-            </ul>
-            <p className="font-medium">Best for festive attire:</p>
-            <ul className="list-disc list-inside space-y-1 text-sm sm:text-base">
-              <li>Oxidized silver choker sets</li>
-              <li>Necklaces adorned with stones or pearls</li>
-              <li>Traditional ethnic silver settings</li>
-              <li>Temple jewellery</li>
-              <li>Statement dangles and jhumkas</li>
-            </ul>
-            <p>
-              No other metal has such a diverse range of designs at this pricing point. Because of its flexibility, 925
-              silver is a popular choice for all styles.
-            </p>
-          </section>
-
-          {/* 5. Tarnish resistant */}
-          <section className="space-y-4 mb-8">
-            <h2 className="text-xl sm:text-2xl font-semibold">
-              5. Tarnish-Resistant and Easy to Maintain
-            </h2>
-            <p>
-              Another advantage of 925 sterling silver is that it is easy to maintain. With minimum care, your jewelry
-              will appear brand new for years.
-            </p>
-            <p className="font-medium">Maintenance tips:</p>
-            <ul className="list-disc list-inside space-y-1 text-sm sm:text-base">
-              <li>Store in an airtight pouch.</li>
-              <li>Keep away from perfumes and lotions.</li>
-              <li>Wipe with a gentle towel after use.</li>
-              <li>Use a silver polishing cloth for enhanced shine.</li>
-            </ul>
-            <p>
-              Unlike trendy jewelry, which rapidly loses colour or sheen, 925 silver stays polished and attractive with
-              proper care.
-            </p>
-          </section>
-
-          {/* 6. Hypoallergenic */}
-          <section className="space-y-4 mb-8">
-            <h2 className="text-xl sm:text-2xl font-semibold">
-              6. Hypoallergenic and Suitable for Sensitive Skin
-            </h2>
-            <p>
-              Many women have allergies to fake or metal-mixed jewelry. However, 925 silver is hypoallergenic, making it
-              suitable for everyday usage.
-            </p>
-            <p className="font-medium">Benefits for sensitive skin:</p>
-            <ul className="list-disc list-inside space-y-1 text-sm sm:text-base">
-              <li>No irritation.</li>
-              <li>No redness or itching.</li>
-              <li>Minimal risk of rashes or reactions.</li>
-              <li>Ideal for all-day wear.</li>
-            </ul>
-            <p>
-              Sterling silver is an excellent choice for jewellery that is both skin-friendly and attractive.
-            </p>
-          </section>
-
-          {/* 7. Timeless investment */}
-          <section className="space-y-4 mb-8">
-            <h2 className="text-xl sm:text-2xl font-semibold">
-              7. A Timeless Investment That Will Never Go Out of Style
-            </h2>
-            <p>
-              Silver has been treasured for generations due to its everlasting appeal. Unlike trendy jewelry, 925 silver
-              is timeless.
-            </p>
-            <p>
-              It offers long-term value, trend-proof elegance, and designs that are suitable for all ages. Whether
-              you&apos;re 18 or 60, silver jewellery complements every age, clothing, or personality.
-            </p>
-          </section>
-
-          {/* 8. Ideal gift */}
-          <section className="space-y-4 mb-10">
-            <h2 className="text-xl sm:text-2xl font-semibold">
-              8. Ideal Gift for Any Occasion
-            </h2>
-            <p>
-              925 sterling silver jewelry offers the ideal present for birthdays, anniversaries, engagements, festivals,
-              college farewells, weddings, and Valentine&apos;s Day.
-            </p>
-            <p>
-              Its high quality and accessible pricing make it a thoughtful and fashionable gift option for anyone who
-              loves elegant jewellery.
-            </p>
-          </section>
-
-          {/* Final thoughts */}
-          <section className="space-y-4 mb-12">
-            <h2 className="text-xl sm:text-2xl font-semibold">Final Thoughts</h2>
-            <p>
-              925 sterling silver jewelry is an excellent balance of beauty, durability, adaptability, and
-              affordability. Sterling silver has something for everyone, whether you want to wear it to work or college
-              or for special occasions.
-            </p>
-            <p>
-              Its long-lasting shine, skin-friendly properties, and unlimited design possibilities make it an excellent
-              alternative for those seeking elegance without breaking the bank.
-            </p>
-            <p>
-              Explore Mysabri&apos;s latest collections for fine 925 silver jewellery made with accuracy and flair. From
-              simple everyday pieces to festive standout designs, you&apos;ll discover jewellery that complements your style
-              on any occasion.
-            </p>
-          </section>
-
-          {/* FAQ */}
-          <section className="border-t border-neutral-200 pt-8 mt-8">
-            <h2 className="text-xl sm:text-2xl font-semibold mb-4">
-              FAQs About 925 Sterling Silver Jewellery
-            </h2>
-            <div className="space-y-4 text-sm sm:text-base">
-              <div>
-                <h3 className="font-semibold mb-1">1. Is 925 sterling silver suitable for daily wear?</h3>
-                <p>
-                  Yes, 925 sterling silver is ideal for daily use since it is long-lasting, scratch-resistant, and gentle
-                  on the skin. The additional alloy makes it durable enough to survive daily usage without losing its
-                  brilliance.
-                </p>
-              </div>
-              <div>
-                <h3 className="font-semibold mb-1">2. Will 925 silver rust easily?</h3>
-                <p>
-                  925 silver will tarnish somewhat over time due to natural oxidation, but it is simple to clean and
-                  preserve. Regular washing with a soft cloth or using silver polish will rapidly restore its lustre.
-                </p>
-              </div>
-              <div>
-                <h3 className="font-semibold mb-1">3. Is sterling silver suitable for delicate skin?</h3>
-                <p>
-                  Absolutely. 925 sterling silver is hypoallergenic, making it suitable for individuals with sensitive
-                  skin. It does not cause irritation, rashes, or allergies like low-quality imitation jewelry.
-                </p>
-              </div>
-              <div>
-                <h3 className="font-semibold mb-1">4. Can 925 silver be worn at festive occasions?</h3>
-                <p>
-                  Yes, sterling silver is ideal for festive and traditional occasions. It is available in patterns such
-                  as oxidized sets, pearl studs, stone-studded necklaces, and ethnic chokers, making it excellent for
-                  weddings, festivals, and other events.
-                </p>
-              </div>
-              <div>
-                <h3 className="font-semibold mb-1">5. How can I know whether my item is genuine 925 sterling silver?</h3>
-                <p>
-                  Look for the "925" hallmark stamped on the jewelry. Genuine sterling silver has a beautiful white
-                  lustre, weighs slightly more than fake jewelry, and does not cause skin sensitivities.
-                </p>
-              </div>
-            </div>
-          </section>
-        </article>
+          </div>
+        </div>
       </main>
+
+      {/* Blog Post Modal */}
+      {selectedPost && (
+        <FullBlogPost 
+          post={selectedPost} 
+          onClose={handleCloseModal}
+        />
+      )}
     </>
   );
 }

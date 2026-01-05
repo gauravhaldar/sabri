@@ -40,9 +40,15 @@ export default function TopSales() {
   return (
     <section className="w-full bg-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <h2 className="text-center text-[16px] sm:text-[20px] md:text-[22px] tracking-wide uppercase py-4 sm:py-6">
-          SABRI TOP STYLES
-        </h2>
+        <div className="flex justify-center py-4 sm:py-6">
+          <Image
+            src="/headings/sabri top styles.png"
+            alt="SABRI TOP STYLES"
+            width={350}
+            height={50}
+            className="h-auto w-full max-w-md object-contain"
+          />
+        </div>
 
         {/* Tabs */}
         <div className="flex items-center justify-start gap-2 sm:gap-4 pb-4 sm:pb-6 overflow-x-auto no-scrollbar [-ms-overflow-style:none] [scrollbar-width:none]">

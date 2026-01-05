@@ -25,9 +25,15 @@ export default function GiftSection({
   return (
     <section className="w-full bg-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <h2 className="text-center text-[16px] sm:text-[20px] md:text-[22px] tracking-wide uppercase py-4 sm:py-6">
-          {title}
-        </h2>
+        <div className="flex justify-center py-4 sm:py-6">
+          <Image
+            src="/headings/jewellery for every frelationship.png"
+            alt="JEWELLERY FOR EVERY RELATIONSHIP"
+            width={400}
+            height={60}
+            className="h-auto w-full max-w-lg object-contain"
+          />
+        </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {cards.map((c, idx) => (

@@ -31,8 +31,14 @@ export default function SpecialBanner({
     <section className="w-full bg-black">
       <div className="mx-auto max-w-[1920px]">
         {/* Title */}
-        <div className="py-2 sm:py-3 text-center text-[10px] sm:text-xs tracking-wider text-white/80">
-          {title}
+        <div className="flex justify-center py-2 sm:py-3">
+          <Image
+            src="/headings/gifting special.png"
+            alt="GIFTING SPECIAL"
+            width={250}
+            height={40}
+            className="h-auto w-full max-w-xs object-contain"
+          />
         </div>
 
         {/* Banner */}

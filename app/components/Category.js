@@ -42,9 +42,15 @@ export default function Category({
     <section className="w-full bg-white overflow-hidden">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Heading */}
-        <h2 className="text-center text-[18px] sm:text-[20px] md:text-[22px] tracking-wide uppercase py-6">
-          {title}
-        </h2>
+        <div className="flex justify-center py-6">
+          <Image
+            src="/headings/everyday silver jewellery.png"
+            alt="EVERYDAY SILVER JEWELLERY"
+            width={300}
+            height={60}
+            className="h-auto w-full max-w-md object-contain"
+          />
+        </div>
 
         {/* Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 lg:gap-6">
