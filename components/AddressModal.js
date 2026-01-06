@@ -11,6 +11,7 @@ import {
   Building2,
   ChevronDown,
   Navigation,
+  Check,
 } from "lucide-react";
 import { useToast } from "@/contexts/ToastContext";
 
@@ -95,6 +96,88 @@ export default function AddressModal({
   const [countrySearchTerm, setCountrySearchTerm] = useState("");
   const [errors, setErrors] = useState({});
   const [isGettingLocation, setIsGettingLocation] = useState(false);
+
+  // Saved addresses state
+  const [savedAddresses, setSavedAddresses] = useState([]);
+  const [loadingSavedAddresses, setLoadingSavedAddresses] = useState(false);
+  const [showNewAddressForm, setShowNewAddressForm] = useState(false);
+
+  // Fetch saved addresses when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      fetchSavedAddresses();
+    }
+  }, [isOpen]);
+
+  const fetchSavedAddresses = async () => {
+    setLoadingSavedAddresses(true);
+    try {
+      const token = localStorage.getItem("authToken");
+      if (!token) {
+        setShowNewAddressForm(true);
+        return;
+      }
+
+      const res = await fetch("/api/auth/addresses", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+      if (data.success && data.data.addresses?.length > 0) {
+        setSavedAddresses(data.data.addresses);
+        setShowNewAddressForm(false);
+      } else {
+        setShowNewAddressForm(true);
+      }
+    } catch (error) {
+      console.error("Error fetching saved addresses:", error);
+      setShowNewAddressForm(true);
+    } finally {
+      setLoadingSavedAddresses(false);
+    }
+  };
+
+  const handleSelectSavedAddress = async (savedAddr) => {
+    // Convert saved address format to the format expected by cart
+    const addressData = {
+      name: savedAddr.name,
+      email: currentUser?.email || "",
+      phone: savedAddr.phone,
+      addressLine1: savedAddr.address,
+      addressLine2: "",
+      city: savedAddr.city,
+      state: savedAddr.state,
+      zipCode: savedAddr.pincode,
+      country: savedAddr.country || "India",
+    };
+
+    // Validate shipping for this address
+    setLoading(true);
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      const isAvailable = savedAddr.pincode?.length >= 5;
+
+      if (isAvailable) {
+        const addressWithShipping = {
+          ...addressData,
+          phoneWithCountryCode: `+91 ${savedAddr.phone}`,
+          countryCode: countryCodes[0],
+          shippingInfo: {
+            state: savedAddr.state,
+            finalCharge: savedAddr.pincode?.startsWith("1") ? 0 : 50,
+          },
+        };
+        onAddressAdded(addressWithShipping);
+        toast.success("Address selected successfully!");
+        onClose();
+      } else {
+        toast.error("Delivery not available for this location");
+      }
+    } catch (error) {
+      toast.error("Failed to validate address");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const resetForm = useCallback(() => {
     setAddress({
@@ -548,303 +631,375 @@ export default function AddressModal({
 
             {/* Form */}
             <div className="p-6 max-h-[calc(90vh-80px)] overflow-y-auto">
-              <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Personal Information */}
-                <div>
-                  <h3 className="text-lg font-medium text-gray-900 mb-4 flex items-center gap-2">
-                    <User className="w-5 h-5 text-gray-600" />
-                    Personal Information
-                  </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Full Name *
-                      </label>
-                      <input
-                        type="text"
-                        name="name"
-                        value={address.name}
-                        onChange={handleInputChange}
-                        className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.name
-                          ? "border-red-300 focus:ring-red-500 focus:border-red-500"
-                          : "border-gray-300"
-                          }`}
-                        required
-                      />
-                      {errors.name && (
-                        <p className="mt-1 text-sm text-red-600">
-                          {errors.name}
-                        </p>
-                      )}
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Phone Number *
-                      </label>
-                      <div className="flex">
-                        {/* Country Code Dropdown */}
-                        <div className="relative">
-                          <button
-                            type="button"
-                            onClick={() =>
-                              setIsCountryDropdownOpen(!isCountryDropdownOpen)
-                            }
-                            className="flex items-center gap-2 px-3 py-2 border border-gray-300 rounded-l-lg hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 min-w-[100px] bg-white"
-                          >
-                            <span>{selectedCountryCode.flag}</span>
-                            <span className="text-sm font-medium">
-                              {selectedCountryCode.code}
-                            </span>
-                            <ChevronDown
-                              className={`w-4 h-4 transition-transform ${isCountryDropdownOpen ? "rotate-180" : ""
-                                }`}
-                            />
-                          </button>
-
-                          {/* Dropdown Menu */}
-                          {isCountryDropdownOpen && (
-                            <div className="absolute top-full left-0 w-80 bg-white border border-gray-200 rounded-lg shadow-lg z-10 max-h-60 overflow-hidden">
-                              {/* Search Input */}
-                              <div className="p-2 border-b border-gray-200">
-                                <input
-                                  type="text"
-                                  placeholder="Search country..."
-                                  value={countrySearchTerm}
-                                  onChange={(e) =>
-                                    setCountrySearchTerm(e.target.value)
-                                  }
-                                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                />
-                              </div>
-
-                              {/* Countries List */}
-                              <div className="max-h-48 overflow-y-auto">
-                                {filteredCountryCodes.map((country) => (
-                                  <button
-                                    key={`${country.code}-${country.country}`}
-                                    type="button"
-                                    onClick={() =>
-                                      handleCountryCodeSelect(country)
-                                    }
-                                    className={`w-full flex items-center gap-3 px-3 py-2 text-left hover:bg-gray-50 transition-colors ${selectedCountryCode.code ===
-                                      country.code &&
-                                      selectedCountryCode.country ===
-                                      country.country
-                                      ? "bg-blue-50 text-blue-700"
-                                      : "text-gray-900"
-                                      }`}
-                                  >
-                                    <span className="text-lg">
-                                      {country.flag}
-                                    </span>
-                                    <div className="flex-1 min-w-0">
-                                      <div className="font-medium truncate">
-                                        {country.name}
-                                      </div>
-                                      <div className="text-sm text-gray-500">
-                                        {country.code}
-                                      </div>
-                                    </div>
-                                  </button>
-                                ))}
-                                {filteredCountryCodes.length === 0 && (
-                                  <div className="px-3 py-4 text-center text-gray-500 text-sm">
-                                    No countries found
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                          )}
-                        </div>
-
-                        {/* Phone Input */}
-                        <input
-                          type="tel"
-                          name="phone"
-                          value={address.phone}
-                          onChange={handleInputChange}
-                          placeholder="Enter phone number"
-                          className={`flex-1 px-3 py-2 border border-l-0 rounded-r-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.phone
-                            ? "border-red-300 focus:ring-red-500 focus:border-red-500"
-                            : "border-gray-300"
-                            }`}
-                          required
-                        />
-                      </div>
-                      {errors.phone && (
-                        <p className="mt-1 text-sm text-red-600">
-                          {errors.phone}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                  <div className="mt-4">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Email Address *
-                    </label>
-                    <input
-                      type="email"
-                      name="email"
-                      value={address.email}
-                      onChange={handleInputChange}
-                      className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.email
-                        ? "border-red-300 focus:ring-red-500 focus:border-red-500"
-                        : "border-gray-300"
-                        }`}
-                      required
-                    />
-                    {errors.email && (
-                      <p className="mt-1 text-sm text-red-600">
-                        {errors.email}
-                      </p>
-                    )}
-                  </div>
+              {/* Saved Addresses Section */}
+              {loadingSavedAddresses ? (
+                <div className="text-center py-8">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                  <p className="text-gray-600">Loading saved addresses...</p>
                 </div>
-
-                {/* Address Information */}
-                <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-medium text-gray-900 flex items-center gap-2">
-                      <Building2 className="w-5 h-5 text-gray-600" />
-                      Address Information
-                    </h3>
+              ) : savedAddresses.length > 0 && !showNewAddressForm ? (
+                <div className="space-y-4 mb-6">
+                  <h3 className="text-lg font-medium text-gray-900 flex items-center gap-2">
+                    <MapPin className="w-5 h-5 text-gray-600" />
+                    Select a Saved Address
+                  </h3>
+                  <div className="grid grid-cols-1 gap-3">
+                    {savedAddresses.map((addr) => (
+                      <button
+                        key={addr._id}
+                        type="button"
+                        onClick={() => handleSelectSavedAddress(addr)}
+                        disabled={loading}
+                        className={`w-full text-left p-4 border rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all disabled:opacity-50 ${addr.isDefault ? "border-green-400 bg-green-50" : "border-gray-200"
+                          }`}
+                      >
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-1">
+                              <span className="font-medium text-gray-900">{addr.name}</span>
+                              <span className="text-xs px-2 py-0.5 bg-gray-100 rounded capitalize">{addr.type}</span>
+                              {addr.isDefault && (
+                                <span className="text-xs px-2 py-0.5 bg-green-100 text-green-700 rounded">Default</span>
+                              )}
+                            </div>
+                            <p className="text-sm text-gray-600">{addr.address}</p>
+                            <p className="text-sm text-gray-600">{addr.city}, {addr.state} - {addr.pincode}</p>
+                            <p className="text-sm text-gray-500 mt-1">{addr.phone}</p>
+                          </div>
+                          <div className="ml-4 flex-shrink-0">
+                            <div className="w-6 h-6 rounded-full border-2 border-blue-500 flex items-center justify-center">
+                              <Check className="w-4 h-4 text-blue-500 opacity-0 group-hover:opacity-100" />
+                            </div>
+                          </div>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                  <div className="text-center pt-4 border-t border-gray-200">
                     <button
                       type="button"
-                      onClick={getCurrentLocation}
-                      disabled={isGettingLocation}
-                      className="flex items-center gap-2 px-3 py-2 text-sm bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+                      onClick={() => setShowNewAddressForm(true)}
+                      className="text-blue-600 hover:text-blue-700 text-sm font-medium"
                     >
-                      <Navigation className="w-4 h-4" />
-                      {isGettingLocation ? (
-                        <>
-                          <div className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full"></div>
-                          Getting Location...
-                        </>
-                      ) : (
-                        "Get My Location"
-                      )}
+                      + Add New Address
                     </button>
                   </div>
-                  <div className="space-y-4">
+                </div>
+              ) : null}
+
+              {/* New Address Form */}
+              {(showNewAddressForm || savedAddresses.length === 0) && (
+                <>
+                  {savedAddresses.length > 0 && (
+                    <div className="mb-4">
+                      <button
+                        type="button"
+                        onClick={() => setShowNewAddressForm(false)}
+                        className="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center gap-1"
+                      >
+                        ← Back to saved addresses
+                      </button>
+                    </div>
+                  )}
+                  <form onSubmit={handleSubmit} className="space-y-6">
+                    {/* Personal Information */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Address Line 1 *
-                      </label>
-                      <input
-                        type="text"
-                        name="addressLine1"
-                        value={address.addressLine1}
-                        onChange={handleInputChange}
-                        placeholder="House/Flat/Building No., Street Name"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Address Line 2
-                      </label>
-                      <input
-                        type="text"
-                        name="addressLine2"
-                        value={address.addressLine2}
-                        onChange={handleInputChange}
-                        placeholder="Area, Landmark (Optional)"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                      />
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          City *
-                        </label>
-                        <input
-                          type="text"
-                          name="city"
-                          value={address.city}
-                          onChange={handleInputChange}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                          required
-                        />
+                      <h3 className="text-lg font-medium text-gray-900 mb-4 flex items-center gap-2">
+                        <User className="w-5 h-5 text-gray-600" />
+                        Personal Information
+                      </h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Full Name *
+                          </label>
+                          <input
+                            type="text"
+                            name="name"
+                            value={address.name}
+                            onChange={handleInputChange}
+                            className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.name
+                              ? "border-red-300 focus:ring-red-500 focus:border-red-500"
+                              : "border-gray-300"
+                              }`}
+                            required
+                          />
+                          {errors.name && (
+                            <p className="mt-1 text-sm text-red-600">
+                              {errors.name}
+                            </p>
+                          )}
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Phone Number *
+                          </label>
+                          <div className="flex">
+                            {/* Country Code Dropdown */}
+                            <div className="relative">
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  setIsCountryDropdownOpen(!isCountryDropdownOpen)
+                                }
+                                className="flex items-center gap-2 px-3 py-2 border border-gray-300 rounded-l-lg hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 min-w-[100px] bg-white"
+                              >
+                                <span>{selectedCountryCode.flag}</span>
+                                <span className="text-sm font-medium">
+                                  {selectedCountryCode.code}
+                                </span>
+                                <ChevronDown
+                                  className={`w-4 h-4 transition-transform ${isCountryDropdownOpen ? "rotate-180" : ""
+                                    }`}
+                                />
+                              </button>
+
+                              {/* Dropdown Menu */}
+                              {isCountryDropdownOpen && (
+                                <div className="absolute top-full left-0 w-80 bg-white border border-gray-200 rounded-lg shadow-lg z-10 max-h-60 overflow-hidden">
+                                  {/* Search Input */}
+                                  <div className="p-2 border-b border-gray-200">
+                                    <input
+                                      type="text"
+                                      placeholder="Search country..."
+                                      value={countrySearchTerm}
+                                      onChange={(e) =>
+                                        setCountrySearchTerm(e.target.value)
+                                      }
+                                      className="w-full px-3 py-2 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                    />
+                                  </div>
+
+                                  {/* Countries List */}
+                                  <div className="max-h-48 overflow-y-auto">
+                                    {filteredCountryCodes.map((country) => (
+                                      <button
+                                        key={`${country.code}-${country.country}`}
+                                        type="button"
+                                        onClick={() =>
+                                          handleCountryCodeSelect(country)
+                                        }
+                                        className={`w-full flex items-center gap-3 px-3 py-2 text-left hover:bg-gray-50 transition-colors ${selectedCountryCode.code ===
+                                          country.code &&
+                                          selectedCountryCode.country ===
+                                          country.country
+                                          ? "bg-blue-50 text-blue-700"
+                                          : "text-gray-900"
+                                          }`}
+                                      >
+                                        <span className="text-lg">
+                                          {country.flag}
+                                        </span>
+                                        <div className="flex-1 min-w-0">
+                                          <div className="font-medium truncate">
+                                            {country.name}
+                                          </div>
+                                          <div className="text-sm text-gray-500">
+                                            {country.code}
+                                          </div>
+                                        </div>
+                                      </button>
+                                    ))}
+                                    {filteredCountryCodes.length === 0 && (
+                                      <div className="px-3 py-4 text-center text-gray-500 text-sm">
+                                        No countries found
+                                      </div>
+                                    )}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+
+                            {/* Phone Input */}
+                            <input
+                              type="tel"
+                              name="phone"
+                              value={address.phone}
+                              onChange={handleInputChange}
+                              placeholder="Enter phone number"
+                              className={`flex-1 px-3 py-2 border border-l-0 rounded-r-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.phone
+                                ? "border-red-300 focus:ring-red-500 focus:border-red-500"
+                                : "border-gray-300"
+                                }`}
+                              required
+                            />
+                          </div>
+                          {errors.phone && (
+                            <p className="mt-1 text-sm text-red-600">
+                              {errors.phone}
+                            </p>
+                          )}
+                        </div>
                       </div>
-                      <div>
+                      <div className="mt-4">
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          State *
+                          Email Address *
                         </label>
                         <input
-                          type="text"
-                          name="state"
-                          value={address.state}
+                          type="email"
+                          name="email"
+                          value={address.email}
                           onChange={handleInputChange}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                          required
-                        />
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Zip Code *
-                        </label>
-                        <input
-                          type="text"
-                          name="zipCode"
-                          value={address.zipCode}
-                          onChange={handleInputChange}
-                          className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.zipCode
+                          className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.email
                             ? "border-red-300 focus:ring-red-500 focus:border-red-500"
                             : "border-gray-300"
                             }`}
                           required
                         />
-                        {errors.zipCode && (
+                        {errors.email && (
                           <p className="mt-1 text-sm text-red-600">
-                            {errors.zipCode}
+                            {errors.email}
                           </p>
                         )}
                       </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Country
-                        </label>
-                        <input
-                          type="text"
-                          name="country"
-                          value={address.country}
-                          onChange={handleInputChange}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50"
-                          readOnly
-                        />
+                    </div>
+
+                    {/* Address Information */}
+                    <div>
+                      <div className="flex items-center justify-between mb-4">
+                        <h3 className="text-lg font-medium text-gray-900 flex items-center gap-2">
+                          <Building2 className="w-5 h-5 text-gray-600" />
+                          Address Information
+                        </h3>
+                        <button
+                          type="button"
+                          onClick={getCurrentLocation}
+                          disabled={isGettingLocation}
+                          className="flex items-center gap-2 px-3 py-2 text-sm bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+                        >
+                          <Navigation className="w-4 h-4" />
+                          {isGettingLocation ? (
+                            <>
+                              <div className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full"></div>
+                              Getting Location...
+                            </>
+                          ) : (
+                            "Get My Location"
+                          )}
+                        </button>
+                      </div>
+                      <div className="space-y-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Address Line 1 *
+                          </label>
+                          <input
+                            type="text"
+                            name="addressLine1"
+                            value={address.addressLine1}
+                            onChange={handleInputChange}
+                            placeholder="House/Flat/Building No., Street Name"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Address Line 2
+                          </label>
+                          <input
+                            type="text"
+                            name="addressLine2"
+                            value={address.addressLine2}
+                            onChange={handleInputChange}
+                            placeholder="Area, Landmark (Optional)"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          />
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                              City *
+                            </label>
+                            <input
+                              type="text"
+                              name="city"
+                              value={address.city}
+                              onChange={handleInputChange}
+                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                              required
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                              State *
+                            </label>
+                            <input
+                              type="text"
+                              name="state"
+                              value={address.state}
+                              onChange={handleInputChange}
+                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                              required
+                            />
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                              Zip Code *
+                            </label>
+                            <input
+                              type="text"
+                              name="zipCode"
+                              value={address.zipCode}
+                              onChange={handleInputChange}
+                              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.zipCode
+                                ? "border-red-300 focus:ring-red-500 focus:border-red-500"
+                                : "border-gray-300"
+                                }`}
+                              required
+                            />
+                            {errors.zipCode && (
+                              <p className="mt-1 text-sm text-red-600">
+                                {errors.zipCode}
+                              </p>
+                            )}
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                              Country
+                            </label>
+                            <input
+                              type="text"
+                              name="country"
+                              value={address.country}
+                              onChange={handleInputChange}
+                              className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50"
+                              readOnly
+                            />
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </div>
 
-                {/* Submit Button */}
-                <div className="flex gap-3 pt-4">
-                  <button
-                    type="button"
-                    onClick={onClose}
-                    className="flex-1 px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={loading || !shippingValidation?.available}
-                    className="flex-1 px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
-                  >
-                    {loading ? (
-                      <>
-                        <div className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full"></div>
-                        Saving...
-                      </>
-                    ) : (
-                      "Save Address"
-                    )}
-                  </button>
-                </div>
-              </form>
+                    {/* Submit Button */}
+                    <div className="flex gap-3 pt-4">
+                      <button
+                        type="button"
+                        onClick={onClose}
+                        className="flex-1 px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="submit"
+                        disabled={loading || !shippingValidation?.available}
+                        className="flex-1 px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+                      >
+                        {loading ? (
+                          <>
+                            <div className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full"></div>
+                            Saving...
+                          </>
+                        ) : (
+                          "Save Address"
+                        )}
+                      </button>
+                    </div>
+                  </form>
+                </>
+              )}
             </div>
           </motion.div>
 

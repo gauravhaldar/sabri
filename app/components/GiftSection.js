@@ -23,7 +23,7 @@ export default function GiftSection({
           />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+        <div className="grid grid-cols-2 gap-4 sm:gap-8 lg:gap-12">
           {cards.map((c, idx) => (
             <Link
               key={`${c.target}-${idx}`}
@@ -42,19 +42,19 @@ export default function GiftSection({
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-80" />
                   <div className="absolute inset-0 bg-gradient-to-t from-amber-900/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 </div>
-                
-                <div className="absolute inset-0 flex flex-col justify-end p-6 sm:p-8">
-                  <div className="text-center space-y-2">
-                    <p className="text-sm sm:text-base text-amber-200 font-medium tracking-wider uppercase">
+
+                <div className="absolute inset-0 flex flex-col justify-end p-3 sm:p-6 lg:p-8">
+                  <div className="text-center space-y-1 sm:space-y-2">
+                    <p className="text-xs sm:text-sm lg:text-base text-amber-200 font-medium tracking-wider uppercase">
                       {c.label}
                     </p>
-                    <h3 className="text-xl sm:text-2xl lg:text-3xl font-serif text-white font-bold tracking-wide drop-shadow-2xl">
+                    <h3 className="text-sm sm:text-xl lg:text-3xl font-serif text-white font-bold tracking-wide drop-shadow-2xl">
                       {c.target}
                     </h3>
-                    <div className="mt-4 flex items-center justify-center">
-                      <span className="inline-flex items-center gap-2 bg-white/90 backdrop-blur-sm text-gray-900 px-4 py-2 rounded-full text-sm font-medium group-hover:bg-amber-500 group-hover:text-white transition-all duration-300">
+                    <div className="mt-2 sm:mt-4 flex items-center justify-center">
+                      <span className="inline-flex items-center gap-1 sm:gap-2 bg-white/90 backdrop-blur-sm text-gray-900 px-2 py-1 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium group-hover:bg-amber-500 group-hover:text-white transition-all duration-300">
                         Shop Now
-                        <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-3 h-3 sm:w-4 sm:h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                         </svg>
                       </span>

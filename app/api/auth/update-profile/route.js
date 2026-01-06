@@ -45,7 +45,8 @@ export async function PUT(request) {
         if (firstName) user.firstName = firstName;
         if (lastName !== undefined) user.lastName = lastName;
         if (phone !== undefined) user.phone = phone;
-        if (gender !== undefined) user.gender = gender;
+        // Only update gender if it's a valid non-empty value
+        if (gender && gender !== "") user.gender = gender;
         if (dateOfBirth !== undefined) user.dateOfBirth = dateOfBirth ? new Date(dateOfBirth) : undefined;
         if (profilePicture !== undefined) user.profilePicture = profilePicture;
 

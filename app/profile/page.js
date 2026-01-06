@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import { MapPin, Plus, Trash2, Edit2, Check } from "lucide-react";
 import LoginPage from "../login/page";
 
 export default function ProfilePage() {
@@ -71,6 +72,24 @@ function AuthenticatedProfile() {
   const [saveMessage, setSaveMessage] = useState({ type: "", text: "" });
   const fileInputRef = useRef(null);
   const [imagePreview, setImagePreview] = useState(null);
+
+  // Address states
+  const [addresses, setAddresses] = useState([]);
+  const [addressesLoading, setAddressesLoading] = useState(false);
+  const [showAddressForm, setShowAddressForm] = useState(false);
+  const [editingAddress, setEditingAddress] = useState(null);
+  const [addressForm, setAddressForm] = useState({
+    type: "home",
+    name: "",
+    phone: "",
+    address: "",
+    city: "",
+    state: "",
+    pincode: "",
+    country: "India",
+    isDefault: false,
+  });
+  const [addressSaving, setAddressSaving] = useState(false);
 
   useEffect(() => {
     // Get user data from localStorage or API
@@ -207,8 +226,150 @@ function AuthenticatedProfile() {
 
   const tabs = [
     { id: "profile", label: "Profile", icon: "👤" },
+    { id: "addresses", label: "Addresses", icon: "📍" },
     { id: "orders", label: "Orders", icon: "🛍️" },
   ];
+
+  // Fetch addresses when tab changes
+  useEffect(() => {
+    if (activeTab === "addresses") {
+      fetchAddresses();
+    }
+  }, [activeTab]);
+
+  const fetchAddresses = async () => {
+    setAddressesLoading(true);
+    try {
+      const token = localStorage.getItem("authToken");
+      const res = await fetch("/api/auth/addresses", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+      if (data.success) {
+        setAddresses(data.data.addresses || []);
+      }
+    } catch (error) {
+      console.error("Error fetching addresses:", error);
+    } finally {
+      setAddressesLoading(false);
+    }
+  };
+
+  const handleAddressFormChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setAddressForm(prev => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
+
+  const resetAddressForm = () => {
+    setAddressForm({
+      type: "home",
+      name: "",
+      phone: "",
+      address: "",
+      city: "",
+      state: "",
+      pincode: "",
+      country: "India",
+      isDefault: false,
+    });
+    setShowAddressForm(false);
+    setEditingAddress(null);
+  };
+
+  const handleSaveAddress = async () => {
+    setAddressSaving(true);
+    try {
+      const token = localStorage.getItem("authToken");
+      const method = editingAddress ? "PUT" : "POST";
+      const body = editingAddress
+        ? { addressId: editingAddress._id, ...addressForm }
+        : addressForm;
+
+      const res = await fetch("/api/auth/addresses", {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(body),
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        setAddresses(data.data.addresses);
+        resetAddressForm();
+      } else {
+        alert(data.message || "Failed to save address");
+      }
+    } catch (error) {
+      console.error("Error saving address:", error);
+      alert("Failed to save address");
+    } finally {
+      setAddressSaving(false);
+    }
+  };
+
+  const handleEditAddress = (address) => {
+    setEditingAddress(address);
+    setAddressForm({
+      type: address.type || "home",
+      name: address.name || "",
+      phone: address.phone || "",
+      address: address.address || "",
+      city: address.city || "",
+      state: address.state || "",
+      pincode: address.pincode || "",
+      country: address.country || "India",
+      isDefault: address.isDefault || false,
+    });
+    setShowAddressForm(true);
+  };
+
+  const handleDeleteAddress = async (addressId) => {
+    if (!confirm("Are you sure you want to delete this address?")) return;
+
+    try {
+      const token = localStorage.getItem("authToken");
+      const res = await fetch(`/api/auth/addresses?addressId=${addressId}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        setAddresses(data.data.addresses);
+      } else {
+        alert(data.message || "Failed to delete address");
+      }
+    } catch (error) {
+      console.error("Error deleting address:", error);
+      alert("Failed to delete address");
+    }
+  };
+
+  const handleSetDefaultAddress = async (addressId) => {
+    try {
+      const token = localStorage.getItem("authToken");
+      const res = await fetch("/api/auth/addresses", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ addressId, isDefault: true }),
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        setAddresses(data.data.addresses);
+      }
+    } catch (error) {
+      console.error("Error setting default address:", error);
+    }
+  };
 
   const displayImage = imagePreview || user?.profilePicture || user?.profileImage || user?.image;
 
@@ -597,6 +758,220 @@ function AuthenticatedProfile() {
                               </div>
                             </div>
                           </a>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Addresses Tab */}
+                {activeTab === "addresses" && (
+                  <div className="space-y-6">
+                    <div className="flex items-center justify-between">
+                      <h2 className="text-xl font-semibold text-neutral-900">
+                        Saved Addresses
+                      </h2>
+                      {!showAddressForm && (
+                        <button
+                          onClick={() => setShowAddressForm(true)}
+                          className="flex items-center gap-2 px-4 py-2 bg-neutral-900 text-white rounded-md text-sm hover:opacity-90"
+                        >
+                          <Plus className="w-4 h-4" />
+                          Add Address
+                        </button>
+                      )}
+                    </div>
+
+                    {/* Address Form */}
+                    {showAddressForm && (
+                      <div className="bg-neutral-50 border border-neutral-200 rounded-lg p-6">
+                        <h3 className="text-lg font-medium mb-4">
+                          {editingAddress ? "Edit Address" : "Add New Address"}
+                        </h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium mb-1">Address Type</label>
+                            <select
+                              name="type"
+                              value={addressForm.type}
+                              onChange={handleAddressFormChange}
+                              className="w-full px-3 py-2 border border-neutral-300 rounded-md"
+                            >
+                              <option value="home">Home</option>
+                              <option value="work">Work</option>
+                              <option value="other">Other</option>
+                            </select>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium mb-1">Full Name *</label>
+                            <input
+                              type="text"
+                              name="name"
+                              value={addressForm.name}
+                              onChange={handleAddressFormChange}
+                              className="w-full px-3 py-2 border border-neutral-300 rounded-md"
+                              placeholder="Enter full name"
+                              required
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium mb-1">Phone *</label>
+                            <input
+                              type="tel"
+                              name="phone"
+                              value={addressForm.phone}
+                              onChange={handleAddressFormChange}
+                              className="w-full px-3 py-2 border border-neutral-300 rounded-md"
+                              placeholder="Enter phone number"
+                              required
+                            />
+                          </div>
+                          <div className="md:col-span-2">
+                            <label className="block text-sm font-medium mb-1">Address *</label>
+                            <input
+                              type="text"
+                              name="address"
+                              value={addressForm.address}
+                              onChange={handleAddressFormChange}
+                              className="w-full px-3 py-2 border border-neutral-300 rounded-md"
+                              placeholder="House no., Building, Street, Area"
+                              required
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium mb-1">City *</label>
+                            <input
+                              type="text"
+                              name="city"
+                              value={addressForm.city}
+                              onChange={handleAddressFormChange}
+                              className="w-full px-3 py-2 border border-neutral-300 rounded-md"
+                              placeholder="Enter city"
+                              required
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium mb-1">State *</label>
+                            <input
+                              type="text"
+                              name="state"
+                              value={addressForm.state}
+                              onChange={handleAddressFormChange}
+                              className="w-full px-3 py-2 border border-neutral-300 rounded-md"
+                              placeholder="Enter state"
+                              required
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium mb-1">Pincode *</label>
+                            <input
+                              type="text"
+                              name="pincode"
+                              value={addressForm.pincode}
+                              onChange={handleAddressFormChange}
+                              className="w-full px-3 py-2 border border-neutral-300 rounded-md"
+                              placeholder="Enter pincode"
+                              required
+                            />
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <input
+                              type="checkbox"
+                              name="isDefault"
+                              id="isDefault"
+                              checked={addressForm.isDefault}
+                              onChange={handleAddressFormChange}
+                              className="w-4 h-4"
+                            />
+                            <label htmlFor="isDefault" className="text-sm">Set as default address</label>
+                          </div>
+                        </div>
+                        <div className="flex gap-3 mt-6">
+                          <button
+                            onClick={handleSaveAddress}
+                            disabled={addressSaving}
+                            className="px-6 py-2 bg-neutral-900 text-white rounded-md text-sm hover:opacity-90 disabled:opacity-50"
+                          >
+                            {addressSaving ? "Saving..." : (editingAddress ? "Update Address" : "Save Address")}
+                          </button>
+                          <button
+                            onClick={resetAddressForm}
+                            className="px-6 py-2 border border-neutral-300 rounded-md text-sm hover:bg-neutral-50"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Address List */}
+                    {addressesLoading ? (
+                      <div className="text-center py-12">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-neutral-900 mx-auto mb-4"></div>
+                        <p className="text-neutral-600">Loading addresses...</p>
+                      </div>
+                    ) : addresses.length === 0 && !showAddressForm ? (
+                      <div className="text-center py-12">
+                        <MapPin className="w-12 h-12 text-neutral-400 mx-auto mb-4" />
+                        <p className="text-neutral-600 mb-4">No saved addresses</p>
+                        <button
+                          onClick={() => setShowAddressForm(true)}
+                          className="inline-flex items-center gap-2 px-4 py-2 bg-neutral-900 text-white rounded-md text-sm hover:opacity-90"
+                        >
+                          <Plus className="w-4 h-4" />
+                          Add Your First Address
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {addresses.map((addr) => (
+                          <div
+                            key={addr._id}
+                            className={`border rounded-lg p-4 relative ${addr.isDefault ? "border-green-500 bg-green-50" : "border-neutral-200"}`}
+                          >
+                            {addr.isDefault && (
+                              <span className="absolute top-2 right-2 text-xs px-2 py-1 bg-green-500 text-white rounded-full">
+                                Default
+                              </span>
+                            )}
+                            <div className="flex items-start gap-3">
+                              <MapPin className="w-5 h-5 text-neutral-600 mt-1 flex-shrink-0" />
+                              <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-1">
+                                  <span className="font-medium">{addr.name}</span>
+                                  <span className="text-xs px-2 py-0.5 bg-neutral-100 rounded capitalize">{addr.type}</span>
+                                </div>
+                                <p className="text-sm text-neutral-600">{addr.address}</p>
+                                <p className="text-sm text-neutral-600">{addr.city}, {addr.state} - {addr.pincode}</p>
+                                <p className="text-sm text-neutral-500 mt-1">{addr.phone}</p>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2 mt-4 pt-3 border-t border-neutral-200">
+                              <button
+                                onClick={() => handleEditAddress(addr)}
+                                className="flex items-center gap-1 text-sm text-neutral-600 hover:text-neutral-900"
+                              >
+                                <Edit2 className="w-4 h-4" />
+                                Edit
+                              </button>
+                              <button
+                                onClick={() => handleDeleteAddress(addr._id)}
+                                className="flex items-center gap-1 text-sm text-red-600 hover:text-red-700"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                                Delete
+                              </button>
+                              {!addr.isDefault && (
+                                <button
+                                  onClick={() => handleSetDefaultAddress(addr._id)}
+                                  className="flex items-center gap-1 text-sm text-green-600 hover:text-green-700 ml-auto"
+                                >
+                                  <Check className="w-4 h-4" />
+                                  Set Default
+                                </button>
+                              )}
+                            </div>
+                          </div>
                         ))}
                       </div>
                     )}
