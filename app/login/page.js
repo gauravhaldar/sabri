@@ -112,55 +112,18 @@ export default function LoginPage() {
   };
 
   const handleResendOtp = async () => {
-    setIsResending(true);
+    // The simplest and most reliable approach is to reset the flow
+    // Clear the confirmation result and reset the timer
+    setConfirmationResult(null);
+    setOtp("");
+    setResendTimer(0);
     setErrors({});
 
-    try {
-      // Reset recaptcha verifier for resend
-      if (recaptchaVerifier.current) {
-        recaptchaVerifier.current = null;
-      }
-
-      if (recaptchaContainerRef.current) {
-        recaptchaVerifier.current = new RecaptchaVerifier(
-          authContext.auth,
-          recaptchaContainerRef.current,
-          {
-            size: "invisible",
-            callback: (response) => { },
-            "expired-callback": () => {
-              setErrors({ general: "reCAPTCHA expired. Please try again." });
-              setIsResending(false);
-            },
-          }
-        );
-      }
-
-      if (!recaptchaVerifier.current) {
-        setErrors({ general: "reCAPTCHA is not initialized. Please refresh the page." });
-        setIsResending(false);
-        return;
-      }
-
-      await recaptchaVerifier.current.verify();
-      const result = await sendPhoneVerificationCode(phone, recaptchaVerifier.current);
-
-      if (result.success) {
-        setConfirmationResult(result.data);
-        setResendTimer(30); // Restart 30 second countdown
-        setOtp(""); // Clear previous OTP
-      } else {
-        setErrors({ general: result.message });
-      }
-    } catch (error) {
-      console.error("Resend OTP error:", error);
-      setErrors({
-        general: error.message || "Failed to resend verification code. Please try again.",
-      });
-    } finally {
-      setIsResending(false);
-    }
+    // Reload the page to get a fresh reCAPTCHA widget
+    // This is necessary because Firebase reCAPTCHA can only be used once
+    window.location.reload();
   };
+
 
   const handleOtpSubmit = async (e) => {
     e.preventDefault();
