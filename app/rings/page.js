@@ -504,7 +504,7 @@ export default function RingsPage() {
           {/* Heading */}
           <div className="text-center mb-12 sm:mb-16">
             <h1 className="text-2xl sm:text-4xl md:text-5xl font-serif font-normal uppercase tracking-wide text-neutral-900 mb-4">
-              Silver Ring for Women
+              Silver Rings for Women
             </h1>
             <div className="w-24 h-1 bg-gradient-to-r from-amber-400 to-yellow-500 mx-auto rounded-full"></div>
           </div>
@@ -512,7 +512,7 @@ export default function RingsPage() {
           {/* Intro Section */}
           <div className="max-w-4xl mx-auto text-center mb-16 sm:mb-24 bg-white/60 backdrop-blur-sm rounded-3xl p-8 sm:p-12 shadow-lg border border-amber-100">
             <p className="text-base sm:text-lg leading-relaxed text-neutral-700">
-              At Mysabri, we offer the perfect silver rings for women, crafted to blend timeless beauty, exceptional craftsmanship, and modern elegance. Our unique selection features excellent 925 sterling silver rings for women, as well as beautifully designed pure silver rings, all of which are crafted with meticulous attention to detail.
+              At Mysabri, we offer the perfect silver rings for women, crafted to blend timeless beauty, exceptional craftsmanship, and modern elegance. Our unique selection features excellent 925 sterling silver rings for women, as well as beautifully designed pure silver rings, all of which are crafted with meticulous attention to detail. Whether you're searching for beautiful engagement silver rings for women that represent eternal love or a simple silver band for everyday use, we have something for every taste.  From sleek, basic bands to elaborately detailed statement designs, our sterling silver rings for women are designed to complement every mood, dress, or event.              
             </p>
           </div>
 
@@ -523,7 +523,7 @@ export default function RingsPage() {
             <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
               <div className="lg:w-1/2 space-y-4">
                 <h2 className="text-xl sm:text-3xl font-serif font-normal text-neutral-900 mb-6">
-                  925 Silver Ring for Women – Authentic Craftsmanship You Can Trust
+                  925 Silver Rings for Women – Authentic Craftsmanship You Can Trust
                 </h2>
                 <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md border border-amber-100/50">
                   <p className="text-sm sm:text-base leading-relaxed text-neutral-700 mb-4">
@@ -715,7 +715,7 @@ export default function RingsPage() {
             <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
               <div className="lg:w-1/2 space-y-4">
                 <h2 className="text-xl sm:text-3xl font-serif font-normal text-neutral-900 mb-6">
-                  Stylish Silver Ring Design for Women to Match Every Outfit
+                  Stylish Silver Rings Design for Women to Match Every Outfit
                 </h2>
                 <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md border border-amber-100/50">
                   <p className="text-sm sm:text-base leading-relaxed text-neutral-700 mb-4">
