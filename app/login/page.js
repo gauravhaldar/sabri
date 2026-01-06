@@ -18,6 +18,8 @@ export default function LoginPage() {
   const [phone, setPhone] = useState("+91");
   const [otp, setOtp] = useState("");
   const [confirmationResult, setConfirmationResult] = useState(null);
+  const [resendTimer, setResendTimer] = useState(0);
+  const [isResending, setIsResending] = useState(false);
   const recaptchaContainerRef = useRef(null);
   const recaptchaVerifier = useRef(null);
   const authContext = useAuth();
@@ -45,6 +47,19 @@ export default function LoginPage() {
       );
     }
   }, [authContext]);
+
+  // Countdown timer for resend OTP
+  useEffect(() => {
+    let interval = null;
+    if (resendTimer > 0) {
+      interval = setInterval(() => {
+        setResendTimer((prev) => prev - 1);
+      }, 1000);
+    }
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [resendTimer]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -82,6 +97,7 @@ export default function LoginPage() {
       const result = await sendPhoneVerificationCode(phone, recaptchaVerifier.current);
       if (result.success) {
         setConfirmationResult(result.data);
+        setResendTimer(30); // Start 30 second countdown
       } else {
         setErrors({ general: result.message });
       }
@@ -92,6 +108,57 @@ export default function LoginPage() {
       });
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleResendOtp = async () => {
+    setIsResending(true);
+    setErrors({});
+
+    try {
+      // Reset recaptcha verifier for resend
+      if (recaptchaVerifier.current) {
+        recaptchaVerifier.current = null;
+      }
+
+      if (recaptchaContainerRef.current) {
+        recaptchaVerifier.current = new RecaptchaVerifier(
+          authContext.auth,
+          recaptchaContainerRef.current,
+          {
+            size: "invisible",
+            callback: (response) => { },
+            "expired-callback": () => {
+              setErrors({ general: "reCAPTCHA expired. Please try again." });
+              setIsResending(false);
+            },
+          }
+        );
+      }
+
+      if (!recaptchaVerifier.current) {
+        setErrors({ general: "reCAPTCHA is not initialized. Please refresh the page." });
+        setIsResending(false);
+        return;
+      }
+
+      await recaptchaVerifier.current.verify();
+      const result = await sendPhoneVerificationCode(phone, recaptchaVerifier.current);
+
+      if (result.success) {
+        setConfirmationResult(result.data);
+        setResendTimer(30); // Restart 30 second countdown
+        setOtp(""); // Clear previous OTP
+      } else {
+        setErrors({ general: result.message });
+      }
+    } catch (error) {
+      console.error("Resend OTP error:", error);
+      setErrors({
+        general: error.message || "Failed to resend verification code. Please try again.",
+      });
+    } finally {
+      setIsResending(false);
     }
   };
 
@@ -203,9 +270,8 @@ export default function LoginPage() {
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className={`w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400 ${
-                    errors.email ? "border-red-500" : "border-neutral-300"
-                  }`}
+                  className={`w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400 ${errors.email ? "border-red-500" : "border-neutral-300"
+                    }`}
                   placeholder="Enter your email"
                 />
                 {errors.email && (
@@ -228,9 +294,8 @@ export default function LoginPage() {
                     name="password"
                     value={formData.password}
                     onChange={handleChange}
-                    className={`w-full px-3 py-2 pr-10 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400 ${
-                      errors.password ? "border-red-500" : "border-neutral-300"
-                    }`}
+                    className={`w-full px-3 py-2 pr-10 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400 ${errors.password ? "border-red-500" : "border-neutral-300"
+                      }`}
                     placeholder="Enter your password"
                   />
                   <button
@@ -374,9 +439,8 @@ export default function LoginPage() {
                             setPhone(value);
                           }
                         }}
-                        className={`w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400 ${
-                          errors.phone ? "border-red-500" : "border-neutral-300"
-                        }`}
+                        className={`w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400 ${errors.phone ? "border-red-500" : "border-neutral-300"
+                          }`}
                         placeholder="e.g., 9876543210"
                       />
                       {errors.phone && (
@@ -410,11 +474,14 @@ export default function LoginPage() {
                         name="otp"
                         value={otp}
                         onChange={(e) => setOtp(e.target.value)}
-                        className={`w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400 ${
-                          errors.otp ? "border-red-500" : "border-neutral-300"
-                        }`}
+                        maxLength={6}
+                        className={`w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400 ${errors.otp ? "border-red-500" : "border-neutral-300"
+                          }`}
                         placeholder="Enter 6-digit code"
                       />
+                      <p className="mt-1 text-xs text-neutral-500">
+                        Code sent to {phone}
+                      </p>
                       {errors.otp && (
                         <p className="mt-1 text-xs text-red-600">
                           {errors.otp}
@@ -425,16 +492,39 @@ export default function LoginPage() {
                       type="button"
                       onClick={handleOtpSubmit}
                       disabled={isLoading}
-                      className="flex items-center justify-center w-full px-4 py-2 border border-neutral-300 rounded-md text-sm font-medium text-neutral-700 hover:bg-neutral-50 disabled:opacity-50"
+                      className="flex items-center justify-center w-full px-4 py-2 bg-neutral-900 text-white rounded-md text-sm font-medium hover:opacity-90 disabled:opacity-50"
                     >
                       {isLoading ? "Verifying..." : "Verify Code"}
                     </button>
+
+                    {/* Resend OTP Button */}
+                    <div className="flex items-center justify-center gap-2">
+                      {resendTimer > 0 ? (
+                        <p className="text-sm text-neutral-500">
+                          Resend code in <span className="font-medium text-neutral-700">{resendTimer}s</span>
+                        </p>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={handleResendOtp}
+                          disabled={isResending}
+                          className="text-sm font-medium text-neutral-900 hover:underline disabled:opacity-50 disabled:no-underline"
+                        >
+                          {isResending ? "Sending..." : "Resend OTP"}
+                        </button>
+                      )}
+                    </div>
+
                     <button
                       type="button"
-                      onClick={() => setConfirmationResult(null)}
-                      className="w-full mt-2 text-sm text-neutral-600 hover:underline"
+                      onClick={() => {
+                        setConfirmationResult(null);
+                        setOtp("");
+                        setResendTimer(0);
+                      }}
+                      className="w-full text-sm text-neutral-600 hover:underline"
                     >
-                      Edit Phone Number
+                      Change Phone Number
                     </button>
                   </div>
                 )}
