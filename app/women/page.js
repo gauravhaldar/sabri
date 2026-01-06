@@ -191,7 +191,8 @@ export default function WomenPage() {
   // Filter out men's products
   const womenProducts = products.filter(product => {
     const category = product.category?.toLowerCase();
-    return category !== 'mens' && category !== 'men' && category !== 'male';
+    // Filter out products marked as men's or with men's category
+    return !product.men && category !== 'mens' && category !== 'men' && category !== 'male';
   });
 
   const filteredProducts = filterProducts(womenProducts, filters);
