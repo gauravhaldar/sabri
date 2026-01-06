@@ -16,9 +16,9 @@ export async function POST(request) {
 
     await connectDB();
 
-    const { uid, email, firstName, lastName, phone } = await request.json();
+    const { uid, email, firstName, lastName, phone, gender, dateOfBirth } = await request.json();
 
-    if (!uid || !email || !firstName || !lastName) {
+    if (!uid || !email) {
       return NextResponse.json(
         { success: false, message: "Missing required fields" },
         { status: 400 }
@@ -39,10 +39,12 @@ export async function POST(request) {
 
     // Create new user in MongoDB
     const user = new User({
-      firstName,
-      lastName,
+      firstName: firstName || "User",
+      lastName: lastName || undefined,
       email,
-      phone: phone || "0000000000", // Default phone if not provided
+      phone: phone || undefined,
+      gender: gender || undefined,
+      dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : undefined,
       googleId: uid, // Using Firebase UID as googleId for consistency
       registeredBy: "firebase",
       isEmailVerified: true,
@@ -65,6 +67,8 @@ export async function POST(request) {
           lastName: user.lastName,
           email: user.email,
           phone: user.phone,
+          gender: user.gender,
+          dateOfBirth: user.dateOfBirth,
           role: user.role,
           isEmailVerified: user.isEmailVerified,
           tier: user.tier,

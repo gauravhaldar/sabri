@@ -15,6 +15,8 @@ export default function SignupPage() {
     password: "",
     confirmPassword: "",
     phone: "",
+    gender: "",
+    dateOfBirth: "",
     agreeToTerms: false,
   });
   const [showPassword, setShowPassword] = useState(false);
@@ -70,9 +72,7 @@ export default function SignupPage() {
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.firstName.trim())
-      newErrors.firstName = "First name is required";
-    if (!formData.lastName.trim()) newErrors.lastName = "Last name is required";
+    // Only email, password, and terms are required
     if (!formData.email.trim()) newErrors.email = "Email is required";
     if (!formData.password) newErrors.password = "Password is required";
     if (formData.password && formData.password.length < 6) {
@@ -81,7 +81,6 @@ export default function SignupPage() {
     if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = "Passwords do not match";
     }
-    if (!formData.phone.trim()) newErrors.phone = "Phone number is required";
     if (!formData.agreeToTerms)
       newErrors.agreeToTerms = "You must agree to the terms and conditions";
 
@@ -169,11 +168,13 @@ export default function SignupPage() {
 
     try {
       const result = await signup({
-        firstName: formData.firstName,
-        lastName: formData.lastName,
+        firstName: formData.firstName || undefined,
+        lastName: formData.lastName || undefined,
         email: formData.email,
         password: formData.password,
-        phone: formData.phone,
+        phone: formData.phone || undefined,
+        gender: formData.gender || undefined,
+        dateOfBirth: formData.dateOfBirth || undefined,
       });
 
       if (result.success) {
@@ -216,7 +217,7 @@ export default function SignupPage() {
               Create Account
             </h1>
             <p className="text-neutral-600">
-              Join Sabri and discover beautiful jewelry
+              Join Sabri
             </p>
           </div>
         </div>
@@ -234,7 +235,7 @@ export default function SignupPage() {
                     htmlFor="firstName"
                     className="block text-sm font-medium text-neutral-900 mb-2"
                   >
-                    First Name
+                    First Name <span className="text-neutral-400 font-normal">(Optional)</span>
                   </label>
                   <input
                     type="text"
@@ -242,23 +243,16 @@ export default function SignupPage() {
                     name="firstName"
                     value={formData.firstName}
                     onChange={handleChange}
-                    className={`w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400 ${
-                      errors.firstName ? "border-red-500" : "border-neutral-300"
-                    }`}
+                    className="w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400 border-neutral-300"
                     placeholder="First name"
                   />
-                  {errors.firstName && (
-                    <p className="mt-1 text-xs text-red-600">
-                      {errors.firstName}
-                    </p>
-                  )}
                 </div>
                 <div>
                   <label
                     htmlFor="lastName"
                     className="block text-sm font-medium text-neutral-900 mb-2"
                   >
-                    Last Name
+                    Last Name <span className="text-neutral-400 font-normal">(Optional)</span>
                   </label>
                   <input
                     type="text"
@@ -266,18 +260,12 @@ export default function SignupPage() {
                     name="lastName"
                     value={formData.lastName}
                     onChange={handleChange}
-                    className={`w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400 ${
-                      errors.lastName ? "border-red-500" : "border-neutral-300"
-                    }`}
+                    className="w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400 border-neutral-300"
                     placeholder="Last name"
                   />
-                  {errors.lastName && (
-                    <p className="mt-1 text-xs text-red-600">
-                      {errors.lastName}
-                    </p>
-                  )}
                 </div>
               </div>
+
 
               {/* Email */}
               <div>
@@ -293,9 +281,8 @@ export default function SignupPage() {
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className={`w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400 ${
-                    errors.email ? "border-red-500" : "border-neutral-300"
-                  }`}
+                  className={`w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400 ${errors.email ? "border-red-500" : "border-neutral-300"
+                    }`}
                   placeholder="Enter your email"
                 />
                 {errors.email && (
@@ -309,7 +296,7 @@ export default function SignupPage() {
                   htmlFor="phone"
                   className="block text-sm font-medium text-neutral-900 mb-2"
                 >
-                  Phone Number
+                  Phone Number <span className="text-neutral-400 font-normal">(Optional)</span>
                 </label>
                 <input
                   type="tel"
@@ -317,14 +304,50 @@ export default function SignupPage() {
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
-                  className={`w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400 ${
-                    errors.phone ? "border-red-500" : "border-neutral-300"
-                  }`}
+                  className="w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400 border-neutral-300"
                   placeholder="Enter your phone number"
                 />
-                {errors.phone && (
-                  <p className="mt-1 text-xs text-red-600">{errors.phone}</p>
-                )}
+              </div>
+
+              {/* Gender and Date of Birth */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label
+                    htmlFor="gender"
+                    className="block text-sm font-medium text-neutral-900 mb-2"
+                  >
+                    Gender <span className="text-neutral-400 font-normal">(Optional)</span>
+                  </label>
+                  <select
+                    id="gender"
+                    name="gender"
+                    value={formData.gender}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400 border-neutral-300 bg-white"
+                  >
+                    <option value="">Select gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                    <option value="prefer-not-to-say">Prefer not to say</option>
+                  </select>
+                </div>
+                <div>
+                  <label
+                    htmlFor="dateOfBirth"
+                    className="block text-sm font-medium text-neutral-900 mb-2"
+                  >
+                    Date of Birth <span className="text-neutral-400 font-normal">(Optional)</span>
+                  </label>
+                  <input
+                    type="date"
+                    id="dateOfBirth"
+                    name="dateOfBirth"
+                    value={formData.dateOfBirth}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400 border-neutral-300"
+                  />
+                </div>
               </div>
 
               {/* Password */}
@@ -342,9 +365,8 @@ export default function SignupPage() {
                     name="password"
                     value={formData.password}
                     onChange={handleChange}
-                    className={`w-full px-3 py-2 pr-10 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400 ${
-                      errors.password ? "border-red-500" : "border-neutral-300"
-                    }`}
+                    className={`w-full px-3 py-2 pr-10 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400 ${errors.password ? "border-red-500" : "border-neutral-300"
+                      }`}
                     placeholder="Create a password"
                   />
                   <button
@@ -369,9 +391,8 @@ export default function SignupPage() {
                     {passwordRequirements.map((req, index) => (
                       <div key={index} className="flex items-center text-xs">
                         <Check
-                          className={`w-3 h-3 mr-2 ${
-                            req.met ? "text-green-600" : "text-neutral-400"
-                          }`}
+                          className={`w-3 h-3 mr-2 ${req.met ? "text-green-600" : "text-neutral-400"
+                            }`}
                         />
                         <span
                           className={
@@ -401,11 +422,10 @@ export default function SignupPage() {
                     name="confirmPassword"
                     value={formData.confirmPassword}
                     onChange={handleChange}
-                    className={`w-full px-3 py-2 pr-10 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400 ${
-                      errors.confirmPassword
-                        ? "border-red-500"
-                        : "border-neutral-300"
-                    }`}
+                    className={`w-full px-3 py-2 pr-10 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400 ${errors.confirmPassword
+                      ? "border-red-500"
+                      : "border-neutral-300"
+                      }`}
                     placeholder="Confirm your password"
                   />
                   <button
@@ -566,9 +586,8 @@ export default function SignupPage() {
                             setPhone(value);
                           }
                         }}
-                        className={`w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400 ${
-                          errors.phone ? "border-red-500" : "border-neutral-300"
-                        }`}
+                        className={`w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400 ${errors.phone ? "border-red-500" : "border-neutral-300"
+                          }`}
                         placeholder="e.g., 9876543210"
                       />
                       {errors.phone && (
@@ -602,9 +621,8 @@ export default function SignupPage() {
                         name="otpSignup"
                         value={otp}
                         onChange={(e) => setOtp(e.target.value)}
-                        className={`w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400 ${
-                          errors.otp ? "border-red-500" : "border-neutral-300"
-                        }`}
+                        className={`w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-neutral-400 ${errors.otp ? "border-red-500" : "border-neutral-300"
+                          }`}
                         placeholder="Enter 6-digit code"
                       />
                       {errors.otp && (

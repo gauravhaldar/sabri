@@ -7,15 +7,15 @@ export async function POST(request) {
   try {
     await connectDB();
 
-    const { firstName, lastName, email, password, phone } =
+    const { firstName, lastName, email, password, phone, gender, dateOfBirth } =
       await request.json();
 
-    // Validate input
-    if (!firstName || !lastName || !email || !password || !phone) {
+    // Validate input - only email and password are required
+    if (!email || !password) {
       return NextResponse.json(
         {
           success: false,
-          message: "All fields are required",
+          message: "Email and password are required",
         },
         { status: 400 }
       );
@@ -35,11 +35,13 @@ export async function POST(request) {
 
     // Create new user
     const user = new User({
-      firstName,
-      lastName,
+      firstName: firstName || "User",
+      lastName: lastName || undefined,
       email,
       password,
-      phone,
+      phone: phone || undefined,
+      gender: gender || undefined,
+      dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : undefined,
       registeredBy: "website",
     });
 
@@ -59,6 +61,8 @@ export async function POST(request) {
           lastName: user.lastName,
           email: user.email,
           phone: user.phone,
+          gender: user.gender,
+          dateOfBirth: user.dateOfBirth,
           role: user.role,
           isEmailVerified: user.isEmailVerified,
           tier: user.tier,
