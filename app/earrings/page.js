@@ -197,6 +197,14 @@ export default function EarringsPage() {
   const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_COUNT);
   const [scrollPosition, setScrollPosition] = useState(0);
   const [lastProductId, setLastProductId] = useState(null);
+  const [showMore1, setShowMore1] = useState(false);
+  const [showMore2, setShowMore2] = useState(false);
+  const [showMore3, setShowMore3] = useState(false);
+  const [showMore4, setShowMore4] = useState(false);
+  const [showMore5, setShowMore5] = useState(false);
+  const [showMore6, setShowMore6] = useState(false);
+  const [showMore7, setShowMore7] = useState(false);
+  const [showMore8, setShowMore8] = useState(false);
 
   const { products, loading, error } = useEarrings();
 
@@ -512,191 +520,454 @@ export default function EarringsPage() {
             </Link>
           </div>
         )}
-        <div className="mt-10 space-y-6 text-gray-800 text-sm sm:text-base leading-relaxed">
-          <h1 className="text-2xl sm:text-3xl font-bold text-black mb-2">
-            Our Best Silver Earrings for Women
-          </h1>
-          <p>
-            The finest silver earrings for women from Mysabri combine style and
-            craftsmanship to give any ensemble a timeless charm. Every item in our
-            collection is created by hand from 925 sterling silver. Our best silver
-            earrings for women guarantee years of purity, luster, and durability.
-            Mysabri offers the ideal set of silver earrings for every event, whether
-            you like striking long drop earrings, stylish silver hoop earrings, or
-            simple silver stud earrings.
-          </p>
-          <p>
-            At MySabri, we think that silver jewelry should represent your uniqueness
-            in addition to enhancing your appearance. Each piece is therefore
-            carefully crafted to strike a balance between comfort and refinement.
-            Discover luxury that suits your taste and price range by looking through
-            our extensive selection of pure silver earrings for women & girls.
-          </p>
-
-          <h2 className="text-xl sm:text-2xl font-semibold text-black">
-            Elegant 925 Sterling Silver Earrings for Women
-          </h2>
-          <p>
-            Our 925 sterling silver earrings for women offer unparalleled quality and
-            luster. These precisely crafted silver earrings add elegance, durability,
-            and a long-lasting gloss to any ensemble. The sterling silver line from
-            Mysabri adds classic elegance and sophistication to your daily look. Get
-            the purest silver jewelry, including earrings, right now.
-          </p>
-
-          <h2 className="text-xl sm:text-2xl font-semibold text-black">
-            Long and Drop Silver Earrings to Elevate Your Look
-          </h2>
-          <p>
-            Perfect for nighttime wear or events, these long silver earrings and
-            silver drop earrings will add to your elegance. These patterns, which are
-            lightweight and adaptable, elegantly draw attention to your neckline and
-            make a statement wherever you go.
-          </p>
-
-          <h2 className="text-xl sm:text-2xl font-semibold text-black">
-            Silver Earrings for Women to Redefine Your Style
-          </h2>
-          <p>
-            With silver earrings for women from Mysabri, you may exude classic
-            elegance. Each pair is made from high-quality 925 sterling silver, which
-            adds beauty and durability. Whether you prefer elegant drops, dramatic
-            hoops, or classic studs, our selection of silver earrings is made to fit
-            any occasion or mood. These earrings enhance your appearance with
-            refinement and shine, making them ideal for both festive occasions and
-            everyday wear. Discover designs that skillfully combine traditional
-            workmanship and modern design, making Mysabri your one-stop shop for
-            exquisite silver earrings and jewelry.
-          </p>
-
-          <h2 className="text-xl sm:text-2xl font-semibold text-black">
-            Long Silver Earrings for Women – Graceful Designs for Every Occasion
-          </h2>
-          <p>
-            Long silver earrings for women from Mysabri will give your look a dash of
-            glitz and refinement. These elegant earrings go well with any ensemble and
-            are ideal for weddings, parties, and festive occasions. Our long silver
-            earrings are crafted with precision, combining lightweight comfort with
-            intricate detailing to create a look that’s both modern and timeless.
-            Regardless of your preference for bold danglers or simple silver
-            earrings, each style exquisitely frames your face, enhancing your look
-            with elegance and shine.
-          </p>
-
-          <h2 className="text-xl sm:text-2xl font-semibold text-black">
-            Sterling Silver Earrings for Girls – Chic and Everyday Ready
-          </h2>
-          <p>
-            Mysabri offers a delightful range of sterling silver earrings for girls
-            that are the ideal combination of simplicity and elegance. Each pair of
-            silver earrings, from delicate studs to small hoops, is made of pure 925
-            sterling silver, making them safe, hypoallergenic, and easy to wear every
-            day. These silver earrings are perfect for school, work, or casual
-            outings, offering uncomplicated appeal for every occasion. Give her a pair
-            now and watch her radiate with confidence and elegance.
-          </p>
-
-          <h2 className="text-xl sm:text-2xl font-semibold text-black">
-            Premium Sterling Silver Earrings to Suit Every Style
-          </h2>
-          <p>
-            Our exquisite selection of sterling silver earrings at Mysabri is made to
-            fit all tastes and personalities. From delicate studs to striking
-            statement pieces, our silver earrings collection has something for
-            everyone, whether you prefer sleek, contemporary jewelry or classic
-            elegance. For optimal purity, luster, and longevity, genuine 925 sterling
-            silver is used to craft each pair of ladies' and girls' silver earrings.
-            Our hypoallergenic, skin-safe earrings are ideal for both special events
-            and everyday usage. Mysabri's silver earrings are the ideal option for
-            self-expression, dressing, and gifting, thanks to their classic styles and
-            finely crafted details. Savor long-lasting elegance with ease and
-            affordability.
-          </p>
-
-          <h2 className="text-xl sm:text-2xl font-semibold text-black">
-            Stylish Silver Hoop Earrings for Every Occasion
-          </h2>
-          <p>
-            Add flair to your look with our silver hoop earrings, available in small,
-            large, and textured designs. Whether it’s a casual outing or festive
-            celebration, these hoops bring effortless charm and modern appeal to your
-            ensemble.
-          </p>
-
-          <h2 className="text-xl sm:text-2xl font-semibold text-black">
-            Long and Drop Silver Earrings to Elevate Your Look
-          </h2>
-          <p>
-            Enhance your elegance with our long silver earrings and silver drop
-            earrings, perfect for parties or evening wear. Lightweight and versatile,
-            these designs highlight your neckline beautifully and make a graceful
-            statement wherever you go.
-          </p>
-
-          <h2 className="text-xl sm:text-2xl font-semibold text-black">
-            Unique Silver Earrings Design for Women and Girls
-          </h2>
-          <p>
-            Mysabri combines traditional artistry with modern fashion to create a vast
-            array of earrings designed for women and girls. Every design, from tiny
-            drops to striking hoops, exudes originality, style, and fine craftsmanship
-            for the contemporary woman.
-          </p>
-
-          <h2 className="text-xl sm:text-2xl font-semibold text-black">
-            Fashionable Silver Stud Earrings for Everyday Use
-          </h2>
-          <p>
-            For ladies who enjoy understated yet sophisticated accessories, our silver
-            stud earrings are ideal. Each pair has a comfortable fit and a polished
-            finish, making them perfect for everyday use. Examine simple looks that
-            incorporate a hint of glitz without overwhelming your appearance.
-          </p>
-
-          <h2 className="text-xl sm:text-2xl font-semibold text-black">
-            925 Silver Rings for Women – Authentic Craftsmanship You Can Trust
-          </h2>
-          <p>
-            Complete your look by pairing these elegant 925 silver rings with our beautifully crafted silver earrings for women. Mysabri offers a wide range of stylish silver earrings — from minimalist studs to premium designer pieces — all made from pure 925 sterling silver. These 925 silver earrings complement our <Link
-              href="https://www.mysabri.in/rings"
-              className="hover:underline"
-            > ring collection </Link>
-            perfectly, helping you create a coordinated and elegant jewellery set for both daily wear and special occasions.
-          </p>
-
-          <h3 className="text-xl sm:text-2xl font-semibold text-black">
-            FAQs For Silver Earrings
-          </h3>
-          <div className="space-y-3 mt-2">
-            {FAQS.map((faq, index) => (
-              <div
-                key={faq.question}
-                className="border border-gray-200 rounded-md overflow-hidden"
-              >
-                <button
-                  type="button"
-                  onClick={() =>
-                    setOpenFaqIndex(openFaqIndex === index ? null : index)
-                  }
-                  className="w-full flex items-center justify-between px-3 py-2 text-left bg-gray-50 hover:bg-gray-100"
-                >
-                  <span className="font-semibold text-sm sm:text-base text-gray-900">
-                    {faq.question}
-                  </span>
-                  <span className="ml-2 text-lg leading-none text-gray-600">
-                    {openFaqIndex === index ? "-" : "+"}
-                  </span>
-                </button>
-                {openFaqIndex === index && (
-                  <div className="px-3 py-2 text-xs sm:text-sm text-gray-700 bg-white">
-                    {faq.answer}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
         </div>
-      </div>
+
+           {/* SEO Section with Zig-Zag Format - Matching Rings Page Design */}
+      <section className="w-full bg-gradient-to-br from-amber-50 via-white to-amber-50/30 py-12 sm:py-20 lg:py-28 font-sans text-neutral-800">
+        <div className="w-full px-4 sm:px-6 lg:px-16">
+          {/* Heading */}
+          <div className="text-center mb-12 sm:mb-16">
+            <h1 className="text-2xl sm:text-4xl md:text-5xl font-serif font-normal uppercase tracking-wide text-neutral-900 mb-4">
+              Silver Earrings for Women
+            </h1>
+            <div className="w-24 h-1 bg-gradient-to-r from-amber-400 to-yellow-500 mx-auto rounded-full"></div>
+          </div>
+
+          {/* Intro Section */}
+          <div className="max-w-4xl mx-auto text-center mb-16 sm:mb-24 bg-white/60 backdrop-blur-sm rounded-3xl p-8 sm:p-12 shadow-lg border border-amber-100">
+            <p className="text-base sm:text-lg leading-relaxed text-neutral-700">
+              At Mysabri, we offer exquisite silver earrings for women, crafted to blend timeless elegance, exceptional craftsmanship, and modern sophistication. Our curated collection features stunning 925 sterling silver earrings, as well as beautifully designed pure silver earrings, all created with meticulous attention to detail. Whether you're seeking graceful long silver earrings for special occasions or elegant studs for daily wear, we have something for every style. From delicate hoops to intricate drop designs, our sterling silver earrings are designed to complement every mood, outfit, and moment.
+            </p>
+          </div>
+
+          {/* Zig-zag Content Sections */}
+          <div className="space-y-16 sm:space-y-24">
+              {/* Section 1 - Content Left, Image Right */}
+              <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16 mb-16">
+                <div className="lg:w-1/2 space-y-4">
+                  <h2 className="text-xl sm:text-3xl font-serif font-normal text-neutral-900 mb-6">
+                    Elegant 925 Sterling Silver Earrings – Timeless Beauty for Modern Women
+                  </h2>
+                  <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md border border-amber-100/50">
+                    <p className="text-sm sm:text-base leading-relaxed text-neutral-700 mb-4">
+                      Discover the perfect blend of elegance and craftsmanship with Mysabri's exquisite silver earrings for women. Each pair is meticulously crafted from genuine 925 sterling silver, ensuring lasting shine, durability, and comfort for everyday wear.
+                    </p>
+                    {!showMore1 && (
+                      <button
+                        type="button"
+                        onClick={() => setShowMore1(true)}
+                        className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                      >
+                        Read more
+                      </button>
+                    )}
+                    {showMore1 && (
+                      <div className="space-y-4">
+                        <p className="text-sm sm:text-base leading-relaxed text-neutral-700">
+                          Our collection features everything from delicate studs to dramatic drops, each designed to complement your unique style. Whether you're dressing up for a special occasion or adding sparkle to your daily look, these silver earrings offer the perfect balance of sophistication and versatility.
+                        </p>
+                        <button
+                          type="button"
+                          onClick={() => setShowMore1(false)}
+                          className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                        >
+                          Read less
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="lg:w-1/2">
+                  <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
+                    <Image 
+                      src="/seo/er1.png" 
+                      alt="925 sterling silver earrings for women"
+                      width={400}
+                      height={300}
+                      className="w-full h-auto"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Section 2 - Image Left, Content Right */}
+              <div className="flex flex-col lg:flex-row-reverse items-center gap-8 lg:gap-16 mb-16">
+                <div className="lg:w-1/2 space-y-4">
+                  <h2 className="text-xl sm:text-3xl font-serif font-normal text-neutral-900 mb-6">
+                    Long Silver Earrings for Women – Graceful Designs for Special Occasions
+                  </h2>
+                  <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md border border-amber-100/50">
+                    <p className="text-sm sm:text-base leading-relaxed text-neutral-700 mb-4">
+                      Elevate your festive and party looks with our stunning long silver earrings. These elegant designs feature intricate detailing and lightweight construction, making them perfect for weddings, celebrations, and evening events where you want to make a graceful statement.
+                    </p>
+                    {!showMore2 && (
+                      <button
+                        type="button"
+                        onClick={() => setShowMore2(true)}
+                        className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                      >
+                        Read more
+                      </button>
+                    )}
+                    {showMore2 && (
+                      <div className="space-y-4">
+                        <p className="text-sm sm:text-base leading-relaxed text-neutral-700">
+                          From cascading chandeliers to elegant drops, our long silver earrings are designed to draw attention to your facial features and complement traditional Indian attire as well as modern outfits. Each piece is crafted with precision to ensure comfort even during extended wear.
+                        </p>
+                        <button
+                          type="button"
+                          onClick={() => setShowMore2(false)}
+                          className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                        >
+                          Read less
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="lg:w-1/2">
+                  <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
+                    <Image 
+                      src="/seo/er2.png" 
+                      alt="Long silver earrings for women"
+                      width={400}
+                      height={300}
+                      className="w-full h-auto"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Section 3 - Content Left, Image Right */}
+              <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16 mb-16">
+                <div className="lg:w-1/2 space-y-4">
+                  <h2 className="text-xl sm:text-3xl font-serif font-normal text-neutral-900 mb-6">
+                    Silver Stud Earrings – Perfect for Everyday Elegance
+                  </h2>
+                  <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md border border-amber-100/50">
+                    <p className="text-sm sm:text-base leading-relaxed text-neutral-700 mb-4">
+                      Our silver stud earrings offer the perfect combination of simplicity and sophistication. Ideal for daily wear, office meetings, and casual outings, these versatile pieces provide just the right amount of sparkle without overwhelming your look.
+                    </p>
+                    {!showMore3 && (
+                      <button
+                        type="button"
+                        onClick={() => setShowMore3(true)}
+                        className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                      >
+                        Read more
+                      </button>
+                    )}
+                    {showMore3 && (
+                      <div className="space-y-4">
+                        <p className="text-sm sm:text-base leading-relaxed text-neutral-700">
+                          Available in various shapes and sizes, from classic round studs to contemporary geometric designs, these silver earrings are hypoallergenic and comfortable for all-day wear. Their timeless appeal makes them essential additions to any jewelry collection.
+                        </p>
+                        <button
+                          type="button"
+                          onClick={() => setShowMore3(false)}
+                          className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                        >
+                          Read less
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="lg:w-1/2">
+                  <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
+                    <Image 
+                      src="/seo/er3.png" 
+                      alt="Silver stud earrings for women"
+                      width={400}
+                      height={300}
+                      className="w-full h-auto"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Section 4 - Image Left, Content Right */}
+              <div className="flex flex-col lg:flex-row-reverse items-center gap-8 lg:gap-16 mb-16">
+                <div className="lg:w-1/2 space-y-4">
+                  <h2 className="text-xl sm:text-3xl font-serif font-normal text-neutral-900 mb-6">
+                    Silver Hoop Earrings – Classic Style with Modern Appeal
+                  </h2>
+                  <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md border border-amber-100/50">
+                    <p className="text-sm sm:text-base leading-relaxed text-neutral-700 mb-4">
+                      Add a touch of contemporary charm to your ensemble with our silver hoop earrings. Available in various sizes from subtle small hoops to bold statement pieces, these versatile earrings transition seamlessly from casual daywear to elegant evening looks.
+                    </p>
+                    {!showMore4 && (
+                      <button
+                        type="button"
+                        onClick={() => setShowMore4(true)}
+                        className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                      >
+                        Read more
+                      </button>
+                    )}
+                    {showMore4 && (
+                      <div className="space-y-4">
+                        <p className="text-sm sm:text-base leading-relaxed text-neutral-700">
+                          Our collection includes classic polished hoops, textured designs, and embellished styles that add visual interest. These silver earrings are lightweight yet impactful, making them perfect for women who appreciate both comfort and style in their accessories.
+                        </p>
+                        <button
+                          type="button"
+                          onClick={() => setShowMore4(false)}
+                          className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                        >
+                          Read less
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="lg:w-1/2">
+                  <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
+                    <Image 
+                      src="/seo/er4.png" 
+                      alt="Silver hoop earrings for women"
+                      width={400}
+                      height={300}
+                      className="w-full h-auto"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Section 5 - Content Left, Image Right */}
+              <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16 mb-16">
+                <div className="lg:w-1/2 space-y-4">
+                  <h2 className="text-xl sm:text-3xl font-serif font-normal text-neutral-900 mb-6">
+                    Drop Silver Earrings – Elegant Designs for Every Face Shape
+                  </h2>
+                  <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md border border-amber-100/50">
+                    <p className="text-sm sm:text-base leading-relaxed text-neutral-700 mb-4">
+                      Our drop silver earrings feature graceful designs that elongate and complement your facial features. Perfect for both traditional and modern outfits, these versatile pieces add sophistication to any occasion while maintaining comfortable wearability.
+                    </p>
+                    {!showMore5 && (
+                      <button
+                        type="button"
+                        onClick={() => setShowMore5(true)}
+                        className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                      >
+                        Read more
+                      </button>
+                    )}
+                    {showMore5 && (
+                      <div className="space-y-4">
+                        <p className="text-sm sm:text-base leading-relaxed text-neutral-700">
+                          From subtle teardrops to elaborate cascading designs, our drop earrings showcase the perfect balance between traditional Indian craftsmanship and contemporary aesthetics. Each piece is designed to move gracefully with you, creating an eye-catching yet elegant effect.
+                        </p>
+                        <button
+                          type="button"
+                          onClick={() => setShowMore5(false)}
+                          className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                        >
+                          Read less
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="lg:w-1/2">
+                  <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
+                    <Image 
+                      src="/seo/er5.png" 
+                      alt="Drop silver earrings for women"
+                      width={400}
+                      height={300}
+                      className="w-full h-auto"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Section 6 - Image Left, Content Right */}
+              <div className="flex flex-col lg:flex-row-reverse items-center gap-8 lg:gap-16 mb-16">
+                <div className="lg:w-1/2 space-y-4">
+                  <h2 className="text-xl sm:text-3xl font-serif font-normal text-neutral-900 mb-6">
+                    Sterling Silver Earrings for Girls – Safe and Stylish Choices
+                  </h2>
+                  <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md border border-amber-100/50">
+                    <p className="text-sm sm:text-base leading-relaxed text-neutral-700 mb-4">
+                      Introduce your young ones to the elegance of silver with our specially designed earrings for girls. Crafted from hypoallergenic 925 sterling silver, these pieces ensure safety without compromising on style, making them perfect for school, parties, and special occasions.
+                    </p>
+                    {!showMore6 && (
+                      <button
+                        type="button"
+                        onClick={() => setShowMore6(true)}
+                        className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                      >
+                        Read more
+                      </button>
+                    )}
+                    {showMore6 && (
+                      <div className="space-y-4">
+                        <p className="text-sm sm:text-base leading-relaxed text-neutral-700">
+                          Our collection features age-appropriate designs including cute studs, small hoops, and playful motifs that appeal to young fashion enthusiasts. Each pair is lightweight and secure, providing peace of mind for parents while allowing girls to express their personal style.
+                        </p>
+                        <button
+                          type="button"
+                          onClick={() => setShowMore6(false)}
+                          className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                        >
+                          Read less
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="lg:w-1/2">
+                  <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
+                    <Image 
+                      src="/seo/er6.png" 
+                      alt="Sterling silver earrings for girls"
+                      width={400}
+                      height={300}
+                      className="w-full h-auto"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Section 7 - Content Left, Image Right */}
+              <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16 mb-16">
+                <div className="lg:w-1/2 space-y-4">
+                  <h2 className="text-xl sm:text-3xl font-serif font-normal text-neutral-900 mb-6">
+                    Oxidized Silver Earrings – Traditional Charm with Contemporary Flair
+                  </h2>
+                  <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md border border-amber-100/50">
+                    <p className="text-sm sm:text-base leading-relaxed text-neutral-700 mb-4">
+                      Embrace the rich heritage of Indian jewelry with our oxidized silver earrings. These pieces feature darkened silver backgrounds that highlight intricate patterns and traditional motifs, perfect for ethnic wear and cultural celebrations.
+                    </p>
+                    {!showMore7 && (
+                      <button
+                        type="button"
+                        onClick={() => setShowMore7(true)}
+                        className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                      >
+                        Read more
+                      </button>
+                    )}
+                    {showMore7 && (
+                      <div className="space-y-4">
+                        <p className="text-sm sm:text-base leading-relaxed text-neutral-700">
+                          Our oxidized collection includes jhumkas, tribal-inspired designs, and contemporary interpretations of traditional patterns. These silver earrings pair beautifully with sarees, kurtis, and fusion outfits, adding an authentic touch of Indian craftsmanship to your look.
+                        </p>
+                        <button
+                          type="button"
+                          onClick={() => setShowMore7(false)}
+                          className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                        >
+                          Read less
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="lg:w-1/2">
+                  <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
+                    <Image 
+                      src="/seo/er7.png" 
+                      alt="Oxidized silver earrings for women"
+                      width={400}
+                      height={300}
+                      className="w-full h-auto"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Section 8 - Image Left, Content Right */}
+            <div className="flex flex-col lg:flex-row-reverse items-center gap-8 lg:gap-16">
+              <div className="lg:w-1/2 space-y-4">
+                <h2 className="text-xl sm:text-3xl font-serif font-normal text-neutral-900 mb-6">
+                  Designer Silver Earrings – Luxury Craftsmanship for Discerning Women
+                </h2>
+                <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md border border-amber-100/50">
+                  <p className="text-sm sm:text-base leading-relaxed text-neutral-700 mb-4">
+                    Experience the pinnacle of elegance with our designer silver earrings collection. Each piece showcases exceptional craftsmanship, featuring premium materials, intricate detailing, and innovative designs that cater to the sophisticated tastes of modern women.
+                  </p>
+                  {!showMore8 && (
+                    <button
+                      type="button"
+                      onClick={() => setShowMore8(true)}
+                      className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                    >
+                      Read more
+                    </button>
+                  )}
+                  {showMore8 && (
+                    <div className="space-y-4">
+                      <p className="text-sm sm:text-base leading-relaxed text-neutral-700">
+                        Our designer collection includes limited edition pieces, gemstone-studded creations, and avant-garde designs that push the boundaries of traditional silver jewelry. These exclusive silver earrings are perfect for making a statement at high-end events and special occasions.
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => setShowMore8(false)}
+                        className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                      >
+                        Read less
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className="lg:w-1/2">
+                <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
+                  <Image 
+                    src="/seo/er8.png" 
+                    alt="Designer silver earrings for women"
+                    width={400}
+                    height={300}
+                    className="w-full h-auto"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* FAQs Section */}
+          <div className="mt-20 sm:mt-32">
+            <div className="text-center mb-8">
+              <h2 className="text-2xl sm:text-3xl font-serif font-normal text-neutral-900 mb-4">
+                FAQs – Silver Earrings for Women
+              </h2>
+              <div className="w-16 h-1 bg-gradient-to-r from-amber-400 to-yellow-500 mx-auto rounded-full"></div>
+            </div>
+
+            <div className="max-w-4xl mx-auto space-y-3 sm:space-y-4">
+              {FAQS.map((faq, index) => (
+                <div
+                  key={faq.question}
+                  className="bg-white/80 backdrop-blur-sm border border-amber-100/50 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300"
+                >
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setOpenFaqIndex(openFaqIndex === index ? null : index)
+                    }
+                    className="w-full flex items-center justify-between px-4 sm:px-6 py-4 text-left hover:bg-amber-50/50 transition-colors"
+                  >
+                    <span className="font-semibold text-sm sm:text-base text-neutral-900 pr-4">
+                      {faq.question}
+                    </span>
+                    <span className="text-lg leading-none text-amber-600 font-bold">
+                      {openFaqIndex === index ? "−" : "+"}
+                    </span>
+                  </button>
+                  {openFaqIndex === index && (
+                    <div className="px-4 sm:px-6 py-4 text-xs sm:text-sm text-neutral-700 bg-white/50 border-t border-amber-100/30">
+                      {faq.answer}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+        </div>
+      </section>
     </div>
   );
 }
