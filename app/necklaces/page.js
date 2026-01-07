@@ -179,6 +179,14 @@ export default function NecklacesPage() {
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [scrollPosition, setScrollPosition] = useState(0);
   const [lastProductId, setLastProductId] = useState(null);
+  const [showMore1, setShowMore1] = useState(false);
+  const [showMore2, setShowMore2] = useState(false);
+  const [showMore3, setShowMore3] = useState(false);
+  const [showMore4, setShowMore4] = useState(false);
+  const [showMore5, setShowMore5] = useState(false);
+  const [showMore6, setShowMore6] = useState(false);
+  const [showMore7, setShowMore7] = useState(false);
+  const [showMore8, setShowMore8] = useState(false);
   const [visibleCount, setVisibleCount] = useState(Number.MAX_SAFE_INTEGER);
 
   const { products, loading, error } = useNecklaces();
@@ -388,256 +396,454 @@ export default function NecklacesPage() {
             </Link>
           </div>
         )}
-        <div className="mt-10 space-y-6 text-gray-800 text-sm sm:text-base leading-relaxed">
-          <h1 className="text-2xl sm:text-3xl font-bold text-black mb-2">
-            Silver Necklace for Women
-          </h1>
-          <p>
-            Upgrade your jewellery collection with our special selection of silver
-            necklaces for women, which is created to accentuate your elegance with
-            every outfit. At Mysabri, we offer high-quality styles that make it easy
-            to choose the perfect silver necklace for women, whether you prefer
-            minimalist chains, classic patterns, or fashionable everyday pieces.
-          </p>
-          <p>
-            Each piece in our line is meticulously designed to provide a lifetime of
-            shine, comfort, and durability. From a pure silver necklace for women to
-            trendy fashion necklaces, each design emphasises the elegance of a silver
-            necklace for women while accommodating a variety of tastes and events.
-          </p>
-          <p>
-            Explore our one-of-a-kind masterpieces and discover why Mysabri is the
-            ideal choice for a trendy, affordable, and high-quality 925 silver
-            necklace for women, handcrafted to perfection.
-          </p>
-
-          <h2 className="text-xl sm:text-2xl font-semibold text-black">
-            Latest Silver Necklace for Women Designs to Elevate Your Style
-          </h2>
-          <p>
-            The most popular and attractive silver necklace for women, made to suit
-            any fashion style. From sleek, minimalist chains to bold statement pieces,
-            our latest collection features exquisitely designed necklaces that add
-            beauty and charm to every ensemble. Whether you choose trendy geometric
-            shapes, classic themes, or stacked silver necklaces, each design is
-            intended to match your own personality.
-          </p>
-          <p>
-            Mysabri focuses on high-quality craftsmanship to ensure that each necklace
-            has a long-lasting lustre and durability. Explore our latest arrivals to
-            discover the perfect silver necklace for women, perfect for enhancing your
-            everyday appearance or completing a special-occasion set.
-          </p>
-
-          <h2 className="text-xl sm:text-2xl font-semibold text-black">
-            Why Silver Necklace for Women Is the Perfect Everyday Accessory
-          </h2>
-          <p>
-            A silver necklace for women is one of the most flexible accessories you
-            can have, making it ideal for daily wear. Its exquisite sheen complements
-            casual clothes, workplace attire, and special events without appearing
-            overly heavy or dazzling. 925 sterling silver is lightweight, soft, and
-            resilient, letting you wear it all day without discomfort.
-          </p>
-          <p>
-            Because silver complements every skin tone and dress type, it enhances
-            your appearance without overwhelming it. Whether you prefer a simple
-            chain, a delicate pendant, or a stylish layered design, a silver necklace
-            for women elevates your everyday look while remaining timeless and
-            affordable.
-          </p>
-
-          <h2 className="text-xl sm:text-2xl font-semibold text-black">
-            How to Choose the Right Silver Necklace for Women for Any Occasion
-          </h2>
-          <p>
-            The ideal silver necklace for women is determined by your personal style
-            and the occasion at hand. For everyday wear, simple silver necklaces for
-            women or lightweight silver necklace sets are ideal since they provide
-            comfort and elegance without feeling heavy. If you prefer a more refined
-            style, a pure silver necklace set adds refinement while remaining
-            durable.
-          </p>
-          <p>
-            For workplace attire, opt for simple or short-chain styles that complement
-            professional clothing well. Special events necessitate bolder styles, such
-            as lengthy necklaces, pearl chokers, or designer jewellery silver necklace
-            pieces that enhance your whole appearance. By combining your particular
-            style with the proper design, you may find a silver necklace for women
-            that complements every outfit.
-          </p>
-
-          <h2 className="text-xl sm:text-2xl font-semibold text-black">
-            Shop Premium Silver Necklace for Women Online at Mysabri
-          </h2>
-          <p>
-            Shopping for a silver necklace for women is made easy with Mysabri's
-            superior online assortment. We have a diverse selection of styles,
-            including a silver necklace set for women, a pure silver necklace set,
-            attractive long necklaces, pearl chokers, and exquisite pieces suitable
-            for everyday use or special events. Each silver necklace for women is
-            meticulously manufactured to ensure durability, lustre, and long-term
-            quality.
-          </p>
-          <p>
-            Whether you're looking for a simple chain, a fashionable pendant, or a
-            high-end jewellery silver necklace, Mysabri offers true workmanship at
-            reasonable costs. Our selected assortment makes it simple to choose the
-            perfect silver necklace for women that suits your style, personality, and
-            budget — all delivered with fast delivery and dependable service. Shop
-            with confidence and enhance your appearance with Mysabri's best silver
-            jewellery.
-          </p>
-
-          <h2 className="text-xl sm:text-2xl font-semibold text-black">
-            Benefits of Wearing a Silver Necklace for Women Daily
-          </h2>
-          <p>
-            Wearing a silver necklace for women every day has both aesthetic and
-            practical benefits. Silver is noted for its durability, lightweight feel,
-            and timeless sheen, making it ideal for everyday use. Many women like
-            basic chains, modest pendants, or a lightweight silver necklace set for
-            women since they complement any ensemble without being overly heavy.
-          </p>
-          <p>
-            Silver is also said to have inherent skin-friendly characteristics, making
-            it appropriate for delicate skin. Whether you select a pure jewellery
-            silver necklace or a fashionable silver necklace for girls, everyday wear
-            items offer a touch of refinement to your style while being comfortable
-            and durable. A silver necklace for women is one of the most versatile and
-            beautiful accessories for regular use.
-          </p>
-
-          <h2 className="text-xl sm:text-2xl font-semibold text-black">
-            How to Identify a Real Pure Silver Necklace Set for Women
-          </h2>
-          <p>
-            Identifying a genuine pure silver necklace set for women is critical to
-            obtaining genuine quality and long-lasting lustre. To ensure authenticity,
-            search for the 925 hallmark, which indicates that the item is composed of
-            92.5% pure silver. A genuine silver necklace for women will usually have
-            this mark on the clasp or back of the pendant.
-          </p>
-          <p>
-            Real silver also has a natural lustre and a somewhat cool touch, as
-            opposed to false metals, which feel excessively light or overly shiny. You
-            may also do a simple magnet test — pure silver is not magnetic and should
-            not attach to a magnet. High-quality silver necklaces for women are
-            properly polished and do not have an unduly yellow or dull tone.
-          </p>
-
-          <p>
-            If you love pairing elegant accessories together, explore our premium <Link
-              href="https://www.mysabri.in/bracelets"
-              className="hover:underline"
-            > Pure Silver Bracelet for Men </Link> and stylish 925 silver bracelets collection. Just like our necklaces, these bracelets are handcrafted using genuine 92.5 sterling silver, offering long-lasting shine, durability, and everyday comfort. Discover matching designs that perfectly complement your necklace choices for a complete and refined look.
-          </p>
-
-          <h2 className="text-xl sm:text-2xl font-semibold text-black">
-            Best Silver Necklace for Women Gift Ideas for Every Budget
-          </h2>
-          <p>
-            Finding the ideal silver necklace for women as a present is simple when
-            there are options for any budget. Whether you're buying for a birthday,
-            an anniversary, or a festive occasion, Mysabri has gorgeous designs that
-            make thoughtful and elegant gifts. Our assortment comprises simple chains,
-            attractive pendants, long necklaces, and premium pure silver necklace sets
-            that are appropriate for women of all ages.
-          </p>
-          <p>
-            Elegant daily-wear patterns start at just ₹1399, making it simple to
-            surprise your loved ones without overpaying. If you want something more
-            special, explore our handcrafted silver necklace set for women or
-            traditional pearl choker necklace styles that provide a rich touch.
-          </p>
-          <p>
-            Mysabri makes gifting simple with a variety of unique styles and budgets,
-            delivering the finest silver necklace for women that complements any event
-            beautifully.
-          </p>
-
-          <h2 className="text-xl sm:text-2xl font-semibold text-black">
-            Why Mysabri Is the Best Place to Buy Silver Necklace for Women Online
-          </h2>
-          <p>
-            Mysabri is the ideal place to buy a silver necklace for women online
-            because we prioritise high quality, fair pricing, and fashionable designs
-            that complement any personality. All of our necklaces are made from
-            certified 925 pure silver, which ensures long-lasting lustre, durability,
-            and skin-friendly comfort. Whether you like minimalist chains, exquisite
-            pendants, or a fine silver necklace set for women, each piece is crafted
-            with precision and attention to detail.
-          </p>
-          <p>
-            We provide affordable, high-quality jewellery beginning at ₹1399,
-            allowing you to enjoy luxury designs without the hefty cost. Our
-            selection includes trendy fashion pieces, classic traditional designs, and
-            exquisite jewellery silver necklaces for women, all suitable for gifts or
-            daily use.
-          </p>
-          <p>
-            Mysabri continues to be the best place to buy a gorgeous silver necklace
-            for women online, thanks to its trusted quality, authentic hallmark
-            certification, and quick shipping.
-          </p>
-
-          <h2 className="text-xl sm:text-2xl font-semibold text-black">
-            Care Tips to Maintain the Shine of Your Silver Necklace for Women
-          </h2>
-          <p>
-            Proper maintenance guarantees that your silver necklace for women remains
-            shining, elegant, and long-lasting. To avoid tarnishing, always store
-            your silver jewellery in an airtight box or pouch. After wearing your
-            necklace, carefully clean it with a soft cloth to remove any perspiration,
-            perfume, or dust. This helps to keep the natural lustre of your silver
-            necklace.
-          </p>
-          <p>
-            Avoid wearing your necklace when swimming, bathing, or exercising, since
-            chlorine, dampness, and perspiration might dull its lustre. For a more
-            thorough cleaning, apply a moderate silver polish or a gentle soap-water
-            solution. If you have a pure silver necklace set for women with
-            intricate patterns, clean them gently to retain the delicate details.
-          </p>
-          <p>
-            By following these simple maintenance instructions, your silver necklace
-            for women will remain sparkling and luminous for years, making any
-            ensemble exquisite and timeless.
-          </p>
-
-          <h3 className="text-xl sm:text-2xl font-semibold text-black">
-            FAQs – Silver Necklace for Women
-          </h3>
-          <div className="space-y-3 mt-2">
-            {FAQS.map((faq, index) => (
-              <div
-                key={faq.question}
-                className="border border-gray-200 rounded-md overflow-hidden"
-              >
-                <button
-                  type="button"
-                  onClick={() =>
-                    setOpenFaqIndex(openFaqIndex === index ? null : index)
-                  }
-                  className="w-full flex items-center justify-between px-3 py-2 text-left bg-gray-50 hover:bg-gray-100"
-                >
-                  <span className="font-semibold text-sm sm:text-base text-gray-900">
-                    {faq.question}
-                  </span>
-                  <span className="ml-2 text-lg leading-none text-gray-600">
-                    {openFaqIndex === index ? "-" : "+"}
-                  </span>
-                </button>
-                {openFaqIndex === index && (
-                  <div className="px-3 py-2 text-xs sm:text-sm text-gray-700 bg-white">
-                    {faq.answer}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
+
+           {/* SEO Section with Zig-Zag Format - Matching Earrings Page Design */}
+      <section className="w-full bg-gradient-to-br from-amber-50 via-white to-amber-50/30 py-12 sm:py-20 lg:py-28 font-sans text-neutral-800">
+        <div className="w-full px-4 sm:px-6 lg:px-16">
+          {/* Heading */}
+          <div className="text-center mb-12 sm:mb-16">
+            <h1 className="text-2xl sm:text-4xl md:text-5xl font-serif font-normal uppercase tracking-wide text-neutral-900 mb-4">
+              Silver Necklace for Women
+            </h1>
+            <div className="w-24 h-1 bg-gradient-to-r from-amber-400 to-yellow-500 mx-auto rounded-full"></div>
+          </div>
+
+          {/* Intro Section */}
+          <div className="max-w-4xl mx-auto text-center mb-16 sm:mb-24 bg-white/60 backdrop-blur-sm rounded-3xl p-8 sm:p-12 shadow-lg border border-amber-100">
+            <p className="text-base sm:text-lg leading-relaxed text-neutral-700">
+              At Mysabri, we offer exquisite silver necklace for women, crafted to blend timeless elegance, exceptional craftsmanship, and modern sophistication. Our curated collection features stunning 925 sterling silver necklaces, as well as beautifully designed pure silver necklace sets, all created with meticulous attention to detail. Whether you're seeking graceful chains for daily wear or bold statement pieces for special occasions, we have something for every style. From classic designs to contemporary patterns, our sterling silver necklaces are designed to complement every personality, outfit, and moment.
+            </p>
+          </div>
+
+          {/* Zig-zag Content Sections */}
+          <div className="space-y-16 sm:space-y-24">
+              {/* Section 1 - Content Left, Image Right */}
+              <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16 mb-16">
+                <div className="lg:w-1/2 space-y-4">
+                  <h2 className="text-xl sm:text-3xl font-serif font-normal text-neutral-900 mb-6">
+                    Elegant 925 Sterling Silver Necklaces – Timeless Beauty for Modern Women
+                  </h2>
+                  <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md border border-amber-100/50">
+                    <p className="text-sm sm:text-base leading-relaxed text-neutral-700 mb-4">
+                      Discover the perfect blend of elegance and craftsmanship with Mysabri's exquisite silver necklace for women. Each piece is meticulously crafted from genuine 925 sterling silver, ensuring lasting shine, durability, and comfort for everyday wear.
+                    </p>
+                    {!showMore1 && (
+                      <button
+                        type="button"
+                        onClick={() => setShowMore1(true)}
+                        className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                      >
+                        Read more
+                      </button>
+                    )}
+                    {showMore1 && (
+                      <div className="space-y-4">
+                        <p className="text-sm sm:text-base leading-relaxed text-neutral-700">
+                          Our collection features everything from delicate chains to bold statement pieces, each designed to complement your unique style. Whether you're dressing up for a special occasion or adding sophistication to your daily look, these silver necklaces offer the perfect balance of femininity and elegance.
+                        </p>
+                        <button
+                          type="button"
+                          onClick={() => setShowMore1(false)}
+                          className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                        >
+                          Read less
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="lg:w-1/2">
+                  <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
+                    <Image 
+                      src="/seo/n1.jpg" 
+                      alt="925 sterling silver necklaces for women"
+                      width={400}
+                      height={300}
+                      className="w-full h-auto"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Section 2 - Image Left, Content Right */}
+              <div className="flex flex-col lg:flex-row-reverse items-center gap-8 lg:gap-16 mb-16">
+                <div className="lg:w-1/2 space-y-4">
+                  <h2 className="text-xl sm:text-3xl font-serif font-normal text-neutral-900 mb-6">
+                    Silver Necklace Sets – Complete Elegance for Every Occasion
+                  </h2>
+                  <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md border border-amber-100/50">
+                    <p className="text-sm sm:text-base leading-relaxed text-neutral-700 mb-4">
+                      Elevate your style with our coordinated silver necklace sets. These perfectly matched combinations feature exquisite designs that create a harmonious and sophisticated look, ideal for weddings, festivals, and special celebrations.
+                    </p>
+                    {!showMore2 && (
+                      <button
+                        type="button"
+                        onClick={() => setShowMore2(true)}
+                        className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                      >
+                        Read more
+                      </button>
+                    )}
+                    {showMore2 && (
+                      <div className="space-y-4">
+                        <p className="text-sm sm:text-base leading-relaxed text-neutral-700">
+                          Our necklace sets include matching earrings and sometimes bracelets, providing a complete coordinated look. Each set is designed to make dressing effortless while ensuring you look perfectly put together for any occasion.
+                        </p>
+                        <button
+                          type="button"
+                          onClick={() => setShowMore2(false)}
+                          className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                        >
+                          Read less
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="lg:w-1/2">
+                  <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
+                    <Image 
+                      src="/seo/n2.jpg" 
+                      alt="Silver necklace sets for women"
+                      width={400}
+                      height={300}
+                      className="w-full h-auto"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Section 3 - Content Left, Image Right */}
+              <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16 mb-16">
+                <div className="lg:w-1/2 space-y-4">
+                  <h2 className="text-xl sm:text-3xl font-serif font-normal text-neutral-900 mb-6">
+                    Long Silver Necklaces – Dramatic Elegance for Special Moments
+                  </h2>
+                  <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md border border-amber-100/50">
+                    <p className="text-sm sm:text-base leading-relaxed text-neutral-700 mb-4">
+                      Make a stunning statement with our long silver necklaces. These dramatic pieces feature extended lengths and intricate designs that create eye-catching silhouettes, perfect for evening events and formal occasions.
+                    </p>
+                    {!showMore3 && (
+                      <button
+                        type="button"
+                        onClick={() => setShowMore3(true)}
+                        className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                      >
+                        Read more
+                      </button>
+                    )}
+                    {showMore3 && (
+                      <div className="space-y-4">
+                        <p className="text-sm sm:text-base leading-relaxed text-neutral-700">
+                          Our long necklace collection includes layered designs, pendant chains, and statement pieces that draw attention to your neckline. Each piece is carefully balanced to provide impressive presence without compromising on comfort or wearability.
+                        </p>
+                        <button
+                          type="button"
+                          onClick={() => setShowMore3(false)}
+                          className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                        >
+                          Read less
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="lg:w-1/2">
+                  <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
+                    <Image 
+                      src="/seo/n3.jpg" 
+                      alt="Long silver necklaces for women"
+                      width={400}
+                      height={300}
+                      className="w-full h-auto"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Section 4 - Image Left, Content Right */}
+              <div className="flex flex-col lg:flex-row-reverse items-center gap-8 lg:gap-16 mb-16">
+                <div className="lg:w-1/2 space-y-4">
+                  <h2 className="text-xl sm:text-3xl font-serif font-normal text-neutral-900 mb-6">
+                    Pendant Silver Necklaces – Personalized Charm and Style
+                  </h2>
+                  <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md border border-amber-100/50">
+                    <p className="text-sm sm:text-base leading-relaxed text-neutral-700 mb-4">
+                      Express your individuality with our beautiful pendant silver necklaces. These versatile pieces feature distinctive pendants that add personal meaning and visual interest to your everyday and special occasion looks.
+                    </p>
+                    {!showMore4 && (
+                      <button
+                        type="button"
+                        onClick={() => setShowMore4(true)}
+                        className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                      >
+                        Read more
+                      </button>
+                    )}
+                    {showMore4 && (
+                      <div className="space-y-4">
+                        <p className="text-sm sm:text-base leading-relaxed text-neutral-700">
+                          Our pendant collection includes geometric shapes, nature-inspired designs, and traditional motifs that allow you to showcase your personality. Each pendant is carefully crafted to ensure it remains secure while adding beautiful movement to your necklace.
+                        </p>
+                        <button
+                          type="button"
+                          onClick={() => setShowMore4(false)}
+                          className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                        >
+                          Read less
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="lg:w-1/2">
+                  <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
+                    <Image 
+                      src="/seo/n4.jpg" 
+                      alt="Pendant silver necklaces for women"
+                      width={400}
+                      height={300}
+                      className="w-full h-auto"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Section 5 - Content Left, Image Right */}
+              <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16 mb-16">
+                <div className="lg:w-1/2 space-y-4">
+                  <h2 className="text-xl sm:text-3xl font-serif font-normal text-neutral-900 mb-6">
+                    Choker Silver Necklaces – Modern Chic for Contemporary Style
+                  </h2>
+                  <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md border border-amber-100/50">
+                    <p className="text-sm sm:text-base leading-relaxed text-neutral-700 mb-4">
+                      Embrace modern elegance with our chic choker silver necklaces. These close-fitting designs sit beautifully at the neckline, creating a sophisticated look that's perfect for both casual and formal settings.
+                    </p>
+                    {!showMore5 && (
+                      <button
+                        type="button"
+                        onClick={() => setShowMore5(true)}
+                        className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                      >
+                        Read more
+                      </button>
+                    )}
+                    {showMore5 && (
+                      <div className="space-y-4">
+                        <p className="text-sm sm:text-base leading-relaxed text-neutral-700">
+                          Our choker collection includes simple bands, decorated designs, and adjustable styles that ensure perfect comfort. These versatile pieces can be worn alone or layered with longer necklaces for a trendy, stacked look.
+                        </p>
+                        <button
+                          type="button"
+                          onClick={() => setShowMore5(false)}
+                          className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                        >
+                          Read less
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="lg:w-1/2">
+                  <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
+                    <Image 
+                      src="/seo/n5.jpg" 
+                      alt="Choker silver necklaces for women"
+                      width={400}
+                      height={300}
+                      className="w-full h-auto"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Section 6 - Image Left, Content Right */}
+              <div className="flex flex-col lg:flex-row-reverse items-center gap-8 lg:gap-16 mb-16">
+                <div className="lg:w-1/2 space-y-4">
+                  <h2 className="text-xl sm:text-3xl font-serif font-normal text-neutral-900 mb-6">
+                    Layered Silver Necklaces – Trendy Styling for Fashion-Forward Look
+                  </h2>
+                  <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md border border-amber-100/50">
+                    <p className="text-sm sm:text-base leading-relaxed text-neutral-700 mb-4">
+                      Create a fashion-forward statement with our layered silver necklaces. These multi-strand designs offer instant sophistication and visual interest, perfect for those who love contemporary, stacked styling.
+                    </p>
+                    {!showMore6 && (
+                      <button
+                        type="button"
+                        onClick={() => setShowMore6(true)}
+                        className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                      >
+                        Read more
+                      </button>
+                    )}
+                    {showMore6 && (
+                      <div className="space-y-4">
+                        <p className="text-sm sm:text-base leading-relaxed text-neutral-700">
+                          Our layered collection includes pre-stacked designs and mix-and-match pieces that allow you to create your own unique combinations. These necklaces add depth and dimension to your outfit, making them perfect for both casual and formal occasions.
+                        </p>
+                        <button
+                          type="button"
+                          onClick={() => setShowMore6(false)}
+                          className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                        >
+                          Read less
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="lg:w-1/2">
+                  <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
+                    <Image 
+                      src="/seo/n6.jpg" 
+                      alt="Layered silver necklaces for women"
+                      width={400}
+                      height={300}
+                      className="w-full h-auto"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Section 7 - Content Left, Image Right */}
+              <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16 mb-16">
+                <div className="lg:w-1/2 space-y-4">
+                  <h2 className="text-xl sm:text-3xl font-serif font-normal text-neutral-900 mb-6">
+                    Traditional Silver Necklaces – Timeless Heritage Designs
+                  </h2>
+                  <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md border border-amber-100/50">
+                    <p className="text-sm sm:text-base leading-relaxed text-neutral-700 mb-4">
+                      Celebrate cultural heritage with our traditional silver necklaces. These authentic designs feature classic patterns and motifs that honor traditional craftsmanship while remaining relevant for modern wear.
+                    </p>
+                    {!showMore7 && (
+                      <button
+                        type="button"
+                        onClick={() => setShowMore7(true)}
+                        className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                      >
+                        Read more
+                      </button>
+                    )}
+                    {showMore7 && (
+                      <div className="space-y-4">
+                        <p className="text-sm sm:text-base leading-relaxed text-neutral-700">
+                          Our traditional collection includes temple jewelry, ethnic patterns, and cultural motifs that have been passed down through generations. Each piece tells a story of heritage while offering timeless elegance for weddings and cultural celebrations.
+                        </p>
+                        <button
+                          type="button"
+                          onClick={() => setShowMore7(false)}
+                          className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                        >
+                          Read less
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="lg:w-1/2">
+                  <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
+                    <Image 
+                      src="/seo/n7.jpg" 
+                      alt="Traditional silver necklaces for women"
+                      width={400}
+                      height={300}
+                      className="w-full h-auto"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Section 8 - Image Left, Content Right */}
+            <div className="flex flex-col lg:flex-row-reverse items-center gap-8 lg:gap-16">
+              <div className="lg:w-1/2 space-y-4">
+                <h2 className="text-xl sm:text-3xl font-serif font-normal text-neutral-900 mb-6">
+                  Minimalist Silver Necklaces – Understated Elegance for Daily Wear
+                </h2>
+                <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md border border-amber-100/50">
+                  <p className="text-sm sm:text-base leading-relaxed text-neutral-700 mb-4">
+                    Discover the beauty of simplicity with our minimalist silver necklaces. These clean, refined designs offer subtle elegance that perfects your everyday look without overwhelming your style.
+                  </p>
+                  {!showMore8 && (
+                    <button
+                      type="button"
+                      onClick={() => setShowMore8(true)}
+                      className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                    >
+                      Read more
+                    </button>
+                  )}
+                  {showMore8 && (
+                    <div className="space-y-4">
+                      <p className="text-sm sm:text-base leading-relaxed text-neutral-700">
+                        Our minimalist collection features simple chains, delicate pendants, and clean geometric shapes that embody modern sophistication. These versatile pieces transition seamlessly from office wear to evening outings, making them essential staples for any jewelry collection.
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => setShowMore8(false)}
+                        className="text-sm font-medium text-amber-700 hover:text-amber-800 underline transition-colors"
+                      >
+                        Read less
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className="lg:w-1/2">
+                <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-100">
+                  <Image 
+                    src="/seo/n8.png" 
+                    alt="Minimalist silver necklaces for women"
+                    width={400}
+                    height={300}
+                    className="w-full h-auto"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* FAQs Section */}
+          <div className="mt-20 sm:mt-32">
+            <div className="text-center mb-8">
+              <h2 className="text-2xl sm:text-3xl font-serif font-normal text-neutral-900 mb-4">
+                FAQs – Silver Necklace for Women
+              </h2>
+              <div className="w-16 h-1 bg-gradient-to-r from-amber-400 to-yellow-500 mx-auto rounded-full"></div>
+            </div>
+
+            <div className="max-w-4xl mx-auto space-y-3 sm:space-y-4">
+              {FAQS.map((faq, index) => (
+                <div
+                  key={faq.question}
+                  className="bg-white/80 backdrop-blur-sm border border-amber-100/50 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300"
+                >
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setOpenFaqIndex(openFaqIndex === index ? null : index)
+                    }
+                    className="w-full flex items-center justify-between px-4 sm:px-6 py-4 text-left hover:bg-amber-50/50 transition-colors"
+                  >
+                    <span className="font-semibold text-sm sm:text-base text-neutral-900 pr-4">
+                      {faq.question}
+                    </span>
+                    <span className="text-lg leading-none text-amber-600 font-bold">
+                      {openFaqIndex === index ? "−" : "+"}
+                    </span>
+                  </button>
+                  {openFaqIndex === index && (
+                    <div className="px-4 sm:px-6 py-4 text-xs sm:text-sm text-neutral-700 bg-white/50 border-t border-amber-100/30">
+                      {faq.answer}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+        </div>
+      </section>
     </div>
   );
 }
