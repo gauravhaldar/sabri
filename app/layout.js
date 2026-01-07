@@ -5,6 +5,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { CartProvider } from "@/contexts/CartContext";
 import { WishlistProvider } from "@/contexts/WishlistContext";
 import { ToastProvider } from "@/contexts/ToastContext";
+import { NotificationProvider } from "@/contexts/NotificationContext";
 import GoogleAnalytics from "./components/GoogleAnalytics";
 import LoadingScreen from "./components/LoadingScreen";
 
@@ -53,16 +54,18 @@ export default function RootLayout({ children }) {
       <body className="antialiased">
         <LoadingScreen />
         <AuthProvider>
-          <CartProvider>
-            <WishlistProvider>
-              <ToastProvider>
-                <GoogleAnalytics />
-                <Navbar />
-                {children}
-                <Footer />
-              </ToastProvider>
-            </WishlistProvider>
-          </CartProvider>
+          <NotificationProvider>
+            <CartProvider>
+              <WishlistProvider>
+                <ToastProvider>
+                  <GoogleAnalytics />
+                  <Navbar />
+                  {children}
+                  <Footer />
+                </ToastProvider>
+              </WishlistProvider>
+            </CartProvider>
+          </NotificationProvider>
         </AuthProvider>
       </body>
     </html>

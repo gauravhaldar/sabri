@@ -12,6 +12,7 @@ import {
 } from "@/lib/auth";
 import { RecaptchaVerifier } from "firebase/auth";
 import { auth } from "@/lib/firebase"; // Import the auth instance
+import { initializePushNotifications } from "@/lib/notifications";
 
 const AuthContext = createContext({});
 
@@ -38,6 +39,9 @@ export const AuthProvider = ({ children }) => {
           if (storedUser && authToken) {
             const userData = JSON.parse(storedUser);
             setUser(userData);
+            // Initialize push notifications for returning users
+            console.log("🔔 AuthContext: Initializing push notifications for returning user");
+            initializePushNotifications(userData._id || userData.id);
           } else if (authToken) {
             // If no stored data but have token, fetch from API
             const response = await fetch("/api/auth/me", {
@@ -50,6 +54,9 @@ export const AuthProvider = ({ children }) => {
             if (data.success) {
               setUser(data.data.user);
               localStorage.setItem("userData", JSON.stringify(data.data.user));
+              // Initialize push notifications
+              console.log("🔔 AuthContext: Initializing push notifications for user from API");
+              initializePushNotifications(data.data.user._id || data.data.user.id);
             } else {
               setUser(null);
               localStorage.removeItem("userData");
@@ -82,6 +89,8 @@ export const AuthProvider = ({ children }) => {
         setUser(result.data.user);
         localStorage.setItem("userData", JSON.stringify(result.data.user));
         localStorage.setItem("authToken", result.data.token);
+        // Initialize push notifications
+        initializePushNotifications(result.data.user._id || result.data.user.id);
       }
       return result;
     } catch (error) {
@@ -97,6 +106,8 @@ export const AuthProvider = ({ children }) => {
         setUser(result.data.user);
         localStorage.setItem("userData", JSON.stringify(result.data.user));
         localStorage.setItem("authToken", result.data.token);
+        // Initialize push notifications
+        initializePushNotifications(result.data.user._id || result.data.user.id);
       }
       return result;
     } catch (error) {
@@ -112,6 +123,8 @@ export const AuthProvider = ({ children }) => {
         setUser(result.data.user);
         localStorage.setItem("userData", JSON.stringify(result.data.user));
         localStorage.setItem("authToken", result.data.token);
+        // Initialize push notifications
+        initializePushNotifications(result.data.user._id || result.data.user.id);
       }
       return result;
     } catch (error) {
@@ -156,6 +169,8 @@ export const AuthProvider = ({ children }) => {
         setUser(result.data.user);
         localStorage.setItem("userData", JSON.stringify(result.data.user));
         localStorage.setItem("authToken", result.data.token);
+        // Initialize push notifications
+        initializePushNotifications(result.data.user._id || result.data.user.id);
       }
       return result;
     } catch (error) {

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { MapPin, Plus, Trash2, Edit2, Check } from "lucide-react";
@@ -53,10 +53,14 @@ export default function ProfilePage() {
 
 // Separate component for authenticated user profile
 function AuthenticatedProfile() {
+  const searchParams = useSearchParams();
   const [user, setUser] = useState(null);
   const [orders, setOrders] = useState([]);
   const [ordersLoading, setOrdersLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState("profile");
+
+  // Read tab from URL query parameter, default to "profile"
+  const tabFromUrl = searchParams.get("tab");
+  const [activeTab, setActiveTab] = useState(tabFromUrl || "profile");
 
   // Edit mode states
   const [isEditing, setIsEditing] = useState(false);

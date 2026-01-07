@@ -17,6 +17,7 @@ import {
 import { useCart } from "@/contexts/CartContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/contexts/ToastContext";
+import { useNotifications } from "@/contexts/NotificationContext";
 import CouponModal from "@/components/CouponModal";
 import AddressModal from "@/components/AddressModal";
 import OrderSuccessModal from "@/components/OrderSuccessModal";
@@ -34,6 +35,7 @@ export default function CartPage() {
     fetchCart,
   } = useCart();
   const toast = useToast();
+  const { addOrderNotification } = useNotifications();
 
   const [localLoading, setLocalLoading] = useState({});
 
@@ -72,8 +74,7 @@ export default function CartPage() {
     const cartItem = cartItems[cartKey];
     if (cartItem && cartItem.stock && newQuantity > cartItem.stock) {
       toast.error(
-        `Only ${cartItem.stock} ${
-          cartItem.stock === 1 ? "item" : "items"
+        `Only ${cartItem.stock} ${cartItem.stock === 1 ? "item" : "items"
         } available in stock`
       );
       return;
@@ -355,7 +356,7 @@ export default function CartPage() {
             "pendingOrderPayload",
             JSON.stringify(orderData)
           );
-        } catch {}
+        } catch { }
         setOrderData({
           orderId: "PREPAY",
           orderSummary: orderData.orderSummary,
@@ -378,6 +379,8 @@ export default function CartPage() {
           setOrderData(data.data);
           setShowOrderSuccess(true);
           toast.success("Order placed successfully!");
+          // Add notification to bell
+          addOrderNotification(data.data);
         } else {
           console.error("❌ Order failed:", data.message);
           toast.error(data.message || "Failed to place order");
@@ -541,7 +544,7 @@ export default function CartPage() {
                                     {Math.round(
                                       ((item.originalPrice - item.price) /
                                         item.originalPrice) *
-                                        100
+                                      100
                                     )}
                                     % OFF
                                   </span>
@@ -779,21 +782,19 @@ export default function CartPage() {
                   <div className="space-y-3">
                     {/* Cash on Delivery */}
                     <div
-                      className={`p-3 border rounded-lg cursor-pointer transition-all ${
-                        paymentMethod === "cash_on_delivery"
-                          ? "border-blue-500 bg-blue-50"
-                          : "border-gray-200 hover:border-gray-300"
-                      }`}
+                      className={`p-3 border rounded-lg cursor-pointer transition-all ${paymentMethod === "cash_on_delivery"
+                        ? "border-blue-500 bg-blue-50"
+                        : "border-gray-200 hover:border-gray-300"
+                        }`}
                       onClick={() => setPaymentMethod("cash_on_delivery")}
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
                           <div
-                            className={`w-4 h-4 rounded-full border-2 ${
-                              paymentMethod === "cash_on_delivery"
-                                ? "border-blue-500 bg-blue-500"
-                                : "border-gray-300"
-                            }`}
+                            className={`w-4 h-4 rounded-full border-2 ${paymentMethod === "cash_on_delivery"
+                              ? "border-blue-500 bg-blue-500"
+                              : "border-gray-300"
+                              }`}
                           >
                             {paymentMethod === "cash_on_delivery" && (
                               <div className="w-full h-full rounded-full bg-white scale-50"></div>
@@ -819,21 +820,19 @@ export default function CartPage() {
 
                     {/* Online Payment - Enabled */}
                     <div
-                      className={`p-3 border rounded-lg cursor-pointer transition-all ${
-                        paymentMethod === "online_payment"
-                          ? "border-blue-500 bg-blue-50"
-                          : "border-gray-200 hover:border-gray-300"
-                      }`}
+                      className={`p-3 border rounded-lg cursor-pointer transition-all ${paymentMethod === "online_payment"
+                        ? "border-blue-500 bg-blue-50"
+                        : "border-gray-200 hover:border-gray-300"
+                        }`}
                       onClick={() => setPaymentMethod("online_payment")}
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
                           <div
-                            className={`w-4 h-4 rounded-full border-2 ${
-                              paymentMethod === "online_payment"
-                                ? "border-blue-500 bg-blue-500"
-                                : "border-gray-300"
-                            }`}
+                            className={`w-4 h-4 rounded-full border-2 ${paymentMethod === "online_payment"
+                              ? "border-blue-500 bg-blue-500"
+                              : "border-gray-300"
+                              }`}
                           >
                             {paymentMethod === "online_payment" && (
                               <div className="w-full h-full rounded-full bg-white scale-50"></div>
@@ -934,9 +933,8 @@ export default function CartPage() {
                   <div className="flex justify-between text-xs sm:text-sm">
                     <span className="text-neutral-600">Shipping</span>
                     <span
-                      className={`font-medium ${
-                        calculateShipping() === 0 ? "text-green-600" : ""
-                      }`}
+                      className={`font-medium ${calculateShipping() === 0 ? "text-green-600" : ""
+                        }`}
                     >
                       {calculateShipping() === 0
                         ? "FREE"

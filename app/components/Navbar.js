@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useCart } from "@/contexts/CartContext";
 import { useWishlist } from "@/contexts/WishlistContext";
 import { Heart } from "lucide-react";
+import NotificationBell from "@/components/NotificationBell";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -17,9 +18,8 @@ export default function Navbar() {
 
   return (
     <header
-      className={`w-full absolute inset-x-0 top-0 z-50 transition-colors duration-300 group/nav hover:shadow-sm ${
-        isHomePage ? "bg-transparent hover:bg-white" : "bg-white shadow-sm"
-      }`}
+      className={`w-full absolute inset-x-0 top-0 z-50 transition-colors duration-300 group/nav hover:shadow-sm ${isHomePage ? "bg-transparent hover:bg-white" : "bg-white shadow-sm"
+        }`}
     >
       {/* Top bar */}
       <div className="mx-auto max-w-7xl px-3 sm:px-1 lg:px-2">
@@ -33,11 +33,10 @@ export default function Navbar() {
                 width={80}
                 height={40}
                 sizes="(max-width: 640px) 112px, 200px"
-                className={`h-8 w-auto sm:h-10 md:h-12 max-w-full transition-all duration-300 ${
-                  isHomePage
+                className={`h-8 w-auto sm:h-10 md:h-12 max-w-full transition-all duration-300 ${isHomePage
                     ? "brightness-0 invert group-hover/nav:brightness-100 group-hover/nav:invert-0"
                     : ""
-                }`}
+                  }`}
                 priority
               />
             </Link>
@@ -47,11 +46,10 @@ export default function Navbar() {
           <button
             aria-label="Toggle menu"
             onClick={() => setOpen((v) => !v)}
-            className={`md:hidden rounded p-2 ${
-              isHomePage
+            className={`md:hidden rounded p-2 ${isHomePage
                 ? "text-white group-hover/nav:text-neutral-900"
                 : "text-neutral-900"
-            }`}
+              }`}
           >
             <svg
               className="h-6 w-6"
@@ -109,16 +107,15 @@ export default function Navbar() {
             aria-label="account-actions"
             className="hidden md:flex items-center gap-5 text-[13px]"
           >
-            
+
 
             {/* Profile/Login */}
             <Link
               href="/profile"
-              className={`group flex flex-col items-center gap-1 hover:opacity-90 transition-colors duration-300 ${
-                isHomePage
+              className={`group flex flex-col items-center gap-1 hover:opacity-90 transition-colors duration-300 ${isHomePage
                   ? "text-white group-hover/nav:text-neutral-900"
                   : "text-neutral-900"
-              }`}
+                }`}
             >
               <svg
                 className="h-6 w-6"
@@ -132,14 +129,16 @@ export default function Navbar() {
               </svg>
             </Link>
 
+            {/* Notifications */}
+            <NotificationBell isHomePage={isHomePage} />
+
             {/* Wishlist */}
             <Link
               href="/wishlist"
-              className={`group relative flex flex-col items-center gap-1 hover:opacity-90 transition-colors duration-300 ${
-                isHomePage
+              className={`group relative flex flex-col items-center gap-1 hover:opacity-90 transition-colors duration-300 ${isHomePage
                   ? "text-white group-hover/nav:text-neutral-900"
                   : "text-neutral-900"
-              }`}
+                }`}
             >
               <Heart className="h-6 w-6" strokeWidth="1.8" />
               {wishlistCount > 0 && (
@@ -152,11 +151,10 @@ export default function Navbar() {
             {/* Cart */}
             <Link
               href="/cart"
-              className={`group relative flex flex-col items-center gap-1 hover:opacity-90 transition-colors duration-300 ${
-                isHomePage
+              className={`group relative flex flex-col items-center gap-1 hover:opacity-90 transition-colors duration-300 ${isHomePage
                   ? "text-white group-hover/nav:text-neutral-900"
                   : "text-neutral-900"
-              }`}
+                }`}
             >
               <svg
                 className="h-6 w-6"
@@ -181,9 +179,8 @@ export default function Navbar() {
 
       {/* Mobile Drawer */}
       <div
-        className={`md:hidden transition-[max-height] duration-300 overflow-hidden bg-white ${
-          open ? "max-h-[420px]" : "max-h-0"
-        }`}
+        className={`md:hidden transition-[max-height] duration-300 overflow-hidden bg-white ${open ? "max-h-[420px]" : "max-h-0"
+          }`}
       >
         <div className="mx-auto max-w-7xl px-3">
           {/* <form
@@ -248,7 +245,7 @@ export default function Navbar() {
                 </span>
               )}
             </Link>
-            
+
             <Link
               href="/profile"
               className="flex items-center gap-2"
@@ -276,11 +273,10 @@ export default function Navbar() {
       <div className="w-full hidden md:block">
         <div className="mx-auto max-w-7xl px-0 sm:px-1 lg:px-2">
           <div
-            className={`flex flex-wrap items-center gap-x-8 lg:gap-x-14 gap-y-2 py-3 lg:py-4 text-sm lg:text-base transition-colors duration-300 ${
-              isHomePage
+            className={`flex flex-wrap items-center gap-x-8 lg:gap-x-14 gap-y-2 py-3 lg:py-4 text-sm lg:text-base transition-colors duration-300 ${isHomePage
                 ? "text-white group-hover/nav:text-neutral-900"
                 : "text-neutral-900"
-            }`}
+              }`}
           >
             {[
               { name: "New Arrivals", href: "/new-arrivals" },
