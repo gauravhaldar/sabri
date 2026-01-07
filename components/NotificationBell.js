@@ -87,7 +87,7 @@ export default function NotificationBell({ isHomePage = false }) {
                             <div className="px-4 py-8 text-center text-neutral-500">
                                 <Bell className="h-12 w-12 mx-auto mb-3 opacity-30" />
                                 <p className="text-sm">No notifications yet</p>
-                                <p className="text-xs mt-1">You'll see order updates here</p>
+                                <p className="text-xs mt-1">You&apos;ll see order updates here</p>
                             </div>
                         ) : (
                             <div className="divide-y divide-neutral-100">
