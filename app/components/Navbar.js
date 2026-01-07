@@ -34,8 +34,8 @@ export default function Navbar() {
                 height={40}
                 sizes="(max-width: 640px) 112px, 200px"
                 className={`h-8 w-auto sm:h-10 md:h-12 max-w-full transition-all duration-300 ${isHomePage
-                    ? "brightness-0 invert group-hover/nav:brightness-100 group-hover/nav:invert-0"
-                    : ""
+                  ? "brightness-0 invert group-hover/nav:brightness-100 group-hover/nav:invert-0"
+                  : ""
                   }`}
                 priority
               />
@@ -47,8 +47,8 @@ export default function Navbar() {
             aria-label="Toggle menu"
             onClick={() => setOpen((v) => !v)}
             className={`md:hidden rounded p-2 ${isHomePage
-                ? "text-white group-hover/nav:text-neutral-900"
-                : "text-neutral-900"
+              ? "text-white group-hover/nav:text-neutral-900"
+              : "text-neutral-900"
               }`}
           >
             <svg
@@ -113,8 +113,8 @@ export default function Navbar() {
             <Link
               href="/profile"
               className={`group flex flex-col items-center gap-1 hover:opacity-90 transition-colors duration-300 ${isHomePage
-                  ? "text-white group-hover/nav:text-neutral-900"
-                  : "text-neutral-900"
+                ? "text-white group-hover/nav:text-neutral-900"
+                : "text-neutral-900"
                 }`}
             >
               <svg
@@ -136,8 +136,8 @@ export default function Navbar() {
             <Link
               href="/wishlist"
               className={`group relative flex flex-col items-center gap-1 hover:opacity-90 transition-colors duration-300 ${isHomePage
-                  ? "text-white group-hover/nav:text-neutral-900"
-                  : "text-neutral-900"
+                ? "text-white group-hover/nav:text-neutral-900"
+                : "text-neutral-900"
                 }`}
             >
               <Heart className="h-6 w-6" strokeWidth="1.8" />
@@ -152,8 +152,8 @@ export default function Navbar() {
             <Link
               href="/cart"
               className={`group relative flex flex-col items-center gap-1 hover:opacity-90 transition-colors duration-300 ${isHomePage
-                  ? "text-white group-hover/nav:text-neutral-900"
-                  : "text-neutral-900"
+                ? "text-white group-hover/nav:text-neutral-900"
+                : "text-neutral-900"
                 }`}
             >
               <svg
@@ -253,6 +253,13 @@ export default function Navbar() {
             >
               <span>Account</span>
             </Link>
+
+            {/* Notifications - Mobile */}
+            <div className="flex items-center gap-2">
+              <NotificationBell isHomePage={false} />
+              <span className="text-sm">Notifications</span>
+            </div>
+
             <Link
               href="/cart"
               className="flex items-center gap-2 relative"
@@ -274,8 +281,8 @@ export default function Navbar() {
         <div className="mx-auto max-w-7xl px-0 sm:px-1 lg:px-2">
           <div
             className={`flex flex-wrap items-center gap-x-8 lg:gap-x-14 gap-y-2 py-3 lg:py-4 text-sm lg:text-base transition-colors duration-300 ${isHomePage
-                ? "text-white group-hover/nav:text-neutral-900"
-                : "text-neutral-900"
+              ? "text-white group-hover/nav:text-neutral-900"
+              : "text-neutral-900"
               }`}
           >
             {[
