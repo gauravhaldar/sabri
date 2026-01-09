@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Heart, ShoppingBag } from "lucide-react";
 import FiltersDrawer from "../components/FiltersDrawer";
-import { useGifts } from "../../hooks/useProducts";
+import { useProducts } from "../../hooks/useProducts";
 import {
   getProductImageUrl,
   getProductHoverImageUrl,
@@ -146,16 +146,18 @@ export default function GiftsPage() {
     minRating: 0,
   });
   const [filtersOpen, setFiltersOpen] = useState(false);
-  const INITIAL_VISIBLE_COUNT = 12;
-  const LOAD_MORE_COUNT = 12;
+  const INITIAL_VISIBLE_COUNT = 24;
+  const LOAD_MORE_COUNT = 24;
   const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_COUNT);
   const [scrollPosition, setScrollPosition] = useState(0);
   const [lastProductId, setLastProductId] = useState(null);
 
-  const { products, loading, error } = useGifts();
+  const { products, loading, error } = useProducts(null, { limit: 100 });
 
   const filteredProducts = filterProducts(products, filters);
-  const sortedProducts = sortProducts(filteredProducts, sortBy);
+  // Shuffle products randomly
+  const shuffledProducts = [...filteredProducts].sort(() => Math.random() - 0.5);
+  const sortedProducts = sortProducts(shuffledProducts, sortBy);
   const visibleProducts = sortedProducts.slice(0, visibleCount);
 
   // Load saved scroll position and product on mount
