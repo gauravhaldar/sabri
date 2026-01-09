@@ -57,7 +57,7 @@ export default function SpecialBanner({
                 <div className="absolute bottom-4 sm:bottom-8 left-4 sm:left-8 z-10">
                   <Link
                     href={s.link || "/best-sellers"}
-                    className="inline-flex items-center gap-1 sm:gap-2 border border-white text-white px-3 py-1.5 sm:px-6 sm:py-2.5 rounded text-xs sm:text-sm font-medium tracking-widest uppercase hover:bg-white hover:text-black transition-all duration-300"
+                    className="inline-flex items-center gap-1 sm:gap-2 border border-black bg-transparent text-black px-3 py-1.5 sm:px-6 sm:py-2.5 rounded text-xs sm:text-sm font-medium tracking-widest uppercase hover:bg-black hover:text-white transition-all duration-300"
                     onClick={(e) => e.stopPropagation()}
                   >
                     Shop Now

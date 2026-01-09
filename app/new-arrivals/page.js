@@ -348,7 +348,7 @@ export default function NewArrivalsPage() {
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
-            src="/banner/gift.jpeg"
+            src="/banner/gifts.png"
             alt="New Arrivals Banner"
             fill
             className="object-cover"
