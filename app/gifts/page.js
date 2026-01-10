@@ -320,11 +320,11 @@ export default function GiftsPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Banner */}
-      <div className="relative text-white pt-28 sm:pt-40 pb-64 sm:pb-80 overflow-hidden">
+      <div className="relative text-white pt-16 sm:pt-32 pb-24 sm:pb-72 overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
-            src="/banner/gifts.png"
+            src="/banner/gifts1.png"
             alt="Gifts Banner"
             fill
             className="object-cover"

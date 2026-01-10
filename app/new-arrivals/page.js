@@ -6,7 +6,6 @@ import Link from "next/link";
 import { Heart, ShoppingBag } from "lucide-react";
 import FiltersDrawer from "../components/FiltersDrawer";
 import { useNewArrivals } from "../../hooks/useProducts";
-import { useWishlist } from "../../contexts/WishlistContext";
 import {
   getProductImageUrl,
   getProductHoverImageUrl,
@@ -18,12 +17,8 @@ import {
 
 // Standalone ProductCard component
 const ProductCard = ({ product, onAddToCart, visibleCount, onProductClick }) => {
+  const [isWishlisted, setIsWishlisted] = useState(false);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
-  const {
-    toggleWishlist,
-    isInWishlist,
-    loading: wishlistLoading,
-  } = useWishlist();
 
   const handleAddToCart = async () => {
     setIsAddingToCart(true);
@@ -32,16 +27,9 @@ const ProductCard = ({ product, onAddToCart, visibleCount, onProductClick }) => 
     setIsAddingToCart(false);
   };
 
-  const handleWishlist = async (e) => {
-    e.preventDefault(); // Prevent navigation when clicking heart
-    e.stopPropagation();
-
-    if (!wishlistLoading) {
-      await toggleWishlist(product._id || product.id);
-    }
+  const handleWishlist = () => {
+    setIsWishlisted(!isWishlisted);
   };
-
-  const isWishlisted = isInWishlist(product._id || product.id);
 
   // Use utility functions to get proper data
   const productImage = getProductImageUrl(product);
@@ -69,8 +57,7 @@ const ProductCard = ({ product, onAddToCart, visibleCount, onProductClick }) => 
           )}
           <button
             onClick={handleWishlist}
-            disabled={wishlistLoading}
-            className="absolute bottom-2 left-2 p-1.5 bg-white/90 hover:bg-white rounded-full transition-all duration-200 shadow-sm opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 disabled:opacity-50"
+            className="absolute bottom-2 left-2 p-1.5 bg-white/90 hover:bg-white rounded-full transition-all duration-200 shadow-sm opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0"
           >
             <Heart
               className={`h-3 w-3 ${
@@ -344,11 +331,11 @@ export default function NewArrivalsPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Banner */}
-      <div className="relative text-white pt-28 sm:pt-40 pb-64 sm:pb-80 overflow-hidden">
+      <div className="relative text-white pt-16 sm:pt-32 pb-24 sm:pb-72 overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
-            src="/banner/gifts.png"
+            src="/banner/new-arrival1.png"
             alt="New Arrivals Banner"
             fill
             className="object-cover"
@@ -392,7 +379,7 @@ export default function NewArrivalsPage() {
         {filteredProducts.length > 0 ? (
           <>
             {/* Filters Drawer + Sort */}
-            <div className="mb-3 sm:mb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div className="mb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
               <button
                 onClick={() => setFiltersOpen(true)}
                 className="px-3 py-2 border border-neutral-900 text-neutral-900 text-sm bg-white hover:bg-neutral-50 whitespace-nowrap"

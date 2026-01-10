@@ -331,11 +331,11 @@ export default function FineGoldPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Banner */}
-      <div className="relative text-white pt-28 sm:pt-40 pb-64 sm:pb-80 overflow-hidden">
+      <div className="relative text-white pt-16 sm:pt-32 pb-24 sm:pb-72 overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
-            src="/banner/ring.png"
+            src="/banner/ring-cum-bangle1.png"
             alt="Ring Cum Bangle Banner"
             fill
             className="object-cover"
