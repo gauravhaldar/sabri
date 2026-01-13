@@ -7,7 +7,8 @@ export async function GET(request, { params }) {
   try {
     await connectDB();
 
-    const { userId } = params;
+    // Next.js 15: params must be awaited before accessing properties
+    const { userId } = await params;
 
     console.log("🔍 BACKEND: GetCart request for user:", userId);
 
