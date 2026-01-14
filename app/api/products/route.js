@@ -10,12 +10,27 @@ export async function GET(request) {
     const page = parseInt(searchParams.get("page")) || 1;
     const limit = parseInt(searchParams.get("limit")) || 10;
     const category = searchParams.get("category");
+    const search = searchParams.get("search");
     const skip = (page - 1) * limit;
 
     // Build query
     let query = { isActive: true };
+
+    // Category filter
     if (category) {
       query.category = category;
+    }
+
+    // Search filter - searches name, description, category, and tags
+    if (search) {
+      const searchRegex = new RegExp(search, 'i'); // Case-insensitive
+      query.$or = [
+        { name: searchRegex },
+        { description: searchRegex },
+        { category: searchRegex },
+        { tags: { $in: [searchRegex] } },
+        { 'seo.keywords': { $in: [searchRegex] } },
+      ];
     }
 
     const products = await Product.find(query)
