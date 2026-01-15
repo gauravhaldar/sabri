@@ -3,6 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import connectDB from "@/lib/db";
 import Product from "@/lib/models/Product";
+import ProductSchema from "@/components/seo/ProductSchema";
+import BreadcrumbSchema from "@/components/seo/BreadcrumbSchema";
 
 // Server component: fetch product directly from DB by slug or _id
 export default async function ProductDetailPage({ params }) {
@@ -26,8 +28,18 @@ export default async function ProductDetailPage({ params }) {
   const primaryImage =
     (product.images && product.images[0]) || "/placeholder-image.jpg";
 
+  // Generate breadcrumbs for SEO
+  const breadcrumbs = [
+    { name: "Home", url: "https://www.mysabri.in" },
+    { name: product.category?.replace(/-/g, " ") || "Products", url: `https://www.mysabri.in/${product.category || "best-sellers"}` },
+    { name: product.name, url: `https://www.mysabri.in/${product.category || "best-sellers"}/${product.slug || product._id}` }
+  ];
+
   return (
     <div className="min-h-screen bg-white">
+      {/* SEO Schemas */}
+      <ProductSchema product={product} />
+      <BreadcrumbSchema breadcrumbs={breadcrumbs} />
       {/* Header */}
       <div className="bg-neutral-50 py-6 sm:py-8 pt-28 sm:pt-40">
         <div className="container mx-auto px-4">

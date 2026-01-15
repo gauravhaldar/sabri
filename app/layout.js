@@ -8,6 +8,7 @@ import { ToastProvider } from "@/contexts/ToastContext";
 import { NotificationProvider } from "@/contexts/NotificationContext";
 import GoogleAnalytics from "./components/GoogleAnalytics";
 import LoadingScreen from "./components/LoadingScreen";
+import OrganizationSchema from "@/components/seo/OrganizationSchema";
 
 export const metadata = {
   title: "Silver Jewellery Set Online – Pure 925 Designs | Mysabri",
@@ -52,6 +53,7 @@ export default function RootLayout({ children }) {
         {/* End Meta Pixel Code */}
       </head>
       <body className="antialiased">
+        <OrganizationSchema />
         <LoadingScreen />
         <AuthProvider>
           <NotificationProvider>

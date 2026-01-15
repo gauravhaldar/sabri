@@ -412,9 +412,9 @@ export default function RingsPage() {
       <div className="bg-gray-50 py-6 sm:py-8">
         <div className="container mx-auto px-4">
           <div className="text-center">
-            {/* <h1 className="text-2xl sm:text-3xl font-bold text-black mb-2">
-              silver ring for women at Mysabri
-            </h1> */}
+            <h1 className="text-2xl sm:text-3xl font-bold text-black mb-2">
+              Rings
+            </h1>
             <p className="text-sm sm:text-base text-gray-600">
               {filteredProducts.length}{" "}
               {filteredProducts.length === 1 ? "product" : "products"} found
