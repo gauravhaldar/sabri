@@ -138,9 +138,24 @@ export default function AddressModal({
 
   const handleSelectSavedAddress = async (savedAddr) => {
     // Convert saved address format to the format expected by cart
+    // Ensure email is always populated - use user email, or generate from phone/userId
+    let userEmail = currentUser?.email;
+    if (!userEmail || userEmail.trim() === "") {
+      // Fallback: generate email from phone number or user ID
+      const phoneDigits = savedAddr.phone?.replace(/\D/g, "") || currentUser?.phone?.replace(/\D/g, "");
+      const userId = currentUser?._id || currentUser?.id;
+      if (phoneDigits) {
+        userEmail = `${phoneDigits}@phone.user.local`;
+      } else if (userId) {
+        userEmail = `${userId}@user.local`;
+      } else {
+        userEmail = "customer@sabri.local";
+      }
+    }
+
     const addressData = {
       name: savedAddr.name,
-      email: currentUser?.email || "",
+      email: userEmail,
       phone: savedAddr.phone,
       addressLine1: savedAddr.address,
       addressLine2: "",
@@ -412,8 +427,23 @@ export default function AddressModal({
       // For now, we'll just simulate success and pass the address data
       await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate API call
 
+      // Ensure email fallback if somehow empty
+      let finalEmail = address.email?.trim();
+      if (!finalEmail) {
+        const phoneDigits = address.phone?.replace(/\D/g, "") || currentUser?.phone?.replace(/\D/g, "");
+        const userId = currentUser?._id || currentUser?.id;
+        if (phoneDigits) {
+          finalEmail = `${phoneDigits}@phone.user.local`;
+        } else if (userId) {
+          finalEmail = `${userId}@user.local`;
+        } else {
+          finalEmail = "customer@sabri.local";
+        }
+      }
+
       const addressWithShipping = {
         ...address,
+        email: finalEmail,
         phoneWithCountryCode: `${selectedCountryCode.code} ${address.phone}`,
         countryCode: selectedCountryCode,
         shippingInfo: shippingValidation.data,
