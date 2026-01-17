@@ -32,6 +32,10 @@ export async function PUT(request) {
 
         const { firstName, lastName, phone, gender, dateOfBirth, profilePicture } = await request.json();
 
+        console.log('=== Profile Update Request ===');
+        console.log('Received gender:', gender);
+        console.log('Received dateOfBirth:', dateOfBirth);
+
         // Find user and update (token uses 'id' field)
         const user = await User.findById(decoded.id);
         if (!user) {
@@ -45,10 +49,16 @@ export async function PUT(request) {
         if (firstName) user.firstName = firstName;
         if (lastName !== undefined) user.lastName = lastName;
         if (phone !== undefined) user.phone = phone;
-        // Only update gender if it's a valid non-empty value
-        if (gender && gender !== "") user.gender = gender;
-        if (dateOfBirth !== undefined) user.dateOfBirth = dateOfBirth ? new Date(dateOfBirth) : undefined;
+        // Update gender if it's provided (even if empty to allow clearing)
+        if (gender !== undefined) user.gender = gender || '';
+        // Update dateOfBirth if it's provided
+        if (dateOfBirth !== undefined) {
+            user.dateOfBirth = dateOfBirth ? new Date(dateOfBirth) : null;
+        }
         if (profilePicture !== undefined) user.profilePicture = profilePicture;
+
+        console.log('Saving gender:', user.gender);
+        console.log('Saving dateOfBirth:', user.dateOfBirth);
 
         await user.save();
 

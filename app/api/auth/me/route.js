@@ -66,6 +66,8 @@ export async function GET(request) {
           lastName: user.lastName,
           email: user.email,
           phone: user.phone,
+          gender: user.gender,
+          dateOfBirth: user.dateOfBirth,
           role: user.role,
           isEmailVerified: user.isEmailVerified,
           lastLogin: user.lastLogin,

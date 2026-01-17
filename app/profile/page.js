@@ -96,17 +96,50 @@ function AuthenticatedProfile() {
   const [addressSaving, setAddressSaving] = useState(false);
 
   useEffect(() => {
-    // Get user data from localStorage or API
-    const userData = JSON.parse(localStorage.getItem("userData") || "{}");
-    setUser(userData);
-    setEditForm({
-      firstName: userData.firstName || "",
-      lastName: userData.lastName || "",
-      phone: userData.phone || "",
-      gender: userData.gender || "",
-      dateOfBirth: userData.dateOfBirth ? userData.dateOfBirth.split('T')[0] : "",
-      profilePicture: userData.profilePicture || "",
-    });
+    // First load from localStorage for immediate display
+    const cachedData = JSON.parse(localStorage.getItem("userData") || "{}");
+    if (cachedData.id) {
+      setUser(cachedData);
+      setEditForm({
+        firstName: cachedData.firstName || "",
+        lastName: cachedData.lastName || "",
+        phone: cachedData.phone || "",
+        gender: cachedData.gender || "",
+        dateOfBirth: cachedData.dateOfBirth ? cachedData.dateOfBirth.split('T')[0] : "",
+        profilePicture: cachedData.profilePicture || "",
+      });
+    }
+
+    // Then fetch fresh data from backend to sync
+    const fetchFreshUserData = async () => {
+      try {
+        const token = localStorage.getItem("authToken");
+        if (!token) return;
+
+        const res = await fetch("/api/auth/me", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = await res.json();
+
+        if (data.success && data.data?.user) {
+          const freshUser = { ...cachedData, ...data.data.user };
+          localStorage.setItem("userData", JSON.stringify(freshUser));
+          setUser(freshUser);
+          setEditForm({
+            firstName: freshUser.firstName || "",
+            lastName: freshUser.lastName || "",
+            phone: freshUser.phone || "",
+            gender: freshUser.gender || "",
+            dateOfBirth: freshUser.dateOfBirth ? freshUser.dateOfBirth.split('T')[0] : "",
+            profilePicture: freshUser.profilePicture || "",
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchFreshUserData();
   }, []);
 
   useEffect(() => {
